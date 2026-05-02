@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://user-images.githubusercontent.com/46929618/150730092-337cd5de-f376-454a-9418-c884bdb5f5e0.png" width="100%">
+<img src="screenshots/banner.png" width="100%" alt="QuinxOS Banner">
 
 # **QuinxOS**
 

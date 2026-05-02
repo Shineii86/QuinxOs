@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="300" font-family="JetBrains Mono, monospace">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0d1117"/>
+      <stop offset="50%" stop-color="#161b22"/>
+      <stop offset="100%" stop-color="#0d1117"/>
+    </linearGradient>
+    <linearGradient id="title" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#00e5ff"/>
+      <stop offset="50%" stop-color="#a855f7"/>
+      <stop offset="100%" stop-color="#ff4757"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#00e5ff"/>
+      <stop offset="100%" stop-color="#a855f7"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <!-- Background -->
+  <rect width="1200" height="300" fill="url(#bg)" rx="12"/>
+  <!-- Border gradient -->
+  <rect x="1" y="1" width="1198" height="298" rx="11" fill="none" stroke="url(#accent)" stroke-width="1" opacity="0.3"/>
+  <!-- Decorative grid lines -->
+  <line x1="0" y1="75" x2="1200" y2="75" stroke="#30363d" stroke-width="0.5" opacity="0.3"/>
+  <line x1="0" y1="225" x2="1200" y2="225" stroke="#30363d" stroke-width="0.5" opacity="0.3"/>
+  <!-- ASCII Art Banner -->
+  <text filter="url(#glow)" fill="url(#title)" font-size="28" font-weight="bold">
+    <tspan x="100" y="75">    ██████╗ ██╗   ██╗██╗███╗   ██╗██╗  ██╗ ██████╗ ███████╗</tspan>
+    <tspan x="100" dy="32">   ██╔═══██╗██║   ██║██║████╗  ██║╚██╗██╔╝██╔═══██╗██╔════╝</tspan>
+    <tspan x="100" dy="32">   ██║   ██║██║   ██║██║██╔██╗ ██║ ╚███╔╝ ██║   ██║███████╗</tspan>
+    <tspan x="100" dy="32">   ██║▄▄ ██║██║   ██║██║██║╚██╗██║ ██╔██╗ ██║   ██║╚════██║</tspan>
+    <tspan x="100" dy="32">   ╚██████╔╝╚██████╔╝██║██║ ╚████║██╔╝ ██╗╚██████╔╝███████║</tspan>
+    <tspan x="100" dy="32">    ╚══▀▀═╝  ╚═════╝ ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝</tspan>
+  </text>
+  <!-- Subtitle -->
+  <text x="600" y="260" text-anchor="middle" fill="#8b949e" font-size="16" font-family="Inter, sans-serif" font-weight="300">The Ultimate Termux Customization Suite</text>
+  <!-- Version tag -->
+  <rect x="510" y="270" width="50" height="20" rx="10" fill="#00e5ff" fill-opacity="0.15" stroke="#00e5ff" stroke-width="1"/>
+  <text x="535" y="284" text-anchor="middle" fill="#00e5ff" font-size="11" font-family="Inter, sans-serif" font-weight="600">v6.0</text>
+  <!-- Decorative dots -->
+  <circle cx="60" cy="150" r="3" fill="#00e5ff" opacity="0.4"/>
+  <circle cx="60" cy="170" r="2" fill="#a855f7" opacity="0.3"/>
+  <circle cx="60" cy="130" r="2" fill="#ff4757" opacity="0.3"/>
+  <circle cx="1140" cy="150" r="3" fill="#a855f7" opacity="0.4"/>
+  <circle cx="1140" cy="170" r="2" fill="#00e5ff" opacity="0.3"/>
+  <circle cx="1140" cy="130" r="2" fill="#2ed573" opacity="0.3"/>
+</svg>
