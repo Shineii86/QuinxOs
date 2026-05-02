@@ -32,7 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [5.0] — 2026-04-01
+## [5.0] — 2026-05-02
 
 ### 🖥️ Added
 - **Live Dashboard** — Full-screen real-time system monitor (CPU, RAM, battery, network, processes)
@@ -56,7 +56,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [4.2] — 2026-03-01
+## [4.2] — 2026-05-02
 
 ### 🎨 Added
 - 15 handcrafted color themes (Cyber Midnight, Matrix Green, Solar Flare, Arctic Blue, etc.)
@@ -70,7 +70,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [4.1] — 2026-02-01
+## [4.1] — 2026-05-02
 
 ### 🔄 Changed
 - 8 major upgrades to existing features
@@ -79,7 +79,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [4.0] — 2026-01-15
+## [4.0] — 2026-05-02
 
 ### 🎨 Added
 - Complete UI redesign
@@ -96,7 +96,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [3.0] — 2025-12-01
+## [3.0] — 2026-05-02
 
 ### 🎨 Added
 - Zsh and Bash dual shell support
@@ -107,7 +107,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [2.0] — 2025-11-01
+## [2.0] — 2026-05-02
 
 ### 🎨 Added
 - Basic theme customization
@@ -117,7 +117,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [1.0] — 2025-10-01
+## [1.0] — 2026-05-02
 
 ### 🎨 Added
 - Initial release

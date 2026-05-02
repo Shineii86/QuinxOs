@@ -1,0 +1,21 @@
+# QuinxOS .gitignore
+
+# Backups & temp
+*.bak
+*.tmp
+*.swp
+*~
+
+# QuinxOS runtime
+.object/backups/
+.object/profiles/*/
+.quinx-installed
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.sublime-*

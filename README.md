@@ -279,6 +279,29 @@ Each profile stores: theme, banner, aliases, zshrc, plugins.
 
 ---
 
+## 🗑️ Uninstall
+
+To completely remove QuinxOS from your system:
+
+1. Open QuinxOS → Select **[37] Uninstall** from the menu
+2. Or run manually:
+   ```bash
+   cd ~/QuinxOS && bash install.sh --skip-wizard
+   # Then select option 37
+   ```
+
+**What gets removed:**
+- `~/QuinxOS/` directory (themes, plugins, configs)
+- QuinxOS shell configuration from `.zshrc` / `.bashrc`
+- QuinxOS aliases and functions
+- `.quinx-installed` marker file
+
+**What is preserved:**
+- Your original `.zshrc` / `.bashrc` backup (if created during install)
+- Termux itself and any manually installed packages
+
+---
+
 ## 🤝 Contributing
 
 We love contributions! Whether it's a new theme, plugin, bug fix, or documentation improvement — every bit helps.
@@ -307,6 +330,24 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 | Dependencies | Pure Bash (no Python/Node required for core) |
 | Anime ASCII Art | 10 characters |
 | Anime Themes | 7 palettes |
+
+---
+
+## ⭐ Star History
+
+<a href="https://star-history.com/#Shineii86/QuinxOS&Date">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=Shineii86/QuinxOS&type=Date&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=Shineii86/QuinxOS&type=Date" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=Shineii86/QuinxOS&type=Date" width="100%" />
+ </picture>
+</a>
+
+---
+
+## 🧩 Writing Plugins
+
+Want to create your own QuinxOS plugin? See the [Plugin API Guide](plugins/README.md) for documentation, environment variables, helper functions, and examples.
 
 ---
 
