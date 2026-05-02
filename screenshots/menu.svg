@@ -46,9 +46,9 @@
     <text x="65" y="265" fill="#00e5ff">[11]</text><text x="100" y="265" fill="#a855f7">Anime Themes</text><text x="400" y="265" fill="#8b949e">7 anime palettes</text>
     <text x="65" y="285" fill="#00e5ff">[15]</text><text x="100" y="285" fill="#2ed573">Plugin System (14)</text><text x="400" y="285" fill="#8b949e">Extensions</text>
     <text x="65" y="305" fill="#00e5ff">[18]</text><text x="100" y="305" fill="#00e5ff">Live Dashboard</text><text x="400" y="305" fill="#8b949e">System monitor</text>
-    <text x="65" y="325" fill="#00e5ff">[28]</text><text x="100" y="325" fill="#ff4757">Quinx Shield</text><text x="400" y="325" fill="#8b949e">Terminal lock</text>
-    <text x="65" y="345" fill="#00e5ff">[35]</text><text x="100" y="345" fill="#2ed573">GitHub Integration</text><text x="400" y="345" fill="#8b949e">Git made easy</text>
-    <text x="65" y="365" fill="#00e5ff">[36]</text><text x="100" y="365" fill="#ffa502">ASCII Games</text><text x="400" y="365" fill="#8b949e">Snake, Tetris, Pong</text>
+    <text x="65" y="325" fill="#00e5ff">[28]</text><text x="100" y="325" fill="#a855f7">Fun Stuff</text><text x="400" y="325" fill="#8b949e">Anime, Matrix, facts</text>
+    <text x="65" y="345" fill="#00e5ff">[32]</text><text x="100" y="345" fill="#ff4757">Quinx Shield</text><text x="400" y="345" fill="#8b949e">Terminal lock</text>
+    <text x="65" y="365" fill="#00e5ff">[35]</text><text x="100" y="365" fill="#2ed573">Command Palette</text><text x="400" y="365" fill="#8b949e">Search features</text>
     <text x="65" y="385" fill="#00e5ff">[38]</text><text x="100" y="385" fill="#ffa502">RGB Animation</text><text x="400" y="385" fill="#8b949e">Preview effect</text>
   </g>
 

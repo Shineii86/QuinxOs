@@ -78,15 +78,13 @@ cd QuinxOS && bash install.sh
 
 | Feature | Description |
 |:--------|:------------|
-| 🎨 **Anime Theme Gallery** | 7 new anime-inspired color schemes — Evangelion, Gojo, Levi, Zero Two, Marin, Bocchi, Power |
-| 🖼️ **Anime ASCII Art** | 10 anime character ASCII banners with random display on terminal start |
+| 🎨 **Anime Theme Gallery** | 6 new anime-inspired color schemes — Evangelion, Attack on Titan, Naruto, Dragon Ball, Demon Slayer, One Piece |
+| 🖼️ **Anime ASCII Art** | Anime character ASCII banners with random display on terminal start |
 | 💬 **Anime Quotes** | Motivational anime quotes shown on each new terminal session |
 | 🤓 **Fun Facts** | Random fun facts displayed alongside your daily quote |
-| 🐙 **GitHub Integration** | One-command repo init, commit, and push — no need to leave the terminal |
-| 🎮 **ASCII Games** | Snake, Tetris, and Pong playable right in your terminal |
-| 🤖 **AI Assistant** | Lightweight CLI assistant for quick answers and jokes |
-| 🔍 **Code Snippets** | Save, search, and manage your frequently used code snippets |
-| 📝 **Quick Notes v2** | Enhanced note system with categories, search, and timestamps |
+| 🐙 **GitHub Integration** | GitHub stats, notifications, streaks, and repo info |
+| 🎮 **Matrix Rain** | Matrix-style rain animation in your terminal |
+| 🎵 **Anime Plugin** | Anime quotes, waifu art, and ASCII character art |
 | ⚙️ **System Tweaks** | Performance optimizations and developer-friendly shell defaults |
 
 ### Previous Releases
@@ -99,27 +97,26 @@ See [CHANGELOG.md](CHANGELOG.md) for the full version history.
 
 **22 handcrafted color schemes** — from cyberpunk neon to anime-inspired palettes.
 
-### Classic Themes (15)
+### Classic Themes (16)
 
 | # | Theme | Vibe | # | Theme | Vibe |
 |:-:|:------|:-----|:-:|:------|:-----|
 | 1 | **Cyber Midnight** | Deep space neon | 9 | **Tokyo Night** | Clean VS Code |
-| 2 | **Matrix Green** | Classic hacker | 10 | **Catppuccin Mocha** | Smooth pastel |
-| 3 | **Solar Flare** | Warm orange dark | 11 | **Everforest** | Nature green |
-| 4 | **Arctic Blue** | Cool ice tones | 12 | **Monokai** | Classic editor |
-| 5 | **Purple Haze** | Purple magenta | 13 | **Synthwave** | Neon 80s retro |
-| 6 | **Dracacula** | Dracula-inspired | 14 | **Rosé Pine** | Gentle rose/gold |
-| 7 | **Nord** | Arctic north-blue | 15 | **Kanagawa** | Japanese ink |
-| 8 | **Gruvbox** | Retro groove | | | |
+| 2 | **Matrix Green** | Classic hacker | 10 | **Tokyo Day** | Light bright |
+| 3 | **Solar Flare** | Warm orange dark | 11 | **Catppuccin Mocha** | Smooth pastel |
+| 4 | **Arctic Blue** | Cool ice tones | 12 | **Everforest** | Nature green |
+| 5 | **Purple Haze** | Purple magenta | 13 | **Monokai** | Classic editor |
+| 6 | **Dracacula** | Dracula-inspired | 14 | **Synthwave** | Neon 80s retro |
+| 7 | **Nord** | Arctic north-blue | 15 | **Rosé Pine** | Gentle rose/gold |
+| 8 | **Gruvbox** | Retro groove | 16 | **Kanagawa** | Japanese ink |
 
-### Anime Themes (7)
+### Anime Themes (6)
 
 | # | Theme | Inspiration | # | Theme | Inspiration |
 |:-:|:------|:------------|:-:|:------|:------------|
-| 16 | **Evangelion** | EVA Unit-01 purple/green | 20 | **Marin Kitagawa** | Gyaru pink/bright |
-| 17 | **Gojo Satoru** | Limitless blue/purple | 21 | **Bocchi** | Shy pink/guitar |
-| 18 | **Levi Ackerman** | Clean grey/military | 22 | **Power** | Blood red/chaos |
-| 19 | **Zero Two** | Crimson/pink darling | | | |
+| 17 | **Evangelion** | EVA Unit-01 purple/green | 20 | **Dragon Ball** | Orange/blue Saiyan |
+| 18 | **Attack on Titan** | Military green/brown | 21 | **Demon Slayer** | Red/black flame |
+| 19 | **Naruto** | Orange ninja | 22 | **One Piece** | Red/pirate gold |
 
 > 💡 **Theme Builder** lets you create unlimited custom themes beyond these 22.
 
@@ -133,20 +130,20 @@ Drop `.sh` files in `.object/plugins/` — they auto-load on terminal start.
 
 | Command | Plugin | What It Does |
 |:--------|:-------|:-------------|
-| `quinx-weather <city>` | Weather | Current weather for any city |
+| `quinx-weather [city]` | Weather | Current weather for any city |
 | `quinx-extract <file>` | Extract | Universal archive extractor (tar, zip, rar, 7z, etc.) |
 | `quinx-ports [host]` | Ports | Quick port scanner |
-| `quinx-calc 'expr'` | Calculator | Math expressions with bc |
-| `quinx-qr 'text'` | QR Code | Generate QR codes |
-| `quinx-timer <secs>` | Timer | Countdown timer + stopwatch |
+| `quinx-calc "expr"` | Calculator | Math expressions with bc |
+| `quinx-qr "text"` | QR Code | Generate QR codes from text or URL |
+| `quinx-timer [secs]` | Timer | Countdown timer + stopwatch |
 | `quinx-pass [len]` | Password | Random password generator |
-| `quinx-note add/list` | Notes | Quick note-taking system |
-| `quinx-color '#hex'` | Color Info | Color converter with preview |
+| `quinx-note [add\|list\|search\|clear]` | Notes | Quick note-taking system |
+| `quinx-color [#hex\|name]` | Color Info | Color converter with preview |
 | `quinx-report` | Sys Report | Full system report (saved to file) |
 | `quinx-define <word>` | Dictionary | English dictionary lookup |
-| `quinx-gh <cmd>` | GitHub | Quick git init, commit, and push |
-| `quinx-game` | Games | Play Snake, Tetris, or Pong in terminal |
-| `quinx-ai 'query'` | AI Assistant | Quick answers, jokes, and trivia |
+| `quinx-anime-quote` | Anime | Anime quotes, waifu art, ASCII art |
+| `quinx-matrix [secs]` | Matrix | Matrix rain animation in terminal |
+| `quinx-ghstats` | GitHub | GitHub stats, notifications, streaks, repos |
 
 ### Creating Your Own
 
@@ -225,25 +222,25 @@ Export any QuinxOS theme to work in other terminals:
 
 | # | Feature | # | Feature |
 |:-:|:--------|:-:|:--------|
-| 01 | Core Setup | 20 | Network Info |
-| 02 | Zsh Config | 21 | QuinxBench |
-| 03 | Switch → Zsh | 22 | Profile System |
-| 04 | Switch → Bash | 23 | Dotfiles Sync |
-| 05 | Banner Style (3) | 24 | Termux API Hooks |
-| 06 | Custom Theme | 25 | MOTD Editor |
-| 07 | Zsh Plugins | 26 | Backup/Restore |
-| 08 | Theme Gallery (22) | 27 | Startup Timer |
-| 09 | Theme Builder | 28 | Quinx Shield |
-| 10 | Color Export | 29 | Fingerprint Lock |
-| 11 | Dev Tools | 30 | Remove Lock |
-| 12 | Quick Commands | 31 | Command Palette |
-| 13 | Aliases Manager | 32 | Update |
-| 14 | Plugin System | 33 | Uninstall |
-| 15 | Custom ASCII Art | 34 | RGB Animation |
-| 16 | Login Sound | 35 | GitHub Integration |
-| 17 | Live Dashboard | 36 | ASCII Games |
-| 18 | Git Dashboard | 37 | AI Assistant |
-| 19 | System Info | 38 | Code Snippets |
+| 01 | Core Setup | 20 | GitHub Integration |
+| 02 | Zsh Config | 21 | System Info |
+| 03 | Switch → Zsh | 22 | Network Info |
+| 04 | Switch → Bash | 23 | QuinxBench |
+| 05 | Banner Style (5) | 24 | Neofetch Banner |
+| 06 | Custom Theme | 25 | Profile System |
+| 07 | Zsh Plugins | 26 | Dotfiles Sync |
+| 08 | Theme Gallery (22) | 27 | Termux API Hooks |
+| 09 | Theme Builder | 28 | Fun Stuff |
+| 10 | Color Export | 29 | MOTD Editor |
+| 11 | Anime Themes (6) | 30 | Backup/Restore |
+| 12 | Dev Tools | 31 | Startup Timer |
+| 13 | Quick Commands | 32 | Quinx Shield |
+| 14 | Aliases Manager | 33 | Fingerprint Lock |
+| 15 | Plugin System | 34 | Remove Lock |
+| 16 | Custom ASCII Art | 35 | Command Palette |
+| 17 | Login Sound | 36 | Update QuinxOS |
+| 18 | Live Dashboard | 37 | Uninstall |
+| 19 | Git Dashboard | 38 | RGB Animation |
 
 ---
 
@@ -352,7 +349,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 | Install Script | ~2,000+ lines |
 | Dependencies | Pure Bash (no Python/Node required for core) |
 | Anime ASCII Art | 10 characters |
-| Anime Themes | 7 palettes |
+| Anime Themes | 6 palettes |
 
 ---
 

@@ -10,20 +10,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [6.0] — 2026-05-02
 
 ### 🎨 Added
-- **Anime Theme Gallery** — 7 new anime-inspired color schemes (Evangelion, Gojo, Levi, Zero Two, Marin, Bocchi, Power)
-- **Anime ASCII Art** — 10 anime character ASCII banners with random display on terminal start
+- **Anime Theme Gallery** — 6 new anime-inspired color schemes (Evangelion, Attack on Titan, Naruto, Dragon Ball, Demon Slayer, One Piece)
+- **Anime ASCII Art** — Anime character ASCII banners with random display on terminal start
 - **Anime Quotes** — Motivational anime quotes shown on each new terminal session
 - **Fun Facts** — Random fun facts displayed alongside daily quotes
-- **GitHub Integration Plugin** (`quinx-gh`) — One-command repo init, commit, and push
-- **ASCII Games** (`quinx-game`) — Snake, Tetris, and Pong playable in terminal
-- **AI Assistant** (`quinx-ai`) — Lightweight CLI assistant for quick answers and jokes
-- **Code Snippets** — Save, search, and manage frequently used code snippets
-- **Quick Notes v2** — Enhanced note system with categories, search, and timestamps
+- **GitHub Integration Plugin** (`quinx-ghstats`) — GitHub stats, notifications, streaks, repos
+- **Matrix Rain Plugin** (`quinx-matrix`) — Matrix-style terminal animation
+- **Anime Plugin** (`quinx-anime-quote`, `quinx-waifu`, `quinx-anime-art`) — Anime content
 - **System Tweaks** — Performance optimizations and developer-friendly shell defaults
 - GitHub Pages documentation site
-- Last commit badge in README
+- Custom SVG banner with gradient effects
+- Terminal screenshots for README
+- CHANGELOG.md, CONTRIBUTING.md, .gitignore
+- GitHub issue/PR templates, ShellCheck CI workflow
+- Plugin API documentation (plugins/README.md)
+- Star history badge in README
 
 ### 🔄 Changed
+- Replaced all box-drawing ASCII art (╔╗╚╝║═) with ASCII-safe characters (+-|) for universal terminal compatibility
+- Rebuilt all SVG screenshots to use rect-based rendering (no overlapping characters)
+- README updated with accurate theme list (22 themes), plugin list (14 plugins), and feature table
+- docs/index.html updated with correct stats, OG meta tags, and favicon
+- Menu options expanded from 34 to **38**
+- Theme count: 22 (16 classic + 6 anime)
+- Plugin count: 14
+- Banner styles: 5 (all ASCII-safe)
 - Menu options expanded from 34 to **38**
 - Theme count increased from 15 to **22**
 - Plugin count increased from 11 to **14**
