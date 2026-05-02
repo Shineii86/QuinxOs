@@ -39,6 +39,29 @@
 
 ---
 
+## 📸 Screenshots
+
+<div align="center">
+
+### Main Menu
+<img src="screenshots/menu.png" width="100%" alt="QuinxOS Main Menu">
+
+### Live Dashboard
+<img src="screenshots/dashboard.png" width="100%" alt="QuinxOS Live Dashboard">
+
+### Theme Gallery (22 themes)
+<img src="screenshots/themes.png" width="100%" alt="QuinxOS Theme Gallery">
+
+### Anime ASCII Art
+<img src="screenshots/anime-art.png" width="100%" alt="QuinxOS Anime ASCII Art">
+
+### Plugin System (14 plugins)
+<img src="screenshots/plugins.png" width="100%" alt="QuinxOS Plugin System">
+
+</div>
+
+---
+
 ## ⚡ Quick Start
 
 ```bash
