@@ -1,23 +1,21 @@
 #!/bin/bash
-# ╔══════════════════════════════════════════════════════════╗
-# ║                    QuinxOS v4.2                          ║
-# ║         Termux Optimization & Customization Suite        ║
-# ║                    by Shineii86                          ║
-# ╚══════════════════════════════════════════════════════════╝
+# ╔══════════════════════════════════════════════════════════════╗
+# ║                      QuinxOS v5.0                            ║
+# ║           Termux Optimization & Customization Suite          ║
+# ║                      by Shineii86                            ║
+# ╚══════════════════════════════════════════════════════════════╝
 
-# ─── Color Palette ─────────────────────────────────────────
 R='\033[1;31m'; G='\033[1;32m'; Y='\033[1;93m'; B='\033[1;94m'
 C='\033[1;96m'; W='\033[1;97m'; M='\033[1;95m'; D='\033[2m'
-RS='\033[0m'; BL='\033[5m'; UL='\033[4m'
+RS='\033[0m'
 
-# ─── Paths ─────────────────────────────────────────────────
 QUINX_HOME="$HOME/QuinxOS"
-QUINX_VERSION="4.2"
+QUINX_VERSION="5.0"
 QUINX_MARKER="$HOME/.quinx-installed"
 QUINX_THEMES="$QUINX_HOME/.object/themes"
 QUINX_PLUGINS="$QUINX_HOME/.object/plugins"
+QUINX_PROFILES="$QUINX_HOME/.profiles"
 
-# ─── Layout Engine ─────────────────────────────────────────
 term_width=$(tput cols 2>/dev/null || echo 80)
 BOX_WIDTH=$(( term_width > 64 ? 62 : term_width - 2 ))
 margin=$(( (term_width - BOX_WIDTH) / 2 ))
@@ -26,28 +24,20 @@ left_pad=$(printf '%*s' "$margin" "")
 draw_top()    { printf "${C}${left_pad}╔"; for ((i=0; i<BOX_WIDTH-2; i++)); do printf "═"; done; printf "╗${RS}\n"; }
 draw_bot()    { printf "${C}${left_pad}╚"; for ((i=0; i<BOX_WIDTH-2; i++)); do printf "═"; done; printf "╝${RS}\n"; }
 draw_sep()    { printf "${C}${left_pad}╠"; for ((i=0; i<BOX_WIDTH-2; i++)); do printf "─"; done; printf "╣${RS}\n"; }
-draw_empty()  { printf "${C}${left_pad}║${RS}"; printf '%*s' $((BOX_WIDTH-2)) ""; printf "${C}║${RS}\n"; }
-
 print_line() {
-    local text="$1" color="${2:-$W}"
-    local len=${#text}
-    local inner=$((BOX_WIDTH - 2))
-    local space_l=$(( (inner - len) / 2 ))
-    local space_r=$(( inner - len - space_l ))
-    printf "${C}${left_pad}║%*s${color}%s${C}%*s║${RS}\n" $space_l "" "$text" $space_r ""
+    local text="$1" color="${2:-$W}" len=${#text} inner=$((BOX_WIDTH - 2))
+    local sl=$(( (inner - len) / 2 )) sr=$(( inner - len - sl ))
+    printf "${C}${left_pad}║%*s${color}%s${C}%*s║${RS}\n" $sl "" "$text" $sr ""
 }
-
 print_item() {
     local num="$1" label="$2" desc="$3" color="${4:-$G}"
-    local num_fmt="${C}[${W}${num}${C}]${color}"
-    local full="  ${num_fmt} ${label}"
+    local full="  ${C}[${W}${num}${C}]${color} ${label}"
     printf "${C}${left_pad}║${RS}${full}"
-    local remaining=$(( BOX_WIDTH - 2 - ${#full} - ${#desc} - 2 ))
-    printf '%*s' $remaining ""
+    printf '%*s' $(( BOX_WIDTH - 2 - ${#full} - ${#desc} - 2 )) ""
     printf "${D}%s${RS}  ${C}║${RS}\n" "$desc"
 }
 
-# ─── ASCII Art Banners ─────────────────────────────────────
+# ─── Banners ───────────────────────────────────────────────
 banner_style_1() {
     echo ""
     echo -e "${C}    ██████╗ ██╗   ██╗██╗███╗   ██╗██╗  ██╗ ██████╗ ███████╗${RS}"
@@ -57,7 +47,6 @@ banner_style_1() {
     echo -e "${C}   ╚██████╔╝╚██████╔╝██║██║ ╚████║██╔╝ ██╗╚██████╔╝███████║${RS}"
     echo -e "${C}    ╚══▀▀═╝  ╚═════╝ ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝${RS}"
 }
-
 banner_style_2() {
     echo ""
     echo -e "${M}    ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄${RS}"
@@ -66,573 +55,868 @@ banner_style_2() {
     echo -e "${M}   █░▀▀░░▀▀▀░▀░░▀░▀▀▀░▀░▀░▀░▀░▀▀▀░▀▀▀░▀▀░░▀▀▀░▀▀░░▀${RS}"
     echo -e "${M}   ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀${RS}"
 }
-
 banner_style_3() {
     echo ""
     echo -e "${G}   ╔═══════════════════════════════════════════════════╗${RS}"
-    echo -e "${G}   ║                                                   ║${RS}"
     echo -e "${G}   ║   ░█▀▄░█░█░█▄░█░█▀▀░█░█░█▀█░█▀▀░█▀█░█▀▄░█▀▀    ║${RS}"
     echo -e "${G}   ║   ░█░█░█░█░█░▀█░█░░░█▀█░█▄█░█░░░█░█░█░█░█▀▀    ║${RS}"
     echo -e "${G}   ║   ░▀▀░░▀▀▀░▀░░▀░▀▀▀░▀░▀░▀░▀░▀▀▀░▀▀▀░▀▀░░▀▀▀    ║${RS}"
-    echo -e "${G}   ║                                                   ║${RS}"
     echo -e "${G}   ╚═══════════════════════════════════════════════════╝${RS}"
 }
 
 show_banner() {
     clear
-    local style_file="$QUINX_HOME/.banner-style"
-    local style="1"
-    [ -f "$style_file" ] && style=$(cat "$style_file")
-    case $style in
-        1) banner_style_1 ;; 2) banner_style_2 ;; 3) banner_style_3 ;;
-        *) banner_style_1 ;;
-    esac
+    local style="1"; [ -f "$QUINX_HOME/.banner-style" ] && style=$(cat "$QUINX_HOME/.banner-style")
+    case $style in 1) banner_style_1 ;; 2) banner_style_2 ;; 3) banner_style_3 ;; *) banner_style_1 ;; esac
     echo ""
     echo -e "${M}         ╔═══════════════════════════════════════╗${RS}"
-    echo -e "${M}         ║  ${W}Termux Optimization Suite ${D}v${QUINX_VERSION}${M}       ║${RS}"
+    echo -e "${M}         ║  ${W}Termux Optimization Suite ${D}v${QUINX_VERSION}${M}         ║${RS}"
     echo -e "${M}         ╚═══════════════════════════════════════╝${RS}"
     echo ""
 }
 
-# ─── Status Bar ────────────────────────────────────────────
 show_status() {
-    local shell_now=$(basename "$SHELL" 2>/dev/null || echo "unknown")
-    local zsh_status="${R}✗${RS}"; [ -d "$HOME/.oh-my-zsh" ] && zsh_status="${G}✓${RS}"
-    local lock_status="${R}✗${RS}"
-    grep -q "#QUINX_LOCK_START" ~/.bashrc 2>/dev/null && lock_status="${G}✓${RS}"
-    grep -q "#QUINX_LOCK_START" ~/.zshrc 2>/dev/null && lock_status="${G}✓${RS}"
-    local theme_name="Cyber Midnight"
-    [ -f "$QUINX_HOME/.current-theme" ] && theme_name=$(cat "$QUINX_HOME/.current-theme")
-    local plugin_count=$(ls "$QUINX_PLUGINS"/*.sh 2>/dev/null | wc -l || echo "0")
-
+    local shell_now=$(basename "$SHELL" 2>/dev/null || echo "?")
+    local z="${R}✗${RS}"; [ -d "$HOME/.oh-my-zsh" ] && z="${G}✓${RS}"
+    local lk="${R}✗${RS}"; grep -q "#QUINX_LOCK_START" ~/.bashrc 2>/dev/null && lk="${G}✓${RS}"; grep -q "#QUINX_LOCK_START" ~/.zshrc 2>/dev/null && lk="${G}✓${RS}"
+    local th="Cyber Midnight"; [ -f "$QUINX_HOME/.current-theme" ] && th=$(cat "$QUINX_HOME/.current-theme")
+    local pc=$(ls "$QUINX_PLUGINS"/*.sh 2>/dev/null | wc -l)
+    local profile="default"; [ -f "$QUINX_HOME/.active-profile" ] && profile=$(cat "$QUINX_HOME/.active-profile")
     draw_top
-    print_line ""
     print_line "SYSTEM STATUS" "$Y"
     draw_sep
-    printf "${C}${left_pad}║${RS}  Shell: ${W}%-8s${RS} Zsh: ${W}%-3b${RS} Lock: ${W}%-3b${RS} Theme: ${W}%-12s${RS} Plugins: ${W}%-3s${RS}" \
-        "$shell_now" "$zsh_status" "$lock_status" "$theme_name" "$plugin_count"
-    local total_len=$(( 8 + 7 + 7 + 8 + 12 + 10 + 3 )
-    )
-    local remaining=$(( BOX_WIDTH - 2 - total_len ))
-    [ $remaining -lt 0 ] && remaining=0
-    printf '%*s' $remaining ""
-    printf "${C}║${RS}\n"
+    printf "${C}${left_pad}║${RS}  ${W}Shell:%-7s${RS} Zsh:%-3b${RS} Lock:%-3b${RS} Theme:%-10s${RS} Plugins:%-3s${RS} Profile:%-8s${RS}" \
+        "$shell_now" "$z" "$lk" "$th" "$pc" "$profile"
+    printf '%*s' $(( BOX_WIDTH - 58 )) "" "${C}║${RS}\n"
     print_line ""
 }
 
-# ─── Auto-Update Check ─────────────────────────────────────
-check_for_updates() {
-    local last_check="$QUINX_HOME/.last-update-check"
-    local now=$(date +%s)
-    if [ -f "$last_check" ]; then
-        local last=$(cat "$last_check")
-        local diff=$(( now - last ))
-        [ $diff -lt 86400 ] && return
-    fi
-    echo "$now" > "$last_check"
-    local remote_ver=$(curl -s --max-time 5 "https://raw.githubusercontent.com/Shineii86/QuinxOS/main/install.sh" 2>/dev/null | grep -m1 'QUINX_VERSION=' | cut -d'"' -f2)
-    if [ -n "$remote_ver" ] && [ "$remote_ver" != "$QUINX_VERSION" ]; then
+# ═══════════════════════════════════════════════════════════
+# 1. INTERACTIVE DASHBOARD
+# ═══════════════════════════════════════════════════════════
+do_dashboard() {
+    echo -e "\033[?25l"  # hide cursor
+    trap 'echo -e "\033[?25h"; return' INT
+    while true; do
+        clear
+        local now=$(date '+%Y-%m-%d %H:%M:%S')
+        local ip=$(ip route get 1.1.1.1 2>/dev/null | grep -oP 'src \K\S+' || echo "N/A")
+        local bat="N/A"; [ -f /sys/class/power_supply/battery/capacity ] && bat="$(cat /sys/class/power_supply/battery/capacity 2>/dev/null)%"
+        local mem=$(free -m 2>/dev/null | awk '/Mem:/{printf "%dMB/%dMB (%.0f%%)", $3, $2, $3/$2*100}')
+        local swap=$(free -m 2>/dev/null | awk '/Swap:/{printf "%dMB/%dMB", $3, $2}')
+        local disk=$(df -h / 2>/dev/null | awk 'NR==2{printf "%s/%s (%s)", $3, $2, $5}')
+        local cpu=$(top -bn1 2>/dev/null | grep "CPU" | awk '{print $2}' || echo "?")
+        local load=$(cat /proc/loadavg 2>/dev/null | awk '{print $1, $2, $3}' || echo "?")
+        local procs=$(ps aux 2>/dev/null | wc -l)
+        local uptime=$(uptime -p 2>/dev/null || echo "N/A")
+        local kernel=$(uname -r 2>/dev/null)
+        local arch=$(uname -m 2>/dev/null)
+
         echo ""
-        draw_top
-        print_line ""
-        print_line "UPDATE AVAILABLE" "$Y"
-        print_line "Current: v${QUINX_VERSION} → Latest: v${remote_ver}" "$W"
-        print_line "Run option [20] to update" "$D"
-        print_line ""
-        draw_bot
+        echo -e "${C}  ╔══════════════════════════════════════════════════════════╗${RS}"
+        echo -e "${C}  ║${W}              QUINXOS LIVE DASHBOARD v${QUINX_VERSION}              ${C}║${RS}"
+        echo -e "${C}  ╠══════════════════════════════════════════════════════════╣${RS}"
+        echo -e "${C}  ║${RS}                                                        ${C}║${RS}"
+        echo -e "${C}  ║${RS}  ${G}▸${RS} Time:      ${W}${now}${RS}                     ${C}║${RS}"
+        echo -e "${C}  ║${RS}  ${G}▸${RS} Uptime:    ${W}${uptime}${RS}                            ${C}║${RS}"
+        echo -e "${C}  ║${RS}  ${G}▸${RS} Kernel:    ${W}${kernel} ${arch}${RS}                   ${C}║${RS}"
+        echo -e "${C}  ║${RS}                                                        ${C}║${RS}"
+        echo -e "${C}  ║${RS}  ${Y}▸${RS} CPU:       ${W}${cpu}%${RS}  Load: ${W}${load}${RS}           ${C}║${RS}"
+        echo -e "${C}  ║${RS}  ${Y}▸${RS} Memory:    ${W}${mem}${RS}                        ${C}║${RS}"
+        echo -e "${C}  ║${RS}  ${Y}▸${RS} Swap:      ${W}${swap}${RS}                            ${C}║${RS}"
+        echo -e "${C}  ║${RS}  ${Y}▸${RS} Disk:      ${W}${disk}${RS}                       ${C}║${RS}"
+        echo -e "${C}  ║${RS}                                                        ${C}║${RS}"
+        echo -e "${C}  ║${RS}  ${B}▸${RS} Network:   ${W}IP: ${ip}${RS}                           ${C}║${RS}"
+        echo -e "${C}  ║${RS}  ${B}▸${RS} Battery:   ${W}${bat}${RS}                                   ${C}║${RS}"
+        echo -e "${C}  ║${RS}  ${B}▸${RS} Processes: ${W}${procs}${RS}                                     ${C}║${RS}"
+        echo -e "${C}  ║${RS}                                                        ${C}║${RS}"
+        echo -e "${C}  ╠══════════════════════════════════════════════════════════╣${RS}"
+        echo -e "${C}  ║${RS}  ${D}Top Processes by CPU:${RS}                                  ${C}║${RS}"
+        ps aux 2>/dev/null | sort -nrk 3 | head -5 | while IFS= read -r line; do
+            printf "${C}  ║${RS}  ${W}%-56s${RS}${C}║${RS}\n" "$(echo "$line" | awk '{printf "%-8s %5s%% %5s%% %s", $1, $3, $4, $11}')"
+        done
+        echo -e "${C}  ║${RS}                                                        ${C}║${RS}"
+        echo -e "${C}  ╠══════════════════════════════════════════════════════════╣${RS}"
+        echo -e "${C}  ║${RS}  ${D}Refreshing every 2s — Press Ctrl+C to exit${RS}             ${C}║${RS}"
+        echo -e "${C}  ╚══════════════════════════════════════════════════════════╝${RS}"
         sleep 2
-    fi
+    done
+    echo -e "\033[?25h"
 }
 
 # ═══════════════════════════════════════════════════════════
-# FEATURE 1: LOGIN SOUND
+# 2. FINGERPRINT LOCK
 # ═══════════════════════════════════════════════════════════
-do_login_sound() {
-    clear; show_banner
-    draw_top
-    print_line "LOGIN SOUND" "$Y"
+do_fingerprint_lock() {
+    clear; show_banner; draw_top
+    print_line "FINGERPRINT LOCK" "$Y"
     draw_sep
-    print_line "Play audio on terminal boot" "$D"
+    if ! command -v termux-fingerprint &>/dev/null; then
+        print_line "termux-api not installed!" "$R"
+        print_line "Run: pkg install termux-api" "$D"
+        print_line "Then: termux-setup-storage" "$D"
+        draw_bot; echo ""
+        echo -ne "${left_pad}${C}  Press Enter...${RS}"; read -r; return
+    fi
+    print_line "Use biometric auth instead of password" "$D"
     draw_sep
-    print_item "1" "Enable Bell     " "Terminal beep on login" "$G"
-    print_item "2" "Custom Sound    " "Use your own audio file" "$G"
-    print_item "3" "Disable         " "Silent boot" "$R"
+    print_item "1" "Enable Fingerprint" "Lock with biometric" "$G"
+    print_item "2" "Disable           " "Remove fingerprint lock" "$R"
     draw_sep
-    print_item "0" "Back            " "Return to menu" "$R"
+    print_item "0" "Back              " "Return to menu" "$R"
     draw_bot; echo ""
     echo -ne "${left_pad}${C}  Selection ❯ ${RS}"
-    read -r sound_choice
-    case $sound_choice in
+    read -r fp_choice
+    case $fp_choice in
         1)
-            echo '# Sound enabled: bell' > "$QUINX_HOME/.login-sound-mode"
+            local fp_code='#QUINX_FINGERPRINT_START
+clear
+echo -e "\033[1;36m  ┌─────────────────────────────────────┐"
+echo -e "  │     QUINX SHIELD — BIOMETRIC        │"
+echo -e "  └─────────────────────────────────────┘\033[0m"
+attempt=1
+while [ $attempt -le 3 ]; do
+    echo -e "\n\033[1;33m  Touch sensor to authenticate...\033[0m"
+    result=$(termux-fingerprint 2>/dev/null)
+    if echo "$result" | grep -q "AUTH_RESULT_SUCCESS"; then
+        echo -e "\033[1;32m  ✓ BIOMETRIC AUTH SUCCESSFUL\033[0m"
+        sleep 1; clear; break
+    else
+        echo -e "\033[1;31m  ✗ AUTH FAILED (Attempt $attempt/3)\033[0m"
+        if [ $attempt -eq 3 ]; then
+            echo -e "\033[1;31m  ✗ TOO MANY ATTEMPTS. SESSION TERMINATED.\033[0m"; exit
+        fi
+        attempt=$((attempt + 1))
+    fi
+done
+#QUINX_FINGERPRINT_END'
+            echo "$fp_code" > "$QUINX_HOME/.fp-lock"
+            # Inject into shell rc
+            for rc in ~/.bashrc ~/.zshrc; do
+                [ -f "$rc" ] || continue
+                sed -i '/#QUINX_FINGERPRINT_START/,/#QUINX_FINGERPRINT_END/d' "$rc"
+                echo "$fp_code" > "$rc.tmp"; cat "$rc" >> "$rc.tmp"; mv "$rc.tmp" "$rc"
+            done
             clear; show_banner; draw_top
-            print_line "LOGIN BELL ENABLED ✓" "$G"
+            print_line "FINGERPRINT LOCK ACTIVATED ✓" "$G"
             draw_bot; sleep 2 ;;
         2)
-            echo ""
-            echo -ne "${left_pad}${C}  Path to audio file: ${RS}"
-            read -r sound_file
-            if [ -f "$sound_file" ]; then
-                cp "$sound_file" "$QUINX_HOME/.login-sound"
-                echo '# Sound enabled: custom' > "$QUINX_HOME/.login-sound-mode"
-                clear; show_banner; draw_top
-                print_line "CUSTOM SOUND SET ✓" "$G"
-                draw_bot
-            else
-                echo -e "\n${left_pad}${R}  File not found${RS}"
-            fi
-            sleep 2 ;;
-        3)
-            rm -f "$QUINX_HOME/.login-sound" "$QUINX_HOME/.login-sound-mode"
+            for rc in ~/.bashrc ~/.zshrc; do
+                [ -f "$rc" ] && sed -i '/#QUINX_FINGERPRINT_START/,/#QUINX_FINGERPRINT_END/d' "$rc"
+            done
+            rm -f "$QUINX_HOME/.fp-lock"
             clear; show_banner; draw_top
-            print_line "LOGIN SOUND DISABLED ✓" "$R"
+            print_line "FINGERPRINT LOCK REMOVED" "$R"
             draw_bot; sleep 2 ;;
-        0) return ;;
     esac
 }
 
 # ═══════════════════════════════════════════════════════════
-# FEATURE 4: RGB ANIMATION
+# 3. COMMAND PALETTE
 # ═══════════════════════════════════════════════════════════
-do_rgb_animation() {
-    clear
+do_command_palette() {
+    clear; show_banner; draw_top
+    print_line "COMMAND PALETTE" "$Y"
+    draw_sep
+    print_line "Type to search features, aliases, plugins" "$D"
+    draw_sep
+    print_line ""
+    draw_bot; echo ""
+    echo -ne "${left_pad}${C}  Search ❯ ${RS}"
+    read -r query
+    [ -z "$query" ] && return
+
     echo ""
-    echo -e "${C}  QuinxOS RGB Animation Preview${RS}"
-    echo ""
-    echo -ne "  "
-    for i in {1..40}; do
-        case $((i % 6)) in
-            0) color="\033[1;31m" ;; 1) color="\033[1;33m" ;;
-            2) color="\033[1;32m" ;; 3) color="\033[1;36m" ;;
-            4) color="\033[1;34m" ;; 5) color="\033[1;35m" ;;
-        esac
-        echo -ne "${color}▓\033[0m"
-        sleep 0.03
+    echo -e "${C}  ── Results ──${RS}"
+
+    # Search menu options
+    local menu_items=("Core Setup" "Zsh Config" "Switch Zsh" "Switch Bash" "Banner Style" "Custom Theme" "Zsh Plugins" "Theme Gallery" "Dev Tools" "Quick Commands" "Aliases Manager" "Plugin System" "Custom ASCII Art" "Login Sound" "System Info" "Network Info" "MOTD Editor" "Backup Restore" "Quinx Shield" "Remove Lock" "Update" "Uninstall" "RGB Animation" "Dashboard" "Fingerprint Lock" "Command Palette" "Dotfiles Sync" "Theme Builder" "Profiles" "Git Dashboard" "Termux Hooks" "QuinxBench" "Startup Timer" "Color Export")
+    local idx=1
+    for item in "${menu_items[@]}"; do
+        if echo "$item" | grep -qi "$query"; then
+            echo -e "  ${G}[$idx]${RS} $item"
+        fi
+        idx=$((idx + 1))
     done
-    echo -e "  \033[1;32mDONE\033[0m"
+
+    # Search aliases
+    if [ -f "$QUINX_HOME/.quinx-aliases" ]; then
+        local alias_match=$(grep -i "$query" "$QUINX_HOME/.quinx-aliases" 2>/dev/null)
+        [ -n "$alias_match" ] && echo -e "\n  ${Y}Aliases:${RS}\n  $alias_match"
+    fi
+
+    # Search plugins
+    for p in "$QUINX_PLUGINS"/*.sh; do
+        [ -f "$p" ] || continue
+        if grep -qi "$query\|quinx-.*$query" "$p" 2>/dev/null; then
+            echo -e "  ${B}Plugin:${RS} $(basename "$p" .sh)"
+        fi
+    done
+
     echo ""
-    echo -e "${C}  This animation plays on every terminal boot.${RS}"
-    echo -e "${D}  Built into your zshrc automatically.${RS}"
-    echo ""
-    echo -ne "${left_pad}${C}  Press Enter to return...${RS}"
+    echo -ne "${left_pad}${C}  Press Enter...${RS}"
     read -r
 }
 
 # ═══════════════════════════════════════════════════════════
-# FEATURE 5: THEME GALLERY (15 themes)
+# 4. DOTFILES SYNC
 # ═══════════════════════════════════════════════════════════
-do_theme_presets() {
-    clear; show_banner
-    draw_top
-    print_line "THEME GALLERY — 15 THEMES" "$Y"
-    draw_sep
-    print_item "01" "Cyber Midnight  " "Deep space + neon" "$C"
-    print_item "02" "Matrix Green     " "Classic hacker" "$G"
-    print_item "03" "Solar Flare      " "Warm dark + orange" "$Y"
-    print_item "04" "Arctic Blue      " "Cool blue / ice" "$B"
-    print_item "05" "Purple Haze      " "Purple + magenta" "$M"
-    print_item "06" "Dracacula        " "Dracula-inspired" "$M"
-    print_item "07" "Nord             " "Arctic north-blue" "$B"
-    print_item "08" "Gruvbox          " "Retro groove warm" "$Y"
-    print_item "09" "Tokyo Night      " "Clean VS Code dark" "$B"
-    print_item "10" "Catppuccin Mocha " "Smooth pastel dark" "$M"
-    print_item "11" "Everforest       " "Nature green dark" "$G"
-    print_item "12" "Monokai          " "Classic code editor" "$Y"
-    print_item "13" "Synthwave        " "Neon retro 80s" "$R"
-    print_item "14" "Rose Pine        " "Gentle pine/rose" "$M"
-    print_item "15" "Kanagawa         " "Japanese ink dark" "$B"
-    draw_sep
-    print_item "0"  "Back             " "Return to menu" "$R"
-    draw_bot; echo ""
-    echo -ne "${left_pad}${C}  Theme ❯ ${RS}"
-    read -r theme_choice
-
-    local theme_file="" theme_name=""
-    case $theme_choice in
-        1|01)  theme_file="cyber-midnight.colors"; theme_name="Cyber Midnight" ;;
-        2|02)  theme_file="matrix-green.colors"; theme_name="Matrix Green" ;;
-        3|03)  theme_file="solar-flare.colors"; theme_name="Solar Flare" ;;
-        4|04)  theme_file="arctic-blue.colors"; theme_name="Arctic Blue" ;;
-        5|05)  theme_file="purple-haze.colors"; theme_name="Purple Haze" ;;
-        6|06)  theme_file="dracacula.colors"; theme_name="Dracacula" ;;
-        7|07)  theme_file="nord.colors"; theme_name="Nord" ;;
-        8|08)  theme_file="gruvbox.colors"; theme_name="Gruvbox" ;;
-        9|09)  theme_file="tokyo-night.colors"; theme_name="Tokyo Night" ;;
-        10)    theme_file="catppuccin-mocha.colors"; theme_name="Catppuccin Mocha" ;;
-        11)    theme_file="everforest.colors"; theme_name="Everforest" ;;
-        12)    theme_file="monokai.colors"; theme_name="Monokai" ;;
-        13)    theme_file="synthwave.colors"; theme_name="Synthwave" ;;
-        14)    theme_file="rose-pine.colors"; theme_name="Rose Pine" ;;
-        15)    theme_file="kanagawa.colors"; theme_name="Kanagawa" ;;
-        0) return ;;
-        *) return ;;
-    esac
-
-    if [ -f "$QUINX_THEMES/$theme_file" ]; then
-        cp "$QUINX_THEMES/$theme_file" ~/.termux/colors.properties 2>/dev/null
-        echo "$theme_name" > "$QUINX_HOME/.current-theme"
-        termux-reload-settings 2>/dev/null
-        clear; show_banner; draw_top
-        print_line "THEME APPLIED: $theme_name ✓" "$G"
-        draw_bot
-    else
-        clear; show_banner; draw_top
-        print_line "THEME FILE NOT FOUND" "$R"
-        draw_bot
-    fi
-    sleep 2
-}
-
-# ═══════════════════════════════════════════════════════════
-# FEATURE 6: ALIASES MANAGER
-# ═══════════════════════════════════════════════════════════
-do_aliases_manager() {
+do_dotfiles_sync() {
     while true; do
-        clear; show_banner
-        draw_top
-        print_line "ALIASES MANAGER" "$Y"
+        clear; show_banner; draw_top
+        print_line "DOTFILES SYNC" "$Y"
         draw_sep
-        print_line "Create & manage shell shortcuts" "$D"
+        print_line "Sync configs to GitHub" "$D"
         draw_sep
-        print_item "1" "List Aliases   " "Show all saved aliases" "$G"
-        print_item "2" "Add Alias      " "Create new alias" "$G"
-        print_item "3" "Remove Alias   " "Delete an alias" "$R"
-        print_item "4" "Quick Aliases  " "Add common aliases" "$Y"
+        print_item "1" "Push Configs   " "Upload to GitHub repo" "$G"
+        print_item "2" "Pull Configs   " "Download from GitHub" "$G"
+        print_item "3" "Set Repo URL   " "Configure sync repo" "$B"
+        print_item "4" "View Synced    " "Show tracked files" "$B"
         draw_sep
         print_item "0" "Back           " "Return to menu" "$R"
         draw_bot; echo ""
         echo -ne "${left_pad}${C}  Selection ❯ ${RS}"
-        read -r alias_choice
-
-        local alias_file="$QUINX_HOME/.quinx-aliases"
-        case $alias_choice in
+        read -r df_choice
+        case $df_choice in
             1)
-                clear; show_banner; draw_top
-                print_line "SAVED ALIASES" "$Y"
-                draw_sep
-                if [ -f "$alias_file" ] && [ -s "$alias_file" ]; then
-                    while IFS= read -r line; do
-                        printf "${C}${left_pad}║${RS}  ${W}%-40s${RS}" "$line"
-                        printf '%*s' $(( BOX_WIDTH - 2 - 42 )) "" "${C}║${RS}\n"
-                    done < "$alias_file"
-                else
-                    print_line "No aliases saved yet" "$D"
+                local repo_url=$(cat "$QUINX_HOME/.dotfiles-repo" 2>/dev/null)
+                if [ -z "$repo_url" ]; then
+                    echo -e "\n${left_pad}${R}  Set repo URL first (option 3)${RS}"; sleep 2; continue
                 fi
-                draw_bot; echo ""
-                echo -ne "${left_pad}${C}  Press Enter...${RS}"
-                read -r ;;
+                local tmpdir=$(mktemp -d)
+                cd "$tmpdir" && git init 2>/dev/null
+                for f in ~/.zshrc ~/.bashrc ~/.gitconfig ~/.ssh/config; do
+                    [ -f "$f" ] && cp "$f" .
+                done
+                [ -d ~/.termux ] && cp -r ~/.termux .
+                [ -f "$QUINX_HOME/.current-theme" ] && cp "$QUINX_HOME/.current-theme" .
+                [ -f "$QUINX_HOME/.banner-style" ] && cp "$QUINX_HOME/.banner-style" .
+                [ -f "$QUINX_HOME/.quinx-aliases" ] && cp "$QUINX_HOME/.quinx-aliases" .
+                git add . && git commit -m "dotfiles: $(date +%Y%m%d-%H%M%S)" 2>/dev/null
+                git remote add origin "$repo_url" 2>/dev/null
+                git push -u origin main --force 2>&1 | tail -3
+                rm -rf "$tmpdir"
+                echo -e "\n${left_pad}${G}  ✓ Configs pushed!${RS}"; sleep 2 ;;
             2)
-                echo ""
-                echo -ne "${left_pad}${C}  Alias name (e.g., 'll'): ${RS}"
-                read -r alias_name
-                echo -ne "${left_pad}${C}  Command: ${RS}"
-                read -r alias_cmd
-                if [ -n "$alias_name" ] && [ -n "$alias_cmd" ]; then
-                    echo "alias ${alias_name}='${alias_cmd}'" >> "$alias_file"
-                    source "$alias_file" 2>/dev/null
-                    echo -e "\n${left_pad}${G}  ✓ alias ${alias_name}='${alias_cmd}'${RS}"
-                fi
-                sleep 2 ;;
+                local repo_url=$(cat "$QUINX_HOME/.dotfiles-repo" 2>/dev/null)
+                [ -z "$repo_url" ] && echo -e "\n${left_pad}${R}  Set repo URL first${RS}" && sleep 2 && continue
+                local tmpdir=$(mktemp -d)
+                git clone "$repo_url" "$tmpdir" 2>/dev/null
+                [ -f "$tmpdir/.zshrc" ] && cp "$tmpdir/.zshrc" ~/.zshrc
+                [ -f "$tmpdir/.bashrc" ] && cp "$tmpdir/.bashrc" ~/.bashrc
+                [ -f "$tmpdir/.gitconfig" ] && cp "$tmpdir/.gitconfig" ~/.gitconfig
+                [ -d "$tmpdir/.termux" ] && cp -r "$tmpdir/.termux/"* ~/.termux/ 2>/dev/null
+                [ -f "$tmpdir/.current-theme" ] && cp "$tmpdir/.current-theme" "$QUINX_HOME/"
+                [ -f "$tmpdir/.banner-style" ] && cp "$tmpdir/.banner-style" "$QUINX_HOME/"
+                [ -f "$tmpdir/.quinx-aliases" ] && cp "$tmpdir/.quinx-aliases" "$QUINX_HOME/"
+                rm -rf "$tmpdir"
+                echo -e "\n${left_pad}${G}  ✓ Configs restored!${RS}"; sleep 2 ;;
             3)
-                if [ -f "$alias_file" ] && [ -s "$alias_file" ]; then
-                    echo ""
-                    nl -ba "$alias_file"
-                    echo ""
-                    echo -ne "${left_pad}${C}  Line number to remove: ${RS}"
-                    read -r line_num
-                    if [ -n "$line_num" ]; then
-                        sed -i "${line_num}d" "$alias_file"
-                        echo -e "${left_pad}${G}  ✓ Removed${RS}"
-                    fi
-                else
-                    echo -e "\n${left_pad}${D}  No aliases to remove${RS}"
-                fi
-                sleep 2 ;;
+                echo ""
+                echo -ne "${left_pad}${C}  GitHub repo URL: ${RS}"
+                read -r repo_input
+                [ -n "$repo_input" ] && echo "$repo_input" > "$QUINX_HOME/.dotfiles-repo"
+                echo -e "${left_pad}${G}  ✓ Saved${RS}"; sleep 2 ;;
             4)
-                cat >> "$alias_file" << 'ALIASES'
-alias ll='ls -la'
-alias la='ls -a'
-alias cls='clear'
-alias ..='cd ..'
-alias ...='cd ../..'
-alias update='apt update && apt upgrade -y'
-alias myip='curl -s ifconfig.me'
-alias ports='netstat -tulanp'
-alias path='echo -e ${PATH//:/\\n}'
-alias mkdir='mkdir -pv'
-ALIASES
-                source "$alias_file" 2>/dev/null
-                clear; show_banner; draw_top
-                print_line "COMMON ALIASES ADDED ✓" "$G"
-                print_line "ll, la, cls, .., ..., update, myip, ports, path, mkdir" "$D"
-                draw_bot; sleep 2 ;;
+                echo ""
+                echo -e "${left_pad}${W}  Tracked files:${RS}"
+                for f in ".zshrc" ".bashrc" ".gitconfig" ".termux/" ".current-theme" ".banner-style" ".quinx-aliases"; do
+                    echo -e "  ${G}•${RS} $f"
+                done
+                echo ""; echo -ne "${left_pad}${C}  Press Enter...${RS}"; read -r ;;
             0) return ;;
         esac
     done
 }
 
 # ═══════════════════════════════════════════════════════════
-# FEATURE 7: PLUGIN SYSTEM
+# 5. THEME BUILDER
 # ═══════════════════════════════════════════════════════════
-do_plugin_system() {
+do_theme_builder() {
+    clear; show_banner; draw_top
+    print_line "THEME BUILDER" "$Y"
+    draw_sep
+    print_line "Create custom color scheme" "$D"
+    draw_sep
+    print_line "Enter hex colors (e.g., #0d1117)" "$D"
+    print_line ""
+    draw_bot; echo ""
+
+    local colors=()
+    local labels=("Background" "Foreground" "Cursor" "Black" "Bright Black" "Red" "Bright Red" "Green" "Bright Green" "Yellow" "Bright Yellow" "Blue" "Bright Blue" "Magenta" "Bright Magenta" "Cyan" "Bright Cyan" "White" "Bright White")
+    local defaults=("#0d1117" "#c9d1d9" "#00e5ff" "#0d1117" "#484f58" "#ff4757" "#ff6b81" "#2ed573" "#7bed9f" "#ffa502" "#ffc048" "#1e90ff" "#54a0ff" "#a855f7" "#c084fc" "#00e5ff" "#67e8f9" "#c9d1d9" "#f0f6fc")
+    local keys=("background" "foreground" "cursor" "color0" "color8" "color1" "color9" "color2" "color10" "color3" "color11" "color4" "color12" "color5" "color13" "color6" "color14" "color7" "color15")
+
+    for i in {0..18}; do
+        echo -ne "${left_pad}${C}  ${labels[$i]} [${D}${defaults[$i]}${C}]: ${RS}"
+        read -r color_val
+        [ -z "$color_val" ] && color_val="${defaults[$i]}"
+        colors[$i]="$color_val"
+    done
+
+    echo -ne "\n${left_pad}${C}  Theme name: ${RS}"
+    read -r theme_name
+    [ -z "$theme_name" ] && theme_name="Custom"
+
+    local theme_file="$QUINX_THEMES/$(echo "$theme_name" | tr ' ' '-' | tr '[:upper:]' '[:lower:]').colors"
+    echo "# $theme_name — Custom theme by QuinxOS Theme Builder" > "$theme_file"
+    for i in {0..18}; do
+        echo "${keys[$i]}=${colors[$i]}" >> "$theme_file"
+    done
+
+    cp "$theme_file" ~/.termux/colors.properties 2>/dev/null
+    echo "$theme_name" > "$QUINX_HOME/.current-theme"
+    termux-reload-settings 2>/dev/null
+
+    clear; show_banner; draw_top
+    print_line "THEME CREATED: $theme_name ✓" "$G"
+    print_line "Saved: $theme_file" "$D"
+    draw_bot; sleep 2
+}
+
+# ═══════════════════════════════════════════════════════════
+# 6. PROFILE SYSTEM
+# ═══════════════════════════════════════════════════════════
+do_profiles() {
     while true; do
-        clear; show_banner
-        draw_top
-        print_line "PLUGIN SYSTEM" "$Y"
+        clear; show_banner; draw_top
+        print_line "PROFILE SYSTEM" "$Y"
         draw_sep
-        print_line "Auto-loaded from: $QUINX_PLUGINS" "$D"
+        print_line "Multiple configs for different contexts" "$D"
         draw_sep
 
-        # List installed plugins
-        local count=0
-        if [ -d "$QUINX_PLUGINS" ]; then
-            for p in "$QUINX_PLUGINS"/*.sh; do
-                [ -f "$p" ] || continue
-                local pname=$(basename "$p" .sh)
-                printf "${C}${left_pad}║${RS}  ${G}●${RS} %-25s" "$pname"
-                printf '%*s' $(( BOX_WIDTH - 2 - 28 )) "" "${C}║${RS}\n"
-                count=$((count + 1))
-            done
-        fi
-        [ $count -eq 0 ] && print_line "No plugins installed" "$D"
+        local active="default"; [ -f "$QUINX_HOME/.active-profile" ] && active=$(cat "$QUINX_HOME/.active-profile")
+        printf "${C}${left_pad}║${RS}  ${W}Active Profile: ${G}%-20s${RS}" "$active"
+        printf '%*s' $(( BOX_WIDTH - 2 - 32 )) "" "${C}║${RS}\n"
+        draw_sep
 
+        print_item "1" "Create Profile  " "New named profile" "$G"
+        print_item "2" "Switch Profile  " "Load a profile" "$G"
+        print_item "3" "List Profiles   " "Show all profiles" "$B"
+        print_item "4" "Delete Profile  " "Remove a profile" "$R"
+        print_item "5" "Save Current    " "Snapshot current config" "$Y"
         draw_sep
-        print_item "1" "View Plugin Info " "Show plugin details" "$G"
-        print_item "2" "Create Plugin    " "Write a new plugin" "$G"
-        print_item "3" "Plugin Directory " "Open plugins folder" "$B"
-        draw_sep
-        print_item "0" "Back             " "Return to menu" "$R"
+        print_item "0" "Back            " "Return to menu" "$R"
         draw_bot; echo ""
         echo -ne "${left_pad}${C}  Selection ❯ ${RS}"
-        read -r plug_choice
-        case $plug_choice in
+        read -r prof_choice
+        case $prof_choice in
             1)
                 echo ""
-                echo -ne "${left_pad}${C}  Plugin name: ${RS}"
-                read -r plug_name
-                local plug_file="$QUINX_PLUGINS/${plug_name}.sh"
-                if [ -f "$plug_file" ]; then
-                    clear; show_banner; draw_top
-                    print_line "PLUGIN: $plug_name" "$Y"
-                    draw_sep
-                    head -5 "$plug_file" | while IFS= read -r line; do
-                        printf "${C}${left_pad}║${RS}  ${W}%-56s${RS}" "$line"
-                        printf '%*s' $(( BOX_WIDTH - 2 - 58 )) "" "${C}║${RS}\n"
-                    done
-                    draw_bot
-                else
-                    echo -e "\n${left_pad}${R}  Plugin not found${RS}"
-                fi
-                echo ""; echo -ne "${left_pad}${C}  Press Enter...${RS}"
-                read -r ;;
+                echo -ne "${left_pad}${C}  Profile name: ${RS}"
+                read -r prof_name
+                [ -z "$prof_name" ] && continue
+                local prof_dir="$QUINX_PROFILES/$prof_name"
+                mkdir -p "$prof_dir"
+                echo "$prof_name" > "$QUINX_HOME/.active-profile"
+                echo -e "${left_pad}${G}  ✓ Profile '$prof_name' created & active${RS}"; sleep 2 ;;
             2)
                 echo ""
-                echo -ne "${left_pad}${C}  Plugin name: ${RS}"
-                read -r new_plugin
-                echo -e "${left_pad}${D}  Enter function (Ctrl+D when done):${RS}"
-                local new_file="$QUINX_PLUGINS/${new_plugin}.sh"
-                echo "#!/bin/bash" > "$new_file"
-                echo "# QuinxOS Plugin: $new_plugin" >> "$new_file"
-                echo "" >> "$new_file"
-                cat >> "$new_file"
-                chmod +x "$new_file"
-                echo -e "\n${left_pad}${G}  ✓ Plugin created: $new_plugin${RS}"
-                sleep 2 ;;
+                local profiles=($(ls "$QUINX_PROFILES" 2>/dev/null))
+                [ ${#profiles[@]} -eq 0 ] && echo -e "${left_pad}${D}  No profiles yet${RS}" && sleep 2 && continue
+                for i in "${!profiles[@]}"; do
+                    echo -e "  ${W}[$((i+1))]${G} ${profiles[$i]}${RS}"
+                done
+                echo ""
+                echo -ne "${left_pad}${C}  Select: ${RS}"
+                read -r prof_idx
+                local selected="${profiles[$((prof_idx-1))]}"
+                [ -z "$selected" ] && continue
+                local prof_dir="$QUINX_PROFILES/$selected"
+                # Apply profile
+                [ -f "$prof_dir/.zshrc" ] && cp "$prof_dir/.zshrc" ~/.zshrc
+                [ -f "$prof_dir/.current-theme" ] && cp "$prof_dir/.current-theme" "$QUINX_HOME/" && cp "$QUINX_THEMES/$(cat "$prof_dir/.current-theme" | tr ' ' '-' | tr '[:upper:]' '[:lower:]').colors" ~/.termux/colors.properties 2>/dev/null
+                [ -f "$prof_dir/.banner-style" ] && cp "$prof_dir/.banner-style" "$QUINX_HOME/"
+                [ -f "$prof_dir/.quinx-aliases" ] && cp "$prof_dir/.quinx-aliases" "$QUINX_HOME/"
+                echo "$selected" > "$QUINX_HOME/.active-profile"
+                echo -e "${left_pad}${G}  ✓ Switched to: $selected${RS}"; sleep 2 ;;
             3)
-                echo -e "\n${left_pad}${C}  Plugins dir: $QUINX_PLUGINS${RS}"
-                echo -e "${left_pad}${D}  Drop .sh files there, restart terminal to load.${RS}"
-                echo ""; echo -ne "${left_pad}${C}  Press Enter...${RS}"
-                read -r ;;
+                echo ""
+                echo -e "${left_pad}${W}  Profiles:${RS}"
+                ls "$QUINX_PROFILES" 2>/dev/null | while read p; do
+                    [ "$p" = "$active" ] && echo -e "  ${G}●${RS} $p (active)" || echo -e "  ${D}○${RS} $p"
+                done
+                [ ! -d "$QUINX_PROFILES" ] && echo -e "  ${D}No profiles yet${RS}"
+                echo ""; echo -ne "${left_pad}${C}  Press Enter...${RS}"; read -r ;;
+            4)
+                echo ""
+                echo -ne "${left_pad}${C}  Profile to delete: ${RS}"
+                read -r del_name
+                [ -d "$QUINX_PROFILES/$del_name" ] && rm -rf "$QUINX_PROFILES/$del_name" && echo -e "${left_pad}${G}  ✓ Deleted${RS}" || echo -e "${left_pad}${R}  Not found${RS}"
+                sleep 2 ;;
+            5)
+                local prof_dir="$QUINX_PROFILES/$active"
+                mkdir -p "$prof_dir"
+                [ -f ~/.zshrc ] && cp ~/.zshrc "$prof_dir/"
+                [ -f "$QUINX_HOME/.current-theme" ] && cp "$QUINX_HOME/.current-theme" "$prof_dir/"
+                [ -f "$QUINX_HOME/.banner-style" ] && cp "$QUINX_HOME/.banner-style" "$prof_dir/"
+                [ -f "$QUINX_HOME/.quinx-aliases" ] && cp "$QUINX_HOME/.quinx-aliases" "$prof_dir/"
+                echo -e "${left_pad}${G}  ✓ Current config saved to '$active'${RS}"; sleep 2 ;;
             0) return ;;
         esac
     done
 }
 
 # ═══════════════════════════════════════════════════════════
-# FEATURE 8: QUICK COMMANDS
+# 7. GIT DASHBOARD
 # ═══════════════════════════════════════════════════════════
-do_quick_commands() {
-    while true; do
-        clear; show_banner
-        draw_top
-        print_line "QUICK COMMANDS" "$Y"
-        draw_sep
-        print_line "Common operations in one place" "$D"
-        draw_sep
-        print_item "01" "Git Init + Push  " "Initialize & push repo" "$G"
-        print_item "02" "Compress Folder  " "tar.gz a directory" "$G"
-        print_item "03" "Find Large Files " "Top 10 biggest files" "$G"
-        print_item "04" "Kill Port        " "Kill process on port" "$Y"
-        print_item "05" "Quick HTTP Serve " "Start local server" "$Y"
-        print_item "06" "Disk Usage       " "Show disk usage" "$B"
-        print_item "07" "Process Monitor  " "Top processes by CPU" "$B"
-        print_item "08" "SSH Key Gen      " "Generate SSH keypair" "$C"
-        print_item "09" "WiFi Info        " "Show network details" "$C"
-        print_item "10" "Systemd Status   " "List running services" "$M"
-        draw_sep
-        print_item "0"  "Back             " "Return to menu" "$R"
+do_git_dashboard() {
+    clear; show_banner; draw_top
+    print_line "GIT DASHBOARD" "$Y"
+    draw_sep
+
+    if ! git rev-parse --is-inside-work-tree &>/dev/null; then
+        print_line "Not inside a git repository" "$R"
+        print_line "Navigate to a repo first" "$D"
         draw_bot; echo ""
-        echo -ne "${left_pad}${C}  Select ❯ ${RS}"
-        read -r qc_choice
-        case $qc_choice in
-            1|01)
-                echo ""
-                echo -ne "${left_pad}${C}  Repo name: ${RS}"
-                read -r repo_name
-                if [ -n "$repo_name" ]; then
-                    mkdir -p "$repo_name" && cd "$repo_name"
-                    git init && touch README.md && git add . && git commit -m "init"
-                    echo -e "${left_pad}${G}  ✓ Git repo initialized${RS}"
-                    echo -ne "${left_pad}${C}  Push to GitHub URL (or Enter to skip): ${RS}"
-                    read -r remote_url
-                    [ -n "$remote_url" ] && git remote add origin "$remote_url" && git push -u origin main
-                    cd ..
-                fi
+        echo -ne "${left_pad}${C}  Press Enter...${RS}"; read -r; return
+    fi
+
+    local branch=$(git symbolic-ref --short HEAD 2>/dev/null || echo "detached")
+    local remote=$(git remote get-url origin 2>/dev/null || echo "none")
+    local commits=$(git rev-list --count HEAD 2>/dev/null || echo "0")
+    local changed=$(git status --porcelain 2>/dev/null | wc -l)
+    local ahead=$(git rev-list --count @{u}..HEAD 2>/dev/null || echo "0")
+    local behind=$(git rev-list --count HEAD..@{u} 2>/dev/null || echo "0")
+    local last_commit=$(git log -1 --format="%ar" 2>/dev/null || echo "N/A")
+    local author=$(git log -1 --format="%an" 2>/dev/null || echo "N/A")
+    local stashes=$(git stash list 2>/dev/null | wc -l)
+    local tags=$(git tag 2>/dev/null | wc -l)
+
+    printf "${C}${left_pad}║${RS}  ${W}Branch:${RS}    ${G}%-30s${RS}" "$branch"
+    printf '%*s' $(( BOX_WIDTH - 2 - 35 )) "" "${C}║${RS}\n"
+    printf "${C}${left_pad}║${RS}  ${W}Remote:${RS}    ${G}%-30s${RS}" "$remote"
+    printf '%*s' $(( BOX_WIDTH - 2 - 35 )) "" "${C}║${RS}\n"
+    printf "${C}${left_pad}║${RS}  ${W}Commits:${RS}   ${G}%-30s${RS}" "$commits"
+    printf '%*s' $(( BOX_WIDTH - 2 - 35 )) "" "${C}║${RS}\n"
+    printf "${C}${left_pad}║${RS}  ${W}Changed:${RS}   ${G}%-30s${RS}" "$changed files"
+    printf '%*s' $(( BOX_WIDTH - 2 - 35 )) "" "${C}║${RS}\n"
+    printf "${C}${left_pad}║${RS}  ${W}Ahead:${RS}     ${G}%-30s${RS}" "$ahead commits"
+    printf '%*s' $(( BOX_WIDTH - 2 - 35 )) "" "${C}║${RS}\n"
+    printf "${C}${left_pad}║${RS}  ${W}Behind:${RS}    ${G}%-30s${RS}" "$behind commits"
+    printf '%*s' $(( BOX_WIDTH - 2 - 35 )) "" "${C}║${RS}\n"
+    printf "${C}${left_pad}║${RS}  ${W}Stashes:${RS}   ${G}%-30s${RS}" "$stashes"
+    printf '%*s' $(( BOX_WIDTH - 2 - 35 )) "" "${C}║${RS}\n"
+    printf "${C}${left_pad}║${RS}  ${W}Tags:${RS}      ${G}%-30s${RS}" "$tags"
+    printf '%*s' $(( BOX_WIDTH - 2 - 35 )) "" "${C}║${RS}\n"
+    printf "${C}${left_pad}║${RS}  ${W}Author:${RS}    ${G}%-30s${RS}" "$author"
+    printf '%*s' $(( BOX_WIDTH - 2 - 35 )) "" "${C}║${RS}\n"
+    printf "${C}${left_pad}║${RS}  ${W}Last:${RS}      ${G}%-30s${RS}" "$last_commit"
+    printf '%*s' $(( BOX_WIDTH - 2 - 35 )) "" "${C}║${RS}\n"
+
+    draw_sep
+    print_line "RECENT COMMITS" "$Y"
+    draw_sep
+    git log --oneline -5 2>/dev/null | while IFS= read -r line; do
+        printf "${C}${left_pad}║${RS}  ${W}%-56s${RS}" "$line"
+        printf '%*s' $(( BOX_WIDTH - 2 - 58 )) "" "${C}║${RS}\n"
+    done
+
+    draw_sep
+    print_line "CHANGED FILES" "$Y"
+    draw_sep
+    git status --short 2>/dev/null | head -8 | while IFS= read -r line; do
+        printf "${C}${left_pad}║${RS}  ${W}%-56s${RS}" "$line"
+        printf '%*s' $(( BOX_WIDTH - 2 - 58 )) "" "${C}║${RS}\n"
+    done
+
+    print_line ""
+    draw_bot; echo ""
+    echo -ne "${left_pad}${C}  Press Enter...${RS}"; read -r
+}
+
+# ═══════════════════════════════════════════════════════════
+# 8. TERMUX API HOOKS
+# ═══════════════════════════════════════════════════════════
+do_termux_hooks() {
+    while true; do
+        clear; show_banner; draw_top
+        print_line "TERMUX API HOOKS" "$Y"
+        draw_sep
+        if ! command -v termux-battery-status &>/dev/null; then
+            print_line "termux-api not installed!" "$R"
+            print_line "Run: pkg install termux-api" "$D"
+            draw_bot; echo ""
+            echo -ne "${left_pad}${C}  Press Enter...${RS}"; read -r; return
+        fi
+        print_item "1" "Battery Status  " "Show battery info" "$G"
+        print_item "2" "Location        " "Get GPS coordinates" "$G"
+        print_item "3" "Notifications   " "List notifications" "$B"
+        print_item "4" "Battery Alert   " "Alert when low battery" "$Y"
+        print_item "5" "Clipboard       " "Get/set clipboard" "$B"
+        print_item "6" "Vibrate         " "Vibrate device" "$M"
+        print_item "7" "Torch           " "Toggle flashlight" "$M"
+        draw_sep
+        print_item "0" "Back            " "Return to menu" "$R"
+        draw_bot; echo ""
+        echo -ne "${left_pad}${C}  Selection ❯ ${RS}"
+        read -r hook_choice
+        case $hook_choice in
+            1)
+                clear; show_banner; draw_top
+                print_line "BATTERY STATUS" "$Y"; draw_sep
+                local bat_info=$(termux-battery-status 2>/dev/null)
+                echo "$bat_info" | python3 -c "
+import sys,json
+try:
+    d=json.load(sys.stdin)
+    for k,v in d.items():
+        print(f'  {k}: {v}')
+except: print('  Failed to parse')
+" 2>/dev/null
+                draw_bot; echo ""
+                echo -ne "${left_pad}${C}  Press Enter...${RS}"; read -r ;;
+            2)
+                clear; show_banner; draw_top
+                print_line "LOCATION" "$Y"; draw_sep
+                local loc=$(termux-location 2>/dev/null)
+                echo "$loc" | python3 -c "
+import sys,json
+try:
+    d=json.load(sys.stdin)
+    print(f'  Latitude:  {d.get(\"latitude\",\"N/A\")}')
+    print(f'  Longitude: {d.get(\"longitude\",\"N/A\")}')
+    print(f'  Altitude:  {d.get(\"altitude\",\"N/A\")}')
+    print(f'  Accuracy:  {d.get(\"accuracy\",\"N/A\")}')
+except: print('  Failed to get location')
+" 2>/dev/null
+                draw_bot; echo ""
+                echo -ne "${left_pad}${C}  Press Enter...${RS}"; read -r ;;
+            3)
+                termux-notification-list 2>/dev/null | head -10
+                echo ""; echo -ne "${left_pad}${C}  Press Enter...${RS}"; read -r ;;
+            4)
+                echo -ne "\n${left_pad}${C}  Alert below (e.g., 20%): ${RS}"
+                read -r threshold
+                [ -n "$threshold" ] && echo -e "${left_pad}${G}  ✓ Battery alert set at ${threshold}%. Add to HEARTBEAT.md.${RS}"
                 sleep 2 ;;
-            2|02)
-                echo ""
-                echo -ne "${left_pad}${C}  Folder path: ${RS}"
-                read -r folder_path
-                if [ -d "$folder_path" ]; then
-                    tar czf "$(basename "$folder_path").tar.gz" "$folder_path"
-                    echo -e "${left_pad}${G}  ✓ Compressed: $(basename "$folder_path").tar.gz${RS}"
+            5)
+                echo -e "\n${left_pad}${W}  Clipboard: $(termux-clipboard-get 2>/dev/null || echo 'empty')${RS}"
+                echo -ne "${left_pad}${C}  Set clipboard (or Enter to skip): ${RS}"
+                read -r clip_val
+                [ -n "$clip_val" ] && termux-clipboard-set "$clip_val" && echo -e "${left_pad}${G}  ✓ Set${RS}"
+                sleep 2 ;;
+            6) termux-vibrate 2>/dev/null; echo -e "${left_pad}${G}  ✓ Vibrated${RS}"; sleep 1 ;;
+            7)
+                local torch_state=$(cat "$QUINX_HOME/.torch-state" 2>/dev/null || echo "off")
+                if [ "$torch_state" = "off" ]; then
+                    termux-torch on 2>/dev/null; echo "on" > "$QUINX_HOME/.torch-state"
+                    echo -e "${left_pad}${G}  ✓ Torch ON${RS}"
                 else
-                    echo -e "${left_pad}${R}  Directory not found${RS}"
-                fi
-                sleep 2 ;;
-            3|03)
-                clear; show_banner; draw_top
-                print_line "TOP 10 LARGEST FILES" "$Y"
-                draw_sep
-                find / -type f -exec du -h {} + 2>/dev/null | sort -rh | head -10 | while IFS= read -r line; do
-                    printf "${C}${left_pad}║${RS}  ${W}%-56s${RS}" "$line"
-                    printf '%*s' $(( BOX_WIDTH - 2 - 58 )) "" "${C}║${RS}\n"
-                done
-                draw_bot; echo ""
-                echo -ne "${left_pad}${C}  Press Enter...${RS}"
-                read -r ;;
-            4|04)
-                echo ""
-                echo -ne "${left_pad}${C}  Port number: ${RS}"
-                read -r port_num
-                if [ -n "$port_num" ]; then
-                    local pid=$(lsof -t -i:"$port_num" 2>/dev/null)
-                    if [ -n "$pid" ]; then
-                        kill -9 "$pid"
-                        echo -e "${left_pad}${G}  ✓ Killed process $pid on port $port_num${RS}"
-                    else
-                        echo -e "${left_pad}${D}  No process on port $port_num${RS}"
-                    fi
-                fi
-                sleep 2 ;;
-            5|05)
-                echo ""
-                echo -ne "${left_pad}${C}  Port [8080]: ${RS}"
-                read -r serve_port
-                serve_port=${serve_port:-8080}
-                echo -e "${left_pad}${G}  Starting server on :$serve_port ...${RS}"
-                echo -e "${left_pad}${D}  Press Ctrl+C to stop${RS}"
-                python3 -m http.server "$serve_port" 2>/dev/null || python -m SimpleHTTPServer "$serve_port" 2>/dev/null ;;
-            6|06)
-                clear; show_banner; draw_top
-                print_line "DISK USAGE" "$Y"
-                draw_sep
-                df -h 2>/dev/null | while IFS= read -r line; do
-                    printf "${C}${left_pad}║${RS}  ${W}%-56s${RS}" "$line"
-                    printf '%*s' $(( BOX_WIDTH - 2 - 58 )) "" "${C}║${RS}\n"
-                done
-                draw_bot; echo ""
-                echo -ne "${left_pad}${C}  Press Enter...${RS}"
-                read -r ;;
-            7|07)
-                clear; show_banner; draw_top
-                print_line "TOP PROCESSES (CPU)" "$Y"
-                draw_sep
-                ps aux 2>/dev/null | sort -nrk 3 | head -10 | while IFS= read -r line; do
-                    printf "${C}${left_pad}║${RS}  ${W}%-56s${RS}" "$line"
-                    printf '%*s' $(( BOX_WIDTH - 2 - 58 )) "" "${C}║${RS}\n"
-                done
-                draw_bot; echo ""
-                echo -ne "${left_pad}${C}  Press Enter...${RS}"
-                read -r ;;
-            8|08)
-                echo ""
-                echo -ne "${left_pad}${C}  Email (for key comment): ${RS}"
-                read -r ssh_email
-                if [ -n "$ssh_email" ]; then
-                    ssh-keygen -t ed25519 -C "$ssh_email" -f "$HOME/.ssh/id_ed25519" -N ""
-                    echo -e "\n${left_pad}${G}  ✓ SSH key generated${RS}"
-                    echo -e "${left_pad}${W}  Public key:${RS}"
-                    cat "$HOME/.ssh/id_ed25519.pub"
-                fi
-                echo ""; echo -ne "${left_pad}${C}  Press Enter...${RS}"
-                read -r ;;
-            9|09)
-                clear; show_banner; draw_top
-                print_line "NETWORK DETAILS" "$Y"
-                draw_sep
-                local h=$(hostname 2>/dev/null)
-                local lip=$(ip route get 1.1.1.1 2>/dev/null | grep -oP 'src \K\S+')
-                local pip=$(curl -s --max-time 5 ifconfig.me 2>/dev/null || echo "N/A")
-                printf "${C}${left_pad}║${RS}  ${W}Hostname:${RS}    ${G}%-30s${RS}" "$h"
-                printf '%*s' $(( BOX_WIDTH - 2 - 35 )) "" "${C}║${RS}\n"
-                printf "${C}${left_pad}║${RS}  ${W}Local IP:${RS}    ${G}%-30s${RS}" "${lip:-N/A}"
-                printf '%*s' $(( BOX_WIDTH - 2 - 35 )) "" "${C}║${RS}\n"
-                printf "${C}${left_pad}║${RS}  ${W}Public IP:${RS}   ${G}%-30s${RS}" "$pip"
-                printf '%*s' $(( BOX_WIDTH - 2 - 35 )) "" "${C}║${RS}\n"
-                draw_bot; echo ""
-                echo -ne "${left_pad}${C}  Press Enter...${RS}"
-                read -r ;;
-            10)
-                clear; show_banner; draw_top
-                print_line "RUNNING SERVICES" "$Y"
-                draw_sep
-                ps aux 2>/dev/null | awk '{print $11}' | sort | uniq -c | sort -rn | head -15 | while IFS= read -r line; do
-                    printf "${C}${left_pad}║${RS}  ${W}%-56s${RS}" "$line"
-                    printf '%*s' $(( BOX_WIDTH - 2 - 58 )) "" "${C}║${RS}\n"
-                done
-                draw_bot; echo ""
-                echo -ne "${left_pad}${C}  Press Enter...${RS}"
-                read -r ;;
-            0|00) return ;;
+                    termux-torch off 2>/dev/null; echo "off" > "$QUINX_HOME/.torch-state"
+                    echo -e "${left_pad}${G}  ✓ Torch OFF${RS}"
+                fi; sleep 1 ;;
+            0) return ;;
         esac
     done
 }
 
 # ═══════════════════════════════════════════════════════════
-# FEATURE 9: CUSTOM ASCII ART
+# 9. QUINXBENCH
 # ═══════════════════════════════════════════════════════════
-do_custom_banner_text() {
-    clear; show_banner
-    draw_top
-    print_line "CUSTOM ASCII ART" "$Y"
+do_bench() {
+    clear; show_banner; draw_top
+    print_line "QUINXBENCH — SYSTEM BENCHMARK" "$Y"
     draw_sep
-    print_line "Set your own banner text" "$D"
+    print_line "Running tests..." "$D"
     draw_bot; echo ""
-    echo -e "${left_pad}${C}  Current custom text: ${W}$(cat "$QUINX_HOME/.custom-banner-text" 2>/dev/null || echo 'PROC')${RS}"
+
+    # CPU benchmark
+    echo -ne "${left_pad}${C}  CPU (prime calc):   ${RS}"
+    local start=$(date +%s%N)
+    python3 -c "
+n=0
+for i in range(2,1000):
+    if all(i%j for j in range(2,i)): n+=1
+" 2>/dev/null
+    local end=$(date +%s%N)
+    local cpu_ms=$(( (end - start) / 1000000 ))
+    echo -e "${W}${cpu_ms}ms${RS}"
+
+    # Disk write
+    echo -ne "${left_pad}${C}  Disk (write 10MB):  ${RS}"
+    start=$(date +%s%N)
+    dd if=/dev/zero of=/tmp/quinx-bench bs=1M count=10 2>/dev/null
+    end=$(date +%s%N)
+    local disk_ms=$(( (end - start) / 1000000 ))
+    rm -f /tmp/quinx-bench
+    echo -e "${W}${disk_ms}ms${RS}"
+
+    # Disk read
+    dd if=/dev/zero of=/tmp/quinx-bench bs=1M count=10 2>/dev/null
+    echo -ne "${left_pad}${C}  Disk (read 10MB):   ${RS}"
+    start=$(date +%s%N)
+    dd if=/tmp/quinx-bench of=/dev/null bs=1M 2>/dev/null
+    end=$(date +%s%N)
+    local read_ms=$(( (end - start) / 1000000 ))
+    rm -f /tmp/quinx-bench
+    echo -e "${W}${read_ms}ms${RS}"
+
+    # Network
+    echo -ne "${left_pad}${C}  Network (ping):     ${RS}"
+    local ping_ms=$(ping -c3 -W3 8.8.8.8 2>/dev/null | tail -1 | awk -F'/' '{print $5}')
+    echo -e "${W}${ping_ms:-N/A}ms avg${RS}"
+
+    # Memory
+    echo -ne "${left_pad}${C}  Memory speed:       ${RS}"
+    local mem_speed=$(free -m 2>/dev/null | awk '/Mem:/{printf "%.0f%% used", $3/$2*100}')
+    echo -e "${W}${mem_speed}${RS}"
+
+    # Score
+    local total=$(( cpu_ms + disk_ms + read_ms ))
     echo ""
-    echo -ne "${left_pad}${C}  Enter new text (max 12 chars): ${RS}"
-    read -r custom_text
-    if [ -n "$custom_text" ]; then
-        echo "$custom_text" > "$QUINX_HOME/.custom-banner-text"
-        clear; show_banner; draw_top
-        print_line "CUSTOM TEXT SET: $custom_text" "$G"
-        print_line "Preview with: figlet -f ASCII-Shadow '$custom_text'" "$D"
-        draw_bot
+    draw_sep
+    if [ $total -lt 500 ]; then
+        print_line "SCORE: EXCELLENT ★★★★★" "$G"
+    elif [ $total -lt 1500 ]; then
+        print_line "SCORE: GOOD ★★★★" "$Y"
+    elif [ $total -lt 3000 ]; then
+        print_line "SCORE: AVERAGE ★★★" "$Y"
+    else
+        print_line "SCORE: SLOW ★★" "$R"
     fi
-    sleep 2
+    draw_bot; echo ""
+    echo -ne "${left_pad}${C}  Press Enter...${RS}"; read -r
 }
 
-# ─── Core Functions ────────────────────────────────────────
-do_necessary_setup() {
+# ═══════════════════════════════════════════════════════════
+# 10. STARTUP TIMER
+# ═══════════════════════════════════════════════════════════
+do_startup_timer() {
     clear; show_banner; draw_top
-    print_line "INSTALLING CORE DEPENDENCIES" "$Y"
+    print_line "STARTUP TIMER" "$Y"
     draw_sep
-    print_line "Please wait..." "$D"
+    print_line "Measures shell boot time" "$D"
+    draw_sep
+    print_item "1" "Enable Timer   " "Show load time at boot" "$G"
+    print_item "2" "Disable Timer  " "Remove from boot" "$R"
+    print_item "3" "Test Now       " "Measure current boot" "$B"
+    draw_sep
+    print_item "0" "Back           " "Return to menu" "$R"
     draw_bot; echo ""
+    echo -ne "${left_pad}${C}  Selection ❯ ${RS}"
+    read -r timer_choice
+    case $timer_choice in
+        1)
+            local timer_code='
+# QuinxOS Startup Timer
+_QUINX_START=$(date +%s%N)'
+            local timer_end='
+_QUINX_END=$(date +%s%N)
+_QUINX_MS=$(( (_QUINX_END - _QUINX_START) / 1000000 ))
+echo -e "\033[2m  Shell loaded in ${_QUINX_MS}ms\033[0m"'
+            # Add to top and bottom of zshrc
+            for rc in ~/.zshrc ~/.bashrc; do
+                [ -f "$rc" ] || continue
+                sed -i '/# QuinxOS Startup Timer/d' "$rc"
+                sed -i '/_QUINX_START=/d' "$rc"
+                sed -i '/_QUINX_END=/d' "$rc"
+                sed -i '/_QUINX_MS=/d' "$rc"
+                sed -i '/Shell loaded in/d' "$rc"
+                # Add timer start at top
+                echo "$timer_code" > "$rc.tmp"; cat "$rc" >> "$rc.tmp"; mv "$rc.tmp" "$rc"
+                # Add timer end at bottom
+                echo "$timer_end" >> "$rc"
+            done
+            clear; show_banner; draw_top
+            print_line "STARTUP TIMER ENABLED ✓" "$G"
+            draw_bot; sleep 2 ;;
+        2)
+            for rc in ~/.zshrc ~/.bashrc; do
+                [ -f "$rc" ] || continue
+                sed -i '/# QuinxOS Startup Timer/d' "$rc"
+                sed -i '/_QUINX_START=/d' "$rc"
+                sed -i '/_QUINX_END=/d' "$rc"
+                sed -i '/_QUINX_MS=/d' "$rc"
+                sed -i '/Shell loaded in/d' "$rc"
+            done
+            clear; show_banner; draw_top
+            print_line "STARTUP TIMER DISABLED" "$R"
+            draw_bot; sleep 2 ;;
+        3)
+            echo ""
+            echo -e "${left_pad}${C}  Measuring boot time...${RS}"
+            local start=$(date +%s%N)
+            source ~/.zshrc 2>/dev/null || source ~/.bashrc 2>/dev/null
+            local end=$(date +%s%N)
+            local ms=$(( (end - start) / 1000000 ))
+            echo -e "\n${left_pad}${G}  Shell load time: ${W}${ms}ms${RS}"
+            echo ""; echo -ne "${left_pad}${C}  Press Enter...${RS}"; read -r ;;
+    esac
+}
+
+# ═══════════════════════════════════════════════════════════
+# 11. COLOR SCHEME EXPORT
+# ═══════════════════════════════════════════════════════════
+do_color_export() {
+    clear; show_banner; draw_top
+    print_line "COLOR SCHEME EXPORT" "$Y"
+    draw_sep
+    print_line "Export current theme to other formats" "$D"
+    draw_sep
+    print_item "1" "Windows Terminal " "JSON format" "$G"
+    print_item "2" "iTerm2           " "plist format" "$G"
+    print_item "3" "Alacritty        " "YAML format" "$G"
+    print_item "4" "Kitty            " "conf format" "$G"
+    print_item "5" "All Formats      " "Export everything" "$Y"
+    draw_sep
+    print_item "0" "Back             " "Return to menu" "$R"
+    draw_bot; echo ""
+    echo -ne "${left_pad}${C}  Format ❯ ${RS}"
+    read -r export_choice
+
+    local current_theme=$(cat "$QUINX_HOME/.current-theme" 2>/dev/null || echo "Cyber Midnight")
+    local theme_file="$QUINX_THEMES/$(echo "$current_theme" | tr ' ' '-' | tr '[:upper:]' '[:lower:]').colors"
+    [ ! -f "$theme_file" ] && theme_file="$QUINX_THEMES/cyber-midnight.colors"
+
+    # Read colors
+    local bg=$(grep '^background=' "$theme_file" | cut -d= -f2)
+    local fg=$(grep '^foreground=' "$theme_file" | cut -d= -f2)
+    local c0=$(grep '^color0=' "$theme_file" | cut -d= -f2)
+    local c1=$(grep '^color1=' "$theme_file" | cut -d= -f2)
+    local c2=$(grep '^color2=' "$theme_file" | cut -d= -f2)
+    local c3=$(grep '^color3=' "$theme_file" | cut -d= -f2)
+    local c4=$(grep '^color4=' "$theme_file" | cut -d= -f2)
+    local c5=$(grep '^color5=' "$theme_file" | cut -d= -f2)
+    local c6=$(grep '^color6=' "$theme_file" | cut -d= -f2)
+    local c7=$(grep '^color7=' "$theme_file" | cut -d= -f2)
+    local c8=$(grep '^color8=' "$theme_file" | cut -d= -f2)
+    local c9=$(grep '^color9=' "$theme_file" | cut -d= -f2)
+    local c10=$(grep '^color10=' "$theme_file" | cut -d= -f2)
+    local c11=$(grep '^color11=' "$theme_file" | cut -d= -f2)
+    local c12=$(grep '^color12=' "$theme_file" | cut -d= -f2)
+    local c13=$(grep '^color13=' "$theme_file" | cut -d= -f2)
+    local c14=$(grep '^color14=' "$theme_file" | cut -d= -f2)
+    local c15=$(grep '^color15=' "$theme_file" | cut -d= -f2)
+
+    local export_dir="$QUINX_HOME/exports"
+    mkdir -p "$export_dir"
+
+    export_windows() {
+        cat > "$export_dir/${current_theme}-windows-terminal.json" << EOF
+{
+    "name": "$current_theme",
+    "background": "$bg",
+    "foreground": "$fg",
+    "cursorColor": "$(grep '^cursor=' "$theme_file" | cut -d= -f2)",
+    "black": "$c0",
+    "red": "$c1",
+    "green": "$c2",
+    "yellow": "$c3",
+    "blue": "$c4",
+    "purple": "$c5",
+    "cyan": "$c6",
+    "white": "$c7",
+    "brightBlack": "$c8",
+    "brightRed": "$c9",
+    "brightGreen": "$c10",
+    "brightYellow": "$c11",
+    "brightBlue": "$c12",
+    "brightPurple": "$c13",
+    "brightCyan": "$c14",
+    "brightWhite": "$c15"
+}
+EOF
+    }
+
+    export_iterm2() {
+        cat > "$export_dir/${current_theme}-iterm2.itermcolors" << EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Ansi 0 Color</key><dict><key>Hex Color</key><string>$c0</string></dict>
+    <key>Ansi 1 Color</key><dict><key>Hex Color</key><string>$c1</string></dict>
+    <key>Ansi 2 Color</key><dict><key>Hex Color</key><string>$c2</string></dict>
+    <key>Ansi 3 Color</key><dict><key>Hex Color</key><string>$c3</string></dict>
+    <key>Ansi 4 Color</key><dict><key>Hex Color</key><string>$c4</string></dict>
+    <key>Ansi 5 Color</key><dict><key>Hex Color</key><string>$c5</string></dict>
+    <key>Ansi 6 Color</key><dict><key>Hex Color</key><string>$c6</string></dict>
+    <key>Ansi 7 Color</key><dict><key>Hex Color</key><string>$c7</string></dict>
+    <key>Background Color</key><dict><key>Hex Color</key><string>$bg</string></dict>
+    <key>Foreground Color</key><dict><key>Hex Color</key><string>$fg</string></dict>
+</dict>
+</plist>
+EOF
+    }
+
+    export_alacritty() {
+        cat > "$export_dir/${current_theme}-alacritty.yml" << EOF
+# $current_theme — QuinxOS Export
+colors:
+  primary:
+    background: '$bg'
+    foreground: '$fg'
+  normal:
+    black:   '$c0'
+    red:     '$c1'
+    green:   '$c2'
+    yellow:  '$c3'
+    blue:    '$c4'
+    magenta: '$c5'
+    cyan:    '$c6'
+    white:   '$c7'
+  bright:
+    black:   '$c8'
+    red:     '$c9'
+    green:   '$c10'
+    yellow:  '$c11'
+    blue:    '$c12'
+    magenta: '$c13'
+    cyan:    '$c14'
+    white:   '$c15'
+EOF
+    }
+
+    export_kitty() {
+        cat > "$export_dir/${current_theme}-kitty.conf" << EOF
+# $current_theme — QuinxOS Export
+background $bg
+foreground $fg
+cursor_color $(grep '^cursor=' "$theme_file" | cut -d= -f2)
+color0 $c0
+color1 $c1
+color2 $c2
+color3 $c3
+color4 $c4
+color5 $c5
+color6 $c6
+color7 $c7
+color8 $c8
+color9 $c9
+color10 $c10
+color11 $c11
+color12 $c12
+color13 $c13
+color14 $c14
+color15 $c15
+EOF
+    }
+
+    case $export_choice in
+        1) export_windows ;;
+        2) export_iterm2 ;;
+        3) export_alacritty ;;
+        4) export_kitty ;;
+        5) export_windows; export_iterm2; export_alacritty; export_kitty ;;
+        0) return ;;
+    esac
+
+    clear; show_banner; draw_top
+    print_line "EXPORTED: $current_theme ✓" "$G"
+    print_line "$export_dir/" "$D"
+    draw_bot; sleep 2
+}
+
+# ═══════════════════════════════════════════════════════════
+# EXISTING FEATURES (carried from v4.2)
+# ═══════════════════════════════════════════════════════════
+generate_recovery_key() { cat /dev/urandom 2>/dev/null | tr -dc 'A-Za-z0-9' | head -c 16; }
+
+do_necessary_setup() {
+    clear; show_banner; draw_top; print_line "INSTALLING CORE DEPENDENCIES" "$Y"; draw_sep; print_line "Please wait..." "$D"; draw_bot; echo ""
     apt update -y && apt upgrade -y
-    pkg install zsh git figlet toilet ruby wget curl -y
-    gem install lolcat; pkg install toilet figlet exa -y
+    pkg install zsh git figlet toilet ruby wget curl -y; gem install lolcat; pkg install toilet figlet exa -y
     mkdir -p "$QUINX_HOME/.object"
     [ -f "$QUINX_HOME/.object/ANSI Shadow.flf" ] && cp -r "$QUINX_HOME/.object/ANSI Shadow.flf" "$PREFIX/share/figlet/ASCII-Shadow.flf" 2>/dev/null
     git clone https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh 2>/dev/null
@@ -641,511 +925,424 @@ do_necessary_setup() {
     [ -f "$QUINX_HOME/.object/termux.properties" ] && cp -r "$QUINX_HOME/.object/termux.properties" ~/.termux.properties
     curl -L https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/Regular/FiraCodeNerdFont-Regular.ttf > ~/.termux/font.ttf 2>/dev/null
     termux-reload-settings 2>/dev/null
-    clear; show_banner; draw_top
-    print_line "SETUP COMPLETE ✓" "$G"
-    draw_bot; sleep 2
+    clear; show_banner; draw_top; print_line "SETUP COMPLETE ✓" "$G"; draw_bot; sleep 2
 }
 
 do_zsh_setup() {
-    clear; show_banner; draw_top
-    print_line "CONFIGURING ZSH ENVIRONMENT" "$Y"
-    draw_sep; print_line "Resetting .zshrc and installing Oh My Zsh..." "$D"; draw_bot
+    clear; show_banner; draw_top; print_line "CONFIGURING ZSH" "$Y"; draw_sep; print_line "Resetting .zshrc..." "$D"; draw_bot
     rm -rf ~/.zshrc; git clone https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh 2>/dev/null
     cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
-    clear; show_banner; draw_top
-    print_line "ZSH SETUP COMPLETE ✓" "$G"
-    draw_bot; sleep 2
+    clear; show_banner; draw_top; print_line "ZSH SETUP COMPLETE ✓" "$G"; draw_bot; sleep 2
 }
 
 do_set_zsh() { pkg install zsh -y; chsh -s zsh; clear; show_banner; draw_top; print_line "DEFAULT SHELL → ZSH ✓" "$G"; draw_bot; sleep 2; }
 do_set_bash() { chsh -s bash; clear; show_banner; draw_top; print_line "DEFAULT SHELL → BASH ✓" "$G"; draw_bot; sleep 2; }
 
 do_set_banner() {
-    clear; show_banner; draw_top
-    print_line "BANNER STYLE SELECTOR" "$Y"
-    draw_sep
-    print_item "1" "Block Letters " "Bold gradient style" "$C"
-    print_item "2" "Box Art      " "Framed pixel art" "$M"
-    print_item "3" "Clean Box    " "Minimal frame" "$G"
-    draw_sep
-    print_item "0" "Back         " "Return to menu" "$R"
-    draw_bot; echo ""
-    echo -ne "${left_pad}${C}  Style ❯ ${RS}"
-    read -r style_choice
-    case $style_choice in
-        1|2|3) echo "$style_choice" > "$QUINX_HOME/.banner-style"; clear; show_banner; draw_top; print_line "BANNER STYLE $style_choice SET ✓" "$G"; draw_bot ;;
-        0) return ;;
-    esac; sleep 2
+    clear; show_banner; draw_top; print_line "BANNER STYLE" "$Y"; draw_sep
+    print_item "1" "Block Letters" "Bold gradient" "$C"; print_item "2" "Box Art" "Framed pixel" "$M"; print_item "3" "Clean Box" "Minimal" "$G"
+    draw_sep; print_item "0" "Back" "Return" "$R"; draw_bot; echo ""
+    echo -ne "${left_pad}${C}  Style ❯ ${RS}"; read -r s
+    case $s in 1|2|3) echo "$s" > "$QUINX_HOME/.banner-style"; clear; show_banner; draw_top; print_line "BANNER $s SET ✓" "$G"; draw_bot ;; 0) return ;; esac; sleep 2
 }
 
 do_set_theme() {
-    clear; show_banner; draw_top
-    print_line "SHELL THEME SETUP" "$Y"
-    draw_sep; print_line "Max 12 characters recommended" "$D"; draw_bot; echo ""
-    echo -ne "${left_pad}${C}  Enter Shell Name ❯ ${RS}"
-    read -r shell_name
-    if [ -f "$QUINX_HOME/.object/quinx.zsh-theme" ]; then
-        mkdir -p ~/.oh-my-zsh/themes
-        sed "s/\PROC/${shell_name}/g" "$QUINX_HOME/.object/quinx.zsh-theme" > ~/.oh-my-zsh/themes/quinx.zsh-theme 2>/dev/null
-    fi
-    clear; show_banner; draw_top; print_line "THEME SET TO: ${shell_name}" "$G"; draw_bot; sleep 2
+    clear; show_banner; draw_top; print_line "SHELL PROMPT NAME" "$Y"; draw_sep; print_line "Max 12 chars" "$D"; draw_bot; echo ""
+    echo -ne "${left_pad}${C}  Name ❯ ${RS}"; read -r n
+    [ -f "$QUINX_HOME/.object/quinx.zsh-theme" ] && mkdir -p ~/.oh-my-zsh/themes && sed "s/\PROC/${n}/g" "$QUINX_HOME/.object/quinx.zsh-theme" > ~/.oh-my-zsh/themes/quinx.zsh-theme 2>/dev/null
+    clear; show_banner; draw_top; print_line "THEME: ${n}" "$G"; draw_bot; sleep 2
 }
 
 do_plugins() {
-    clear; show_banner; draw_top
-    print_line "INSTALLING ZSH PLUGINS" "$Y"
-    draw_sep; print_line "Syntax Highlighting + Autosuggestions" "$D"; draw_bot; echo ""
+    clear; show_banner; draw_top; print_line "ZSH PLUGINS" "$Y"; draw_sep; print_line "Highlight + Autosuggestions" "$D"; draw_bot; echo ""
     git clone https://github.com/zsh-users/zsh-autosuggestions "$HOME/.oh-my-zsh/plugins/zsh-autosuggestions" 2>/dev/null
     git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$HOME/.oh-my-zsh/plugins/zsh-syntax-highlighting" 2>/dev/null
-    if [ -f "$QUINX_HOME/.object/zshrc-full" ]; then sed "s/\PROC/${USER:-Quinx}/g" "$QUINX_HOME/.object/zshrc-full" > ~/.zshrc; fi
-    if [ -f "$QUINX_HOME/.object/quinx.zsh-theme" ]; then mkdir -p ~/.oh-my-zsh/themes; sed "s/\PROC/${USER:-Quinx}/g" "$QUINX_HOME/.object/quinx.zsh-theme" > ~/.oh-my-zsh/themes/quinx.zsh-theme 2>/dev/null; fi
-    clear; show_banner; draw_top
-    print_line "PLUGINS INSTALLED ✓" "$G"
-    print_line "Syntax Highlighting: ACTIVE" "$G"
-    print_line "Autosuggestions: ACTIVE" "$G"
-    draw_bot; sleep 2
+    [ -f "$QUINX_HOME/.object/zshrc-full" ] && sed "s/\PROC/${USER:-Quinx}/g" "$QUINX_HOME/.object/zshrc-full" > ~/.zshrc
+    [ -f "$QUINX_HOME/.object/quinx.zsh-theme" ] && mkdir -p ~/.oh-my-zsh/themes && sed "s/\PROC/${USER:-Quinx}/g" "$QUINX_HOME/.object/quinx.zsh-theme" > ~/.oh-my-zsh/themes/quinx.zsh-theme 2>/dev/null
+    clear; show_banner; draw_top; print_line "PLUGINS INSTALLED ✓" "$G"; draw_bot; sleep 2
 }
 
-do_sysinfo() {
-    clear; show_banner; draw_top
-    print_line "SYSTEM INFORMATION" "$Y"
-    draw_sep
-    local arch=$(uname -m 2>/dev/null) kernel=$(uname -r 2>/dev/null) os_name=$(uname -o 2>/dev/null)
-    local uptime_info=$(uptime -p 2>/dev/null || echo "N/A")
-    local disk=$(df -h / 2>/dev/null | tail -1 | awk '{print $3"/"$2" ("$5" used)"}')
-    local mem=$(free -h 2>/dev/null | awk '/Mem:/{print $3"/"$2}')
-    local cpu=$(nproc 2>/dev/null || echo "?")
-    local pkgs=$(dpkg -l 2>/dev/null | grep -c '^ii' || echo "?")
-    for entry in "OS:${os_name}" "Arch:${arch}" "Kernel:${kernel}" "Uptime:${uptime_info}" "CPU:${cpu} cores" "Memory:${mem}" "Disk:${disk}" "Packages:${pkgs} installed"; do
-        local key="${entry%%:*}"; local val="${entry#*:}"
-        printf "${C}${left_pad}║${RS}  ${W}%-10s${RS} ${G}%-30s${RS}" "$key:" "$val"
-        printf '%*s' $(( BOX_WIDTH - 2 - 42 )) "" "${C}║${RS}\n"
+do_theme_presets() {
+    clear; show_banner; draw_top; print_line "THEME GALLERY — 15 THEMES" "$Y"; draw_sep
+    local names=("Cyber Midnight" "Matrix Green" "Solar Flare" "Arctic Blue" "Purple Haze" "Dracacula" "Nord" "Gruvbox" "Tokyo Night" "Catppuccin Mocha" "Everforest" "Monokai" "Synthwave" "Rose Pine" "Kanagawa")
+    local files=("cyber-midnight" "matrix-green" "solar-flare" "arctic-blue" "purple-haze" "dracacula" "nord" "gruvbox" "tokyo-night" "catppuccin-mocha" "everforest" "monokai" "synthwave" "rose-pine" "kanagawa")
+    local colors=("$C" "$G" "$Y" "$B" "$M" "$M" "$B" "$Y" "$B" "$M" "$G" "$Y" "$R" "$M" "$B")
+    for i in {0..14}; do
+        local num=$(printf "%02d" $((i+1)))
+        printf "${C}${left_pad}║${RS}  ${C}[${W}${num}${C}]${colors[$i]} %-18s${RS}" "${names[$i]}"
+        printf '%*s' $(( BOX_WIDTH - 2 - 22 )) "" "${C}║${RS}\n"
     done
-    print_line ""; draw_bot; echo ""
-    echo -ne "${left_pad}${C}  Press Enter to return...${RS}"
-    read -r
+    draw_sep; print_item "0" "Back" "Return" "$R"; draw_bot; echo ""
+    echo -ne "${left_pad}${C}  Theme ❯ ${RS}"; read -r t
+    local idx=$(( ${t:-0} - 1 ))
+    [ $idx -lt 0 ] || [ $idx -gt 14 ] && return
+    [ -f "$QUINX_THEMES/${files[$idx]}.colors" ] && cp "$QUINX_THEMES/${files[$idx]}.colors" ~/.termux/colors.properties 2>/dev/null
+    echo "${names[$idx]}" > "$QUINX_HOME/.current-theme"
+    termux-reload-settings 2>/dev/null
+    clear; show_banner; draw_top; print_line "APPLIED: ${names[$idx]} ✓" "$G"; draw_bot; sleep 2
 }
 
-do_network_info() {
-    clear; show_banner; draw_top
-    print_line "NETWORK INFORMATION" "$Y"
-    draw_sep
-    local local_ip=$(ip route get 1.1.1.1 2>/dev/null | grep -oP 'src \K\S+')
-    local public_ip=$(curl -s --max-time 5 ifconfig.me 2>/dev/null || echo "N/A")
-    local dns=$(grep -m1 'nameserver' /etc/resolv.conf 2>/dev/null | awk '{print $2}' || echo "N/A")
-    local hostname=$(hostname 2>/dev/null || echo "N/A")
-    for entry in "Hostname:${hostname}" "Local IP:${local_ip:-N/A}" "Public IP:${public_ip}" "DNS:${dns}"; do
-        local key="${entry%%:*}"; local val="${entry#*:}"
-        printf "${C}${left_pad}║${RS}  ${W}%-10s${RS} ${G}%-30s${RS}" "$key:" "$val"
-        printf '%*s' $(( BOX_WIDTH - 2 - 42 )) "" "${C}║${RS}\n"
+do_dev_tools() {
+    while true; do
+        clear; show_banner; draw_top; print_line "DEV TOOLS" "$Y"; draw_sep
+        print_item "01" "Python 3" "pip, ipython" "$G"; print_item "02" "Node.js" "npm, yarn" "$G"
+        print_item "03" "Go" "compiler" "$G"; print_item "04" "Rust" "cargo" "$G"
+        print_item "05" "Ruby" "gem" "$G"; print_item "06" "PHP" "" "$G"
+        print_item "07" "Git+SSH" "" "$B"; print_item "08" "Neovim" "" "$B"
+        print_item "09" "tmux" "" "$B"; print_item "10" "All Python" "numpy,pandas,flask" "$Y"
+        print_item "11" "All Web" "node+php+ruby" "$Y"
+        draw_sep; print_item "0" "Back" "Return" "$R"; draw_bot; echo ""
+        echo -ne "${left_pad}${C}  ❯ ${RS}"; read -r d
+        case $d in
+            1|01) clear; pkg install python python-pip -y 2>&1 | tail -3; pip install ipython virtualenv 2>&1 | tail -2; echo -e "\n${G}  ✓ Python${RS}"; sleep 2 ;;
+            2|02) clear; pkg install nodejs -y 2>&1 | tail -3; echo -e "\n${G}  ✓ Node.js${RS}"; sleep 2 ;;
+            3|03) clear; pkg install golang -y 2>&1 | tail -3; echo -e "\n${G}  ✓ Go${RS}"; sleep 2 ;;
+            4|04) clear; pkg install rust -y 2>&1 | tail -3; echo -e "\n${G}  ✓ Rust${RS}"; sleep 2 ;;
+            5|05) clear; pkg install ruby -y 2>&1 | tail -3; echo -e "\n${G}  ✓ Ruby${RS}"; sleep 2 ;;
+            6|06) clear; pkg install php -y 2>&1 | tail -3; echo -e "\n${G}  ✓ PHP${RS}"; sleep 2 ;;
+            7|07) clear; pkg install git openssh -y 2>&1 | tail -3; echo -e "\n${G}  ✓ Git+SSH${RS}"; sleep 2 ;;
+            8|08) clear; pkg install neovim -y 2>&1 | tail -3; echo -e "\n${G}  ✓ Neovim${RS}"; sleep 2 ;;
+            9|09) clear; pkg install tmux -y 2>&1 | tail -3; echo -e "\n${G}  ✓ tmux${RS}"; sleep 2 ;;
+            10) clear; pkg install python python-pip -y 2>&1 | tail -3; pip install numpy pandas flask requests ipython virtualenv 2>&1 | tail -3; echo -e "\n${G}  ✓ Python stack${RS}"; sleep 2 ;;
+            11) clear; pkg install nodejs php ruby python -y 2>&1 | tail -3; echo -e "\n${G}  ✓ Web stack${RS}"; sleep 2 ;;
+            0|00) return ;;
+        esac
     done
-    draw_sep; print_line "CONNECTIVITY TEST" "$Y"; draw_sep
-    for target in "8.8.8.8:Google DNS" "1.1.1.1:Cloudflare"; do
-        local addr="${target%%:*}"; local name="${target#*:}"
-        local ping_t=$(ping -c1 -W3 "$addr" 2>/dev/null | grep -oP 'time=\K\S+')
-        if [ -n "$ping_t" ]; then
-            printf "${C}${left_pad}║${RS}  ${W}%-12s${RS} ${G}✓ %s${RS}" "$name:" "$ping_t"
-            printf '%*s' $(( BOX_WIDTH - 2 - 18 - ${#ping_t} )) "" "${C}║${RS}\n"
-        else
-            printf "${C}${left_pad}║${RS}  ${W}%-12s${RS} ${R}✗ Timeout${RS}" "$name:"
-            printf '%*s' $(( BOX_WIDTH - 2 - 23 )) "" "${C}║${RS}\n"
-        fi
-    done
-    print_line ""; draw_bot; echo ""
-    echo -ne "${left_pad}${C}  Press Enter to return...${RS}"
-    read -r
 }
 
-do_backup() {
-    clear; show_banner; draw_top
-    print_line "BACKUP & RESTORE" "$Y"
-    draw_sep
-    print_item "1" "Backup  " "Save current config" "$G"
-    print_item "2" "Restore " "Load saved config" "$G"
-    print_item "0" "Back    " "Return to menu" "$R"
+do_quick_commands() {
+    while true; do
+        clear; show_banner; draw_top; print_line "QUICK COMMANDS" "$Y"; draw_sep
+        print_item "01" "Git Init+Push" "Init & push repo" "$G"
+        print_item "02" "Compress" "tar.gz directory" "$G"
+        print_item "03" "Find Large" "Top 10 biggest files" "$G"
+        print_item "04" "Kill Port" "Kill process on port" "$Y"
+        print_item "05" "HTTP Serve" "Local server" "$Y"
+        print_item "06" "Disk Usage" "df -h" "$B"
+        print_item "07" "Process Top" "Top by CPU" "$B"
+        print_item "08" "SSH Keygen" "ed25519 keypair" "$C"
+        print_item "09" "WiFi Info" "Network details" "$C"
+        draw_sep; print_item "0" "Back" "Return" "$R"; draw_bot; echo ""
+        echo -ne "${left_pad}${C}  ❯ ${RS}"; read -r q
+        case $q in
+            1|01) echo ""; echo -ne "${left_pad}${C}  Repo: ${RS}"; read -r r; [ -n "$r" ] && mkdir -p "$r" && cd "$r" && git init && touch README.md && git add . && git commit -m "init" && cd ..; sleep 2 ;;
+            2|02) echo ""; echo -ne "${left_pad}${C}  Folder: ${RS}"; read -r f; [ -d "$f" ] && tar czf "$(basename "$f").tar.gz" "$f" && echo -e "${G}  ✓ Done${RS}"; sleep 2 ;;
+            3|03) clear; find / -type f -exec du -h {} + 2>/dev/null | sort -rh | head -10; echo ""; echo -ne "${left_pad}${C}  Enter...${RS}"; read -r ;;
+            4|04) echo ""; echo -ne "${left_pad}${C}  Port: ${RS}"; read -r p; local pid=$(lsof -t -i:"$p" 2>/dev/null); [ -n "$pid" ] && kill -9 "$pid" && echo -e "${G}  ✓ Killed${RS}"; sleep 2 ;;
+            5|05) echo ""; echo -ne "${left_pad}${C}  Port [8080]: ${RS}"; read -r sp; python3 -m http.server ${sp:-8080} 2>/dev/null ;;
+            6|06) clear; df -h; echo ""; echo -ne "${left_pad}${C}  Enter...${RS}"; read -r ;;
+            7|07) clear; ps aux | sort -nrk 3 | head -10; echo ""; echo -ne "${left_pad}${C}  Enter...${RS}"; read -r ;;
+            8|08) echo ""; echo -ne "${left_pad}${C}  Email: ${RS}"; read -r e; [ -n "$e" ] && ssh-keygen -t ed25519 -C "$e" -f "$HOME/.ssh/id_ed25519" -N "" && cat "$HOME/.ssh/id_ed25519.pub"; echo ""; echo -ne "${left_pad}${C}  Enter...${RS}"; read -r ;;
+            9|09) clear; echo "Hostname: $(hostname)"; echo "Local: $(ip route get 1.1.1.1 2>/dev/null | grep -oP 'src \K\S+')"; echo "Public: $(curl -s --max-time 5 ifconfig.me)"; echo ""; echo -ne "${left_pad}${C}  Enter...${RS}"; read -r ;;
+            0|00) return ;;
+        esac
+    done
+}
+
+do_aliases_manager() {
+    while true; do
+        clear; show_banner; draw_top; print_line "ALIASES MANAGER" "$Y"; draw_sep
+        print_item "1" "List" "Show aliases" "$G"; print_item "2" "Add" "New alias" "$G"
+        print_item "3" "Remove" "Delete alias" "$R"; print_item "4" "Quick" "Common aliases" "$Y"
+        draw_sep; print_item "0" "Back" "Return" "$R"; draw_bot; echo ""
+        echo -ne "${left_pad}${C}  ❯ ${RS}"; read -r a
+        local af="$QUINX_HOME/.quinx-aliases"
+        case $a in
+            1) clear; show_banner; draw_top; print_line "ALIASES" "$Y"; draw_sep
+               [ -f "$af" ] && [ -s "$af" ] && while IFS= read -r l; do printf "${C}${left_pad}║${RS}  ${W}%-56s${RS}" "$l"; printf '%*s' $(( BOX_WIDTH - 60 )) "" "${C}║${RS}\n"; done < "$af" || print_line "None yet" "$D"
+               draw_bot; echo ""; echo -ne "${left_pad}${C}  Enter...${RS}"; read -r ;;
+            2) echo ""; echo -ne "${left_pad}${C}  Alias: ${RS}"; read -r an; echo -ne "${left_pad}${C}  Command: ${RS}"; read -r ac
+               [ -n "$an" ] && [ -n "$ac" ] && echo "alias ${an}='${ac}'" >> "$af" && echo -e "${G}  ✓ Added${RS}"; sleep 2 ;;
+            3) [ -f "$af" ] && nl -ba "$af" && echo "" && echo -ne "${left_pad}${C}  Line #: ${RS}" && read -r ln && [ -n "$ln" ] && sed -i "${ln}d" "$af"; sleep 2 ;;
+            4) cat >> "$af" << 'A'
+alias ll='ls -la' alias la='ls -a' alias cls='clear' alias ..='cd ..' alias ...='cd ../..'
+alias update='apt update && apt upgrade -y' alias myip='curl -s ifconfig.me'
+alias path='echo -e ${PATH//:/\\n}' alias mkdir='mkdir -pv'
+A
+               echo -e "${G}  ✓ Common aliases added${RS}"; sleep 2 ;;
+            0) return ;;
+        esac
+    done
+}
+
+do_plugin_system() {
+    while true; do
+        clear; show_banner; draw_top; print_line "PLUGIN SYSTEM" "$Y"; draw_sep
+        print_line "Auto-loaded from: .object/plugins/" "$D"; draw_sep
+        local cnt=0
+        for p in "$QUINX_PLUGINS"/*.sh; do [ -f "$p" ] || continue; printf "${C}${left_pad}║${RS}  ${G}●${RS} %-54s" "$(basename "$p" .sh)"; printf '%*s' $(( BOX_WIDTH - 58 )) "" "${C}║${RS}\n"; cnt=$((cnt+1)); done
+        [ $cnt -eq 0 ] && print_line "No plugins" "$D"
+        draw_sep; print_item "1" "Create Plugin" "Write new" "$G"; print_item "2" "Plugin Dir" "Open folder" "$B"
+        draw_sep; print_item "0" "Back" "Return" "$R"; draw_bot; echo ""
+        echo -ne "${left_pad}${C}  ❯ ${RS}"; read -r pc
+        case $pc in
+            1) echo ""; echo -ne "${left_pad}${C}  Plugin name: ${RS}"; read -r pn
+               echo -e "${left_pad}${D}  Code (Ctrl+D done):${RS}"; local nf="$QUINX_PLUGINS/${pn}.sh"
+               echo "#!/bin/bash" > "$nf"; echo "# $pn plugin" >> "$nf"; cat >> "$nf"; chmod +x "$nf"
+               echo -e "\n${G}  ✓ Created: $pn${RS}"; sleep 2 ;;
+            2) echo -e "\n${left_pad}${C}  Dir: $QUINX_PLUGINS${RS}"; echo -ne "${left_pad}${C}  Enter...${RS}"; read -r ;;
+            0) return ;;
+        esac
+    done
+}
+
+do_custom_banner_text() {
+    clear; show_banner; draw_top; print_line "CUSTOM ASCII ART" "$Y"; draw_sep
+    print_line "Current: $(cat "$QUINX_HOME/.custom-banner-text" 2>/dev/null || echo 'PROC')" "$D"
     draw_bot; echo ""
-    echo -ne "${left_pad}${C}  Selection ❯ ${RS}"
-    read -r choice
-    case $choice in
-        1)
-            local backup_dir="$QUINX_HOME/backups/$(date +%Y%m%d_%H%M%S)"
-            mkdir -p "$backup_dir"
-            for f in ~/.zshrc ~/.bashrc "$QUINX_HOME/.current-theme" "$QUINX_HOME/.banner-style" "$QUINX_HOME/.quinx-aliases" "$QUINX_HOME/.custom-banner-text"; do
-                [ -f "$f" ] && cp "$f" "$backup_dir/"
-            done
-            [ -d ~/.termux ] && cp -r ~/.termux "$backup_dir/"
-            [ -d ~/.oh-my-zsh/themes ] && cp -r ~/.oh-my-zsh/themes "$backup_dir/themes" 2>/dev/null
-            clear; show_banner; draw_top; print_line "BACKUP SAVED ✓" "$G"; print_line "$backup_dir" "$D"; draw_bot; sleep 2 ;;
-        2)
-            if [ -d "$QUINX_HOME/backups" ]; then
-                local latest=$(ls -t "$QUINX_HOME/backups/" 2>/dev/null | head -1)
-                if [ -n "$latest" ]; then
-                    local bdir="$QUINX_HOME/backups/$latest"
-                    for f in .zshrc .bashrc .current-theme .banner-style .quinx-aliases .custom-banner-text; do
-                        [ -f "$bdir/$f" ] && cp "$bdir/$f" "$QUINX_HOME/"
-                    done
-                    [ -f "$bdir/.zshrc" ] && cp "$bdir/.zshrc" ~/.zshrc
-                    [ -f "$bdir/.bashrc" ] && cp "$bdir/.bashrc" ~/.bashrc
-                    [ -d "$bdir/.termux" ] && cp -r "$bdir/.termux/"* ~/.termux/ 2>/dev/null
-                    clear; show_banner; draw_top; print_line "RESTORED FROM: $latest" "$G"; draw_bot
-                else echo -e "\n${left_pad}${R}  No backups found.${RS}"
-                fi
-            else echo -e "\n${left_pad}${R}  No backups directory.${RS}"
-            fi; sleep 2 ;;
-    esac
+    echo -ne "${left_pad}${C}  New text (max 12): ${RS}"; read -r ct
+    [ -n "$ct" ] && echo "$ct" > "$QUINX_HOME/.custom-banner-text"
+    clear; show_banner; draw_top; print_line "SET: $ct ✓" "$G"; draw_bot; sleep 2
 }
 
-# ─── Motd Editor ──────────────────────────────────────────
-do_motd_editor() {
-    clear; show_banner; draw_top
-    print_line "MOTD EDITOR" "$Y"
-    draw_sep
-    print_item "1" "Set Custom MOTD " "Write your own message" "$G"
-    print_item "2" "Default MOTD    " "QuinxOS branded message" "$G"
-    print_item "3" "Disable MOTD    " "No message on boot" "$R"
-    draw_sep
-    print_item "0" "Back            " "Return to menu" "$R"
-    draw_bot; echo ""
-    echo -ne "${left_pad}${C}  Selection ❯ ${RS}"
-    read -r motd_choice
-    local motd_file="/data/data/com.termux/files/usr/etc/motd"
-    case $motd_choice in
-        1) echo ""; echo -ne "${left_pad}${C}  Enter MOTD text: ${RS}"; read -r motd_text
-           echo -e "\033[1;96m${motd_text}\033[0m" > "$motd_file"
-           clear; show_banner; draw_top; print_line "CUSTOM MOTD SET ✓" "$G"; draw_bot; sleep 2 ;;
-        2) cat > "$motd_file" << 'MOTD_EOF'
-\033[1;96m
-  ╔═══════════════════════════════════════╗
-  ║        Welcome to QuinxOS v4.2        ║
-  ║       by Shineii86                    ║
-  ╚═══════════════════════════════════════╝
-\033[0m
-MOTD_EOF
-           clear; show_banner; draw_top; print_line "DEFAULT MOTD SET ✓" "$G"; draw_bot; sleep 2 ;;
-        3) rm -f "$motd_file"; clear; show_banner; draw_top; print_line "MOTD DISABLED ✓" "$G"; draw_bot; sleep 2 ;;
+do_login_sound() {
+    clear; show_banner; draw_top; print_line "LOGIN SOUND" "$Y"; draw_sep
+    print_item "1" "Enable Bell" "Terminal beep" "$G"; print_item "2" "Custom Sound" "Your audio file" "$G"; print_item "3" "Disable" "Silent" "$R"
+    draw_sep; print_item "0" "Back" "Return" "$R"; draw_bot; echo ""
+    echo -ne "${left_pad}${C}  ❯ ${RS}"; read -r sc
+    case $sc in
+        1) echo '# bell' > "$QUINX_HOME/.login-sound-mode"; clear; show_banner; draw_top; print_line "BELL ENABLED ✓" "$G"; draw_bot; sleep 2 ;;
+        2) echo ""; echo -ne "${left_pad}${C}  File path: ${RS}"; read -r sf; [ -f "$sf" ] && cp "$sf" "$QUINX_HOME/.login-sound" && echo '# custom' > "$QUINX_HOME/.login-sound-mode" && echo -e "${G}  ✓ Set${RS}"; sleep 2 ;;
+        3) rm -f "$QUINX_HOME/.login-sound" "$QUINX_HOME/.login-sound-mode"; clear; show_banner; draw_top; print_line "SOUND DISABLED" "$R"; draw_bot; sleep 2 ;;
         0) return ;;
     esac
 }
 
-# ─── Quinx Shield ─────────────────────────────────────────
-generate_recovery_key() { cat /dev/urandom 2>/dev/null | tr -dc 'A-Za-z0-9' | head -c 16; }
+do_sysinfo() {
+    clear; show_banner; draw_top; print_line "SYSTEM INFORMATION" "$Y"; draw_sep
+    for e in "OS:$(uname -o)" "Arch:$(uname -m)" "Kernel:$(uname -r)" "Uptime:$(uptime -p 2>/dev/null || echo N/A)" "CPU:$(nproc) cores" "Memory:$(free -h 2>/dev/null | awk '/Mem:/{print $3"/"$2}')" "Disk:$(df -h / 2>/dev/null | awk 'NR==2{print $3"/"$2" ("$5")"}')" "Packages:$(dpkg -l 2>/dev/null | grep -c '^ii')"; do
+        local k="${e%%:*}"; local v="${e#*:}"; printf "${C}${left_pad}║${RS}  ${W}%-10s${RS} ${G}%-30s${RS}" "$k:" "$v"; printf '%*s' $(( BOX_WIDTH - 42 )) "" "${C}║${RS}\n"
+    done
+    print_line ""; draw_bot; echo ""; echo -ne "${left_pad}${C}  Enter...${RS}"; read -r
+}
+
+do_network_info() {
+    clear; show_banner; draw_top; print_line "NETWORK" "$Y"; draw_sep
+    for e in "Hostname:$(hostname)" "Local IP:$(ip route get 1.1.1.1 2>/dev/null | grep -oP 'src \K\S+')" "Public IP:$(curl -s --max-time 5 ifconfig.me)" "DNS:$(grep -m1 nameserver /etc/resolv.conf 2>/dev/null | awk '{print $2}')"; do
+        local k="${e%%:*}"; local v="${e#*:}"; printf "${C}${left_pad}║${RS}  ${W}%-10s${RS} ${G}%-30s${RS}" "$k:" "$v"; printf '%*s' $(( BOX_WIDTH - 42 )) "" "${C}║${RS}\n"
+    done
+    draw_sep; print_line "PING TESTS" "$Y"; draw_sep
+    for t in "8.8.8.8:Google" "1.1.1.1:Cloudflare"; do
+        local a="${t%%:*}"; local n="${t#*:}"; local pt=$(ping -c1 -W3 "$a" 2>/dev/null | grep -oP 'time=\K\S+')
+        [ -n "$pt" ] && printf "${C}${left_pad}║${RS}  ${W}%-12s${RS} ${G}✓ %s${RS}" "$n:" "$pt" || printf "${C}${left_pad}║${RS}  ${W}%-12s${RS} ${R}✗ Timeout${RS}" "$n:"
+        printf '%*s' $(( BOX_WIDTH - 30 )) "" "${C}║${RS}\n"
+    done
+    print_line ""; draw_bot; echo ""; echo -ne "${left_pad}${C}  Enter...${RS}"; read -r
+}
+
+do_motd_editor() {
+    clear; show_banner; draw_top; print_line "MOTD EDITOR" "$Y"; draw_sep
+    print_item "1" "Custom MOTD" "Your message" "$G"; print_item "2" "Default" "QuinxOS msg" "$G"; print_item "3" "Disable" "No MOTD" "$R"
+    draw_sep; print_item "0" "Back" "Return" "$R"; draw_bot; echo ""
+    echo -ne "${left_pad}${C}  ❯ ${RS}"; read -r m
+    local mf="/data/data/com.termux/files/usr/etc/motd"
+    case $m in
+        1) echo ""; echo -ne "${left_pad}${C}  Text: ${RS}"; read -r mt; echo -e "\033[1;96m${mt}\033[0m" > "$mf"; echo -e "${G}  ✓${RS}"; sleep 2 ;;
+        2) echo -e "\033[1;96m\n  ╔═══════════════════════════════════════╗\n  ║        Welcome to QuinxOS v5.0        ║\n  ║       by Shineii86                    ║\n  ╚═══════════════════════════════════════╝\n\033[0m" > "$mf"; echo -e "${G}  ✓${RS}"; sleep 2 ;;
+        3) rm -f "$mf"; echo -e "${G}  ✓ Disabled${RS}"; sleep 2 ;;
+        0) return ;;
+    esac
+}
+
+do_backup() {
+    clear; show_banner; draw_top; print_line "BACKUP & RESTORE" "$Y"; draw_sep
+    print_item "1" "Backup" "Save config" "$G"; print_item "2" "Restore" "Load config" "$G"; print_item "0" "Back" "Return" "$R"
+    draw_bot; echo ""; echo -ne "${left_pad}${C}  ❯ ${RS}"; read -r bc
+    case $bc in
+        1) local bd="$QUINX_HOME/backups/$(date +%Y%m%d_%H%M%S)"; mkdir -p "$bd"
+           for f in ~/.zshrc ~/.bashrc "$QUINX_HOME/.current-theme" "$QUINX_HOME/.banner-style" "$QUINX_HOME/.quinx-aliases"; do [ -f "$f" ] && cp "$f" "$bd/"; done
+           [ -d ~/.termux ] && cp -r ~/.termux "$bd/"
+           clear; show_banner; draw_top; print_line "BACKUP SAVED ✓" "$G"; print_line "$bd" "$D"; draw_bot; sleep 2 ;;
+        2) local lt=$(ls -t "$QUINX_HOME/backups/" 2>/dev/null | head -1)
+           [ -n "$lt" ] && { local bd="$QUINX_HOME/backups/$lt"; [ -f "$bd/.zshrc" ] && cp "$bd/.zshrc" ~/.zshrc; [ -f "$bd/.bashrc" ] && cp "$bd/.bashrc" ~/.bashrc; [ -d "$bd/.termux" ] && cp -r "$bd/.termux/"* ~/.termux/ 2>/dev/null; clear; show_banner; draw_top; print_line "RESTORED ✓" "$G"; draw_bot; } || echo -e "\n${left_pad}${R}  No backups${RS}"; sleep 2 ;;
+    esac
+}
 
 do_cyber_lock() {
-    clear; show_banner; draw_top
-    print_line "QUINX SHIELD — SECURITY LOCK" "$Y"
-    draw_sep; print_line "Protect your terminal with encrypted access" "$D"; draw_bot; echo ""
-    echo -ne "${left_pad}${C}  Create Access Key ❯ ${RS}"; read -s new_pass; echo
-    echo -ne "${left_pad}${C}  Confirm Access Key ❯ ${RS}"; read -s confirm_pass; echo
-    if [ "$new_pass" != "$confirm_pass" ]; then echo -e "\n${left_pad}${R}  ✗ Keys do not match. Aborting.${RS}"; sleep 2; return; fi
-
-    local recovery_key=$(generate_recovery_key)
-    echo "$recovery_key" > "$QUINX_HOME/.quinx-recovery"; chmod 600 "$QUINX_HOME/.quinx-recovery"
-
-    # Emergency unlock script
-    cat > "$QUINX_HOME/quinx-unlock" << 'UNLOCK_EOF'
+    clear; show_banner; draw_top; print_line "QUINX SHIELD" "$Y"; draw_sep; print_line "Encrypted terminal lock" "$D"; draw_bot; echo ""
+    echo -ne "${left_pad}${C}  Create Key ❯ ${RS}"; read -s np; echo
+    echo -ne "${left_pad}${C}  Confirm Key ❯ ${RS}"; read -s cp; echo
+    [ "$np" != "$cp" ] && echo -e "\n${left_pad}${R}  ✗ Mismatch${RS}" && sleep 2 && return
+    local rk=$(generate_recovery_key); echo "$rk" > "$QUINX_HOME/.quinx-recovery"; chmod 600 "$QUINX_HOME/.quinx-recovery"
+    cat > "$QUINX_HOME/quinx-unlock" << 'U'
 #!/bin/bash
-R='\033[1;31m'; G='\033[1;32m'; C='\033[1;96m'; W='\033[1;97m'; RS='\033[0m'
-echo -e "\n${C}  QUINX SHIELD — EMERGENCY UNLOCK${RS}\n"
-echo -ne "  Enter recovery key: "; read -s input_key; echo
-QUINX_HOME="$HOME/QuinxOS"
-if [ -f "$QUINX_HOME/.quinx-recovery" ] && [ "$input_key" = "$(cat "$QUINX_HOME/.quinx-recovery")" ]; then
-    sed -i '/#QUINX_LOCK_START/,/#QUINX_LOCK_END/d' ~/.bashrc 2>/dev/null
-    [ -f ~/.zshrc ] && sed -i '/#QUINX_LOCK_START/,/#QUINX_LOCK_END/d' ~/.zshrc 2>/dev/null
-    echo -e "\n  ${G}✓ QUINX SHIELD REMOVED${RS}"; rm -f "$QUINX_HOME/.quinx-recovery"; exit 0
-fi
-echo -e "\n  ${R}✗ INVALID KEY${RS}"; exit 1
-UNLOCK_EOF
+echo -ne "\n  Recovery key: "; read -s k; echo
+[ -f "$HOME/QuinxOS/.quinx-recovery" ] && [ "$k" = "$(cat "$HOME/QuinxOS/.quinx-recovery")" ] && sed -i '/#QUINX_LOCK_START/,/#QUINX_LOCK_END/d' ~/.bashrc 2>/dev/null && [ -f ~/.zshrc ] && sed -i '/#QUINX_LOCK_START/,/#QUINX_LOCK_END/d' ~/.zshrc 2>/dev/null && rm -f "$HOME/QuinxOS/.quinx-recovery" && echo -e "\n  ✓ Removed" && exit 0
+echo -e "\n  ✗ Invalid key"
+U
     chmod +x "$QUINX_HOME/quinx-unlock"
-
-    local lock_code='#QUINX_LOCK_START
-clear
-echo -e "\033[1;36m  ┌─────────────────────────────────────┐"
-echo -e "  │     QUINX SHIELD — ACCESS GATE      │"
-echo -e "  └─────────────────────────────────────┘\033[0m"
-echo -e "\033[1;33m  Initializing security protocols...\033[0m"; sleep 0.5
-attempt=1
-while [ $attempt -le 3 ]; do
-    echo -e "\n\033[1;36m  ╔══════════════════════════════════════╗"
-    echo -e "  ║        \033[1;31mQUINX SHIELD ACCESS           \033[1;36m║"
-    echo -e "  ╚══════════════════════════════════════╝\033[0m"
-    echo -ne "\033[1;33m  [Attempt $attempt/3] Enter Key: \033[0m"; read -s pass_input; echo
-    if [ "$pass_input" = "'"$new_pass"'" ]; then
-        echo -e "\033[1;32m  ✓ ACCESS GRANTED.\033[0m"; sleep 1; clear; break
-    else
-        echo -e "\033[1;31m  ✗ ACCESS DENIED.\033[0m"
-        if [ $attempt -eq 3 ]; then
-            echo -e "\033[1;31m  ╔══════════════════════════════════════╗"
-            echo -e "  ║   LOCKED OUT — RECOVERY OPTIONS      ║"
-            echo -e "  ╠══════════════════════════════════════╣"
-            echo -e "  ║  1. bash ~/QuinxOS/quinx-unlock      ║"
-            echo -e "  ║  2. Enter recovery key below          ║"
-            echo -e "  ║  3. nano ~/.bashrc (delete lock)      ║"
-            echo -e "  ╚══════════════════════════════════════╝\033[0m"
-            echo -ne "\033[1;33m  Recovery key (or Enter to exit): \033[0m"; read -s rkey; echo
-            if [ -n "$rkey" ] && [ -f "'"$QUINX_HOME"'/.quinx-recovery" ] && [ "$rkey" = "$(cat '"$QUINX_HOME"'/ 2>/dev/null/.quinx-recovery)" ]; then
-                sed -i "/#QUINX_LOCK_START/,/#QUINX_LOCK_END/d" ~/.bashrc 2>/dev/null
-                [ -f ~/.zshrc ] && sed -i "/#QUINX_LOCK_START/,/#QUINX_LOCK_END/d" ~/.zshrc 2>/dev/null
-                echo -e "\033[1;32m  ✓ RECOVERY SUCCESSFUL.\033[0m"; rm -f "'"$QUINX_HOME"'/.quinx-recovery"; sleep 2; clear; break
-            fi
-            echo -e "\033[1;31m  ✗ SESSION TERMINATED.\033[0m"; exit
-        fi; attempt=$((attempt + 1))
-    fi
-done
+    local lc='#QUINX_LOCK_START
+clear; echo -e "\033[1;36m  ┌─────────────────────────────────────┐\n  │     QUINX SHIELD — ACCESS GATE      │\n  └─────────────────────────────────────┘\033[0m"
+a=1; while [ $a -le 3 ]; do echo -ne "\n\033[1;33m  [Attempt $a/3] Key: \033[0m"; read -s p; echo
+[ "$p" = "'"$np"'" ] && echo -e "\033[1;32m  ✓ GRANTED\033[0m" && sleep 1 && clear && break
+echo -e "\033[1;31m  ✗ DENIED\033[0m"; [ $a -eq 3 ] && echo -e "\033[1;31m  LOCKED. bash ~/QuinxOS/quinx-unlock\033[0m" && exit; a=$((a+1)); done
 #QUINX_LOCK_END'
-
-    add_to_top() {
-        if [ -f "$1" ]; then echo "$lock_code" > "$1.tmp"; cat "$1" >> "$1.tmp"; mv "$1.tmp" "$1"
-        else echo "$lock_code" > "$1"; fi
-    }
-    add_to_top ~/.bashrc; [ -f ~/.zshrc ] && add_to_top ~/.zshrc
-
-    clear; show_banner; draw_top
-    print_line ""; print_line "QUINX SHIELD ACTIVATED ✓" "$G"
-    draw_sep; print_line "⚠ SAVE YOUR RECOVERY KEY ⚠" "$R"
-    print_line ""; print_line "Key: $recovery_key" "$G"
-    print_line "File: $QUINX_HOME/.quinx-recovery" "$D"
-    print_line "Unlock: bash ~/QuinxOS/quinx-unlock" "$D"
-    print_line ""; draw_bot; echo ""
-    echo -ne "${left_pad}${C}  Press Enter after saving your key...${RS}"; read -r
+    for rc in ~/.bashrc ~/.zshrc; do [ -f "$rc" ] && echo "$lc" > "$rc.tmp" && cat "$rc" >> "$rc.tmp" && mv "$rc.tmp" "$rc"; done
+    clear; show_banner; draw_top; print_line "SHIELD ACTIVATED ✓" "$G"; draw_sep; print_line "⚠ SAVE YOUR RECOVERY KEY ⚠" "$R"; print_line ""; print_line "Key: $rk" "$G"; print_line "File: $QUINX_HOME/.quinx-recovery" "$D"; print_line "Unlock: bash ~/QuinxOS/quinx-unlock" "$D"; print_line ""; draw_bot; echo ""
+    echo -ne "${left_pad}${C}  Press Enter after saving key...${RS}"; read -r
 }
 
 do_remove_lock() {
     sed -i '/#QUINX_LOCK_START/,/#QUINX_LOCK_END/d' ~/.bashrc 2>/dev/null
     [ -f ~/.zshrc ] && sed -i '/#QUINX_LOCK_START/,/#QUINX_LOCK_END/d' ~/.zshrc 2>/dev/null
     rm -f "$QUINX_HOME/.quinx-recovery" "$QUINX_HOME/quinx-unlock" 2>/dev/null
-    clear; show_banner; draw_top; print_line ""; print_line "QUINX SHIELD DEACTIVATED" "$R"; print_line ""; draw_bot; sleep 2
+    clear; show_banner; draw_top; print_line "SHIELD DEACTIVATED" "$R"; draw_bot; sleep 2
 }
 
 do_update() {
-    clear; show_banner; draw_top; print_line "UPDATING QUINXOS" "$Y"
-    draw_sep; print_line "Pulling latest from GitHub..." "$D"; draw_bot; echo ""
-    rm -rf "$QUINX_HOME"; cd "$HOME"
-    git clone https://github.com/Shineii86/QuinxOS.git 2>/dev/null; cd "$QUINX_HOME"
+    clear; show_banner; draw_top; print_line "UPDATING QUINXOS" "$Y"; draw_sep; print_line "Pulling from GitHub..." "$D"; draw_bot; echo ""
+    rm -rf "$QUINX_HOME"; cd "$HOME"; git clone https://github.com/Shineii86/QuinxOS.git 2>/dev/null; cd "$QUINX_HOME"
     clear; show_banner; draw_top; print_line "UPDATE COMPLETE ✓" "$G"; draw_bot; sleep 2
 }
 
 do_uninstall() {
-    clear; show_banner; draw_top
-    print_line "UNINSTALL QUINXOS" "$R"
-    draw_sep; print_line "This will remove all QuinxOS components" "$D"; draw_sep
-    print_line "Removes: QuinxOS dir, themes, shield, plugins" "$D"
-    print_line "Keeps: Oh My Zsh, .zshrc, .bashrc, font" "$D"
-    draw_sep
-    print_item "1" "Confirm Uninstall" "Remove QuinxOS" "$R"
-    print_item "0" "Cancel           " "Keep everything" "$G"
-    draw_bot; echo ""
-    echo -ne "${left_pad}${C}  Are you sure? ❯ ${RS}"
-    read -r confirm
-    case $confirm in
-        1)
-            sed -i '/#QUINX_LOCK_START/,/#QUINX_LOCK_END/d' ~/.bashrc 2>/dev/null
-            [ -f ~/.zshrc ] && sed -i '/#QUINX_LOCK_START/,/#QUINX_LOCK_END/d' ~/.zshrc 2>/dev/null
-            rm -f ~/.oh-my-zsh/themes/quinx.zsh-theme 2>/dev/null
-            rm -f /data/data/com.termux/files/usr/etc/motd 2>/dev/null
-            rm -rf "$QUINX_HOME" "$QUINX_MARKER"
-            clear; show_banner; draw_top; print_line ""; print_line "QUINXOS UNINSTALLED ✓" "$R"
-            print_line "Thank you for using QuinxOS!" "$W"; print_line ""; draw_bot
-            echo ""; echo -ne "${left_pad}${C}  Press Enter...${RS}"; read -r; exit 0 ;;
-        *) return ;;
-    esac
+    clear; show_banner; draw_top; print_line "UNINSTALL QUINXOS" "$R"; draw_sep; print_line "Removes everything QuinxOS" "$D"
+    print_line "Keeps: Oh My Zsh, shell configs, font" "$D"; draw_sep
+    print_item "1" "Confirm" "Remove" "$R"; print_item "0" "Cancel" "Keep" "$G"; draw_bot; echo ""
+    echo -ne "${left_pad}${C}  ❯ ${RS}"; read -r u
+    [ "$u" = "1" ] && { sed -i '/#QUINX_LOCK_START/,/#QUINX_LOCK_END/d' ~/.bashrc ~/.zshrc 2>/dev/null; rm -f ~/.oh-my-zsh/themes/quinx.zsh-theme /data/data/com.termux/files/usr/etc/motd 2>/dev/null; rm -rf "$QUINX_HOME" "$QUINX_MARKER"
+    clear; show_banner; draw_top; print_line "UNINSTALLED ✓" "$R"; print_line "Thanks for using QuinxOS!" "$W"; draw_bot; echo ""; echo -ne "${left_pad}${C}  Enter...${RS}"; read -r; exit 0; }
 }
 
-# ═══════════════════════════════════════════════════════════
-# FIRST-RUN WIZARD
-# ═══════════════════════════════════════════════════════════
+do_rgb_animation() {
+    clear; echo -e "\n${C}  RGB Animation Preview${RS}\n  "
+    for i in {1..40}; do
+        case $((i % 6)) in 0) c="\033[1;31m" ;; 1) c="\033[1;33m" ;; 2) c="\033[1;32m" ;; 3) c="\033[1;36m" ;; 4) c="\033[1;34m" ;; 5) c="\033[1;35m" ;; esac
+        echo -ne "${c}▓\033[0m"; sleep 0.03
+    done
+    echo -e "  \033[1;32mDONE\033[0m\n"; echo -ne "${left_pad}${C}  Enter...${RS}"; read -r
+}
+
+# ─── Auto-Update ──────────────────────────────────────────
+check_for_updates() {
+    local lc="$QUINX_HOME/.last-update-check" now=$(date +%s)
+    [ -f "$lc" ] && [ $(( now - $(cat "$lc") )) -lt 86400 ] && return
+    echo "$now" > "$lc"
+    local rv=$(curl -s --max-time 5 "https://raw.githubusercontent.com/Shineii86/QuinxOS/main/install.sh" 2>/dev/null | grep -m1 'QUINX_VERSION=' | cut -d'"' -f2)
+    [ -n "$rv" ] && [ "$rv" != "$QUINX_VERSION" ] && { echo ""; draw_top; print_line "UPDATE: v${QUINX_VERSION} → v${rv}" "$Y"; print_line "Run option [26] to update" "$D"; draw_bot; sleep 2; }
+}
+
+# ─── First-Run Wizard ─────────────────────────────────────
 do_first_run_wizard() {
-    clear
+    clear; echo ""
+    banner_style_1; echo ""
+    echo -e "${M}  ╔═══════════════════════════════════════════════════════╗${RS}"
+    echo -e "${M}  ║     ${W}WELCOME TO QUINXOS v${QUINX_VERSION} SETUP WIZARD${M}          ║${RS}"
+    echo -e "${M}  ╚═══════════════════════════════════════════════════════╝${RS}"
     echo ""
-    echo -e "${C}    ██████╗ ██╗   ██╗██╗███╗   ██╗██╗  ██╗ ██████╗ ███████╗${RS}"
-    echo -e "${C}   ██╔═══██╗██║   ██║██║████╗  ██║╚██╗██╔╝██╔═══██╗██╔════╝${RS}"
-    echo -e "${C}   ██║   ██║██║   ██║██║██╔██╗ ██║ ╚███╔╝ ██║   ██║███████╗${RS}"
-    echo -e "${C}   ██║▄▄ ██║██║   ██║██║██║╚██╗██║ ██╔██╗ ██║   ██║╚════██║${RS}"
-    echo -e "${C}   ╚██████╔╝╚██████╔╝██║██║ ╚████║██╔╝ ██╗╚██████╔╝███████║${RS}"
-    echo -e "${C}    ╚══▀▀═╝  ╚═════╝ ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝${RS}"
+    echo -e "${C}  Step 1: Shell${RS}  [1] Zsh  [2] Bash"; echo -ne "  Choice: "; read -r s
+    case $s in 2) chsh -s bash ;; *) pkg install zsh -y 2>&1 | tail -1; chsh -s zsh ;; esac
     echo ""
-    echo -e "${M}  ╔═══════════════════════════════════════════════════════════╗${RS}"
-    echo -e "${M}  ║           ${W}WELCOME TO QUINXOS v${QUINX_VERSION} SETUP WIZARD${M}           ║${RS}"
-    echo -e "${M}  ╚═══════════════════════════════════════════════════════════╝${RS}"
+    echo -e "${C}  Step 2: Theme (1-15)${RS}"
+    echo "  1.Cyber Midnight 2.Matrix Green 3.Solar Flare 4.Arctic Blue 5.Purple Haze"
+    echo "  6.Dracacula 7.Nord 8.Gruvbox 9.Tokyo Night 10.Catppuccin"
+    echo "  11.Everforest 12.Monokai 13.Synthwave 14.Rose Pine 15.Kanagawa"
+    echo -ne "  Choice: "; read -r tw
+    local tf=("cyber-midnight" "matrix-green" "solar-flare" "arctic-blue" "purple-haze" "dracacula" "nord" "gruvbox" "tokyo-night" "catppuccin-mocha" "everforest" "monokai" "synthwave" "rose-pine" "kanagawa")
+    local tn=("Cyber Midnight" "Matrix Green" "Solar Flare" "Arctic Blue" "Purple Haze" "Dracacula" "Nord" "Gruvbox" "Tokyo Night" "Catppuccin Mocha" "Everforest" "Monokai" "Synthwave" "Rose Pine" "Kanagawa")
+    local idx=$(( ${tw:-1} - 1 )); [ $idx -lt 0 ] && idx=0; [ $idx -gt 14 ] && idx=0
+    [ -f "$QUINX_THEMES/${tf[$idx]}.colors" ] && cp "$QUINX_THEMES/${tf[$idx]}.colors" ~/.termux/colors.properties 2>/dev/null
+    echo "${tn[$idx]}" > "$QUINX_HOME/.current-theme"
     echo ""
-
-    # Shell
-    echo -e "${C}  ── Step 1/4: Choose Your Shell ──${RS}"
-    echo -e "  ${W}[1]${G} Zsh (recommended)${RS}  ${W}[2]${G} Bash${RS}"
-    echo -ne "${C}  Your choice [1-2]: ${RS}"; read -r shell_choice
-    case $shell_choice in
-        2) chsh -s bash ;;
-        *) pkg install zsh -y 2>&1 | tail -1; chsh -s zsh ;;
-    esac
-
-    # Theme
+    echo -e "${C}  Step 3: Banner [1] Block [2] Box [3] Clean${RS}"; echo -ne "  Choice: "; read -r b; echo "$b" > "$QUINX_HOME/.banner-style"
     echo ""
-    echo -e "${C}  ── Step 2/4: Choose Your Theme ──${RS}"
-    echo -e "  ${W}[1]${C} Cyber Midnight  ${W}[2]${G} Matrix Green  ${W}[3]${Y} Solar Flare${RS}"
-    echo -e "  ${W}[4]${B} Arctic Blue     ${W}[5]${M} Purple Haze   ${W}[6]${M} Dracacula${RS}"
-    echo -e "  ${W}[7]${B} Nord            ${W}[8]${Y} Gruvbox       ${W}[9]${B} Tokyo Night${RS}"
-    echo -e "  ${W}[10]${M} Catppuccin    ${W}[11]${G} Everforest    ${W}[12]${Y} Monokai${RS}"
-    echo -e "  ${W}[13]${R} Synthwave     ${W}[14]${M} Rose Pine     ${W}[15]${B} Kanagawa${RS}"
-    echo -ne "${C}  Your choice [1-15]: ${RS}"; read -r tw
-    local tfiles=("cyber-midnight" "matrix-green" "solar-flare" "arctic-blue" "purple-haze" "dracacula" "nord" "gruvbox" "tokyo-night" "catppuccin-mocha" "everforest" "monokai" "synthwave" "rose-pine" "kanagawa")
-    local tnames=("Cyber Midnight" "Matrix Green" "Solar Flare" "Arctic Blue" "Purple Haze" "Dracacula" "Nord" "Gruvbox" "Tokyo Night" "Catppuccin Mocha" "Everforest" "Monokai" "Synthwave" "Rose Pine" "Kanagawa")
-    local idx=$(( ${tw:-1} - 1 ))
-    [ $idx -lt 0 ] && idx=0; [ $idx -gt 14 ] && idx=0
-    [ -f "$QUINX_THEMES/${tfiles[$idx]}.colors" ] && cp "$QUINX_THEMES/${tfiles[$idx]}.colors" ~/.termux/colors.properties 2>/dev/null
-    echo "${tnames[$idx]}" > "$QUINX_HOME/.current-theme"
-    echo -e "\n  ${G}Theme: ${tnames[$idx]}${RS}"
-
-    # Banner
+    echo -e "${C}  Step 4: Display Name${RS}"; echo -ne "  Name: "; read -r dn; [ -z "$dn" ] && dn="${USER:-Quinx}"
     echo ""
-    echo -e "${C}  ── Step 3/4: Banner Style ──${RS}"
-    echo -e "  ${W}[1]${C} Block Letters  ${W}[2]${M} Box Art  ${W}[3]${G} Clean Box${RS}"
-    echo -ne "${C}  Your choice [1-3]: ${RS}"; read -r banner_choice
-    echo "$banner_choice" > "$QUINX_HOME/.banner-style"
-
-    # Name
-    echo ""
-    echo -e "${C}  ── Step 4/4: Display Name ──${RS}"
-    echo -ne "${C}  Enter name (max 12): ${RS}"; read -r display_name
-    [ -z "$display_name" ] && display_name="${USER:-Quinx}"
-
-    # Install
-    echo ""
-    echo -e "${C}  ── Installing Components ──${RS}"
-    echo -ne "  ${W}Dependencies: ${RS}"
-    apt update -y 2>&1 | tail -1 && apt upgrade -y 2>&1 | tail -1
-    pkg install zsh git figlet toilet ruby wget curl -y 2>&1 | tail -1
-    gem install lolcat 2>&1 | tail -1; echo -e "${G}✓${RS}"
-    echo -ne "  ${W}Oh My Zsh:    ${RS}"
-    git clone https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh 2>&1 | tail -1; echo -e "${G}✓${RS}"
-    echo -ne "  ${W}Zsh Plugins:  ${RS}"
+    echo -ne "  ${W}Installing...${RS} "
+    apt update -y 2>&1 | tail -1; apt upgrade -y 2>&1 | tail -1
+    pkg install zsh git figlet toilet ruby wget curl -y 2>&1 | tail -1; gem install lolcat 2>&1 | tail -1
+    git clone https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh 2>&1 | tail -1
     git clone https://github.com/zsh-users/zsh-autosuggestions "$HOME/.oh-my-zsh/plugins/zsh-autosuggestions" 2>&1 | tail -1
     git clone https://github.com/zsh-users/zsh-syntax-highlighting "$HOME/.oh-my-zsh/plugins/zsh-syntax-highlighting" 2>&1 | tail -1
-    echo -e "${G}✓${RS}"
-    echo -ne "  ${W}Font:         ${RS}"
     [ -f "$QUINX_HOME/.object/ANSI Shadow.flf" ] && cp "$QUINX_HOME/.object/ANSI Shadow.flf" "$PREFIX/share/figlet/ASCII-Shadow.flf" 2>/dev/null
     curl -L https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/Regular/FiraCodeNerdFont-Regular.ttf > ~/.termux/font.ttf 2>/dev/null
-    echo -e "${G}✓${RS}"
-    echo -ne "  ${W}Config:       ${RS}"
+    [ -f "$QUINX_HOME/.object/zshrc-full" ] && sed "s/\PROC/${dn}/g" "$QUINX_HOME/.object/zshrc-full" > ~/.zshrc
+    [ -f "$QUINX_HOME/.object/quinx.zsh-theme" ] && mkdir -p ~/.oh-my-zsh/themes && sed "s/\PROC/${dn}/g" "$QUINX_HOME/.object/quinx.zsh-theme" > ~/.oh-my-zsh/themes/quinx.zsh-theme 2>/dev/null
     [ -f "$QUINX_HOME/.object/termux.properties" ] && cp "$QUINX_HOME/.object/termux.properties" ~/.termux.properties
-    [ -f "$QUINX_HOME/.object/zshrc-full" ] && sed "s/\PROC/${display_name}/g" "$QUINX_HOME/.object/zshrc-full" > ~/.zshrc
-    [ -f "$QUINX_HOME/.object/quinx.zsh-theme" ] && mkdir -p ~/.oh-my-zsh/themes && sed "s/\PROC/${display_name}/g" "$QUINX_HOME/.object/quinx.zsh-theme" > ~/.oh-my-zsh/themes/quinx.zsh-theme 2>/dev/null
-    termux-reload-settings 2>/dev/null; echo -e "${G}✓${RS}"
-
+    termux-reload-settings 2>/dev/null
+    echo -e "${G}✓${RS}"
     echo "v${QUINX_VERSION}" > "$QUINX_MARKER"
-
+    mkdir -p "$QUINX_PROFILES/default"
     echo ""
-    echo -e "${M}  ╔═══════════════════════════════════════════════════════════╗${RS}"
-    echo -e "${M}  ║              ${G}✓ SETUP COMPLETE!${M}                          ║${RS}"
-    echo -e "${M}  ║  ${W}Shell: ${G}$(basename "$SHELL")${M}   Theme: ${G}${tnames[$idx]}${M}   Name: ${G}${display_name}${M}  ║${RS}"
-    echo -e "${M}  ║  ${W}Restart your terminal to see the changes!${M}               ║${RS}"
-    echo -e "${M}  ╚═══════════════════════════════════════════════════════════╝${RS}"
-    echo ""
-    echo -ne "${C}  Press Enter to continue...${RS}"; read -r
+    echo -e "${M}  ╔═══════════════════════════════════════════════════════╗${RS}"
+    echo -e "${M}  ║  ${G}✓ SETUP COMPLETE!${M}  Shell:${G}$(basename "$SHELL")${M}  Theme:${G}${tn[$idx]}${M}      ║${RS}"
+    echo -e "${M}  ╚═══════════════════════════════════════════════════════╝${RS}"
+    echo ""; echo -ne "${C}  Enter to continue...${RS}"; read -r
 }
 
 # ═══════════════════════════════════════════════════════════
-# MAIN MENU — 20 OPTIONS
+# MAIN MENU — 28 OPTIONS
 # ═══════════════════════════════════════════════════════════
 main_menu() {
     while true; do
         show_banner; show_status; echo ""
-        draw_top
-        print_line "MAIN MENU" "$Y"
-        draw_sep
-        print_item "01" "Core Setup       " "Install deps & fonts" "$G"
-        print_item "02" "Zsh Config       " "Reset zsh environment" "$G"
-        print_item "03" "Switch → Zsh     " "Set Zsh as default" "$G"
-        print_item "04" "Switch → Bash    " "Set Bash as default" "$G"
-        print_item "05" "Banner Style     " "3 banner designs" "$Y"
-        print_item "06" "Custom Theme     " "Set shell prompt name" "$Y"
-        print_item "07" "Zsh Plugins      " "Highlight + Autosuggest" "$Y"
+        draw_top; print_line "MAIN MENU" "$Y"; draw_sep
+        print_item "01" "Core Setup       " "Deps & fonts" "$G"
+        print_item "02" "Zsh Config       " "Reset zsh" "$G"
+        print_item "03" "Switch → Zsh     " "Default shell" "$G"
+        print_item "04" "Switch → Bash    " "Default shell" "$G"
+        print_item "05" "Banner Style     " "3 designs" "$Y"
+        print_item "06" "Custom Theme     " "Prompt name" "$Y"
+        print_item "07" "Zsh Plugins      " "Highlight+Auto" "$Y"
         print_item "08" "Theme Gallery    " "15 color schemes" "$C"
-        print_item "09" "Dev Tools        " "Python, Node, Go..." "$C"
-        print_item "10" "Quick Commands   " "Git, compress, serve..." "$C"
-        print_item "11" "Aliases Manager  " "Shell shortcuts" "$B"
-        print_item "12" "Plugin System    " "Load custom scripts" "$B"
-        print_item "13" "Custom ASCII Art " "Your own banner text" "$B"
-        print_item "14" "Login Sound      " "Audio on boot" "$B"
-        print_item "15" "System Info      " "Device details" "$M"
-        print_item "16" "Network Info     " "IP, DNS, ping" "$M"
-        print_item "17" "MOTD Editor      " "Boot message" "$M"
-        print_item "18" "Backup/Restore   " "Save/load configs" "$M"
-        print_item "19" "Quinx Shield     " "Terminal lock" "$R"
-        print_item "20" "Remove Lock      " "Deactivate shield" "$R"
+        print_item "09" "Theme Builder    " "Create custom" "$C"
+        print_item "10" "Color Export     " "Win/iTerm/Alacritty" "$C"
+        print_item "11" "Dev Tools        " "Python,Node,Go..." "$B"
+        print_item "12" "Quick Commands   " "Git,serve,compress" "$B"
+        print_item "13" "Aliases Manager  " "Shell shortcuts" "$B"
+        print_item "14" "Plugin System    " "Custom scripts" "$B"
+        print_item "15" "Custom ASCII Art " "Banner text" "$M"
+        print_item "16" "Login Sound      " "Audio on boot" "$M"
+        print_item "17" "Dashboard        " "Live system monitor" "$G"
+        print_item "18" "Git Dashboard    " "Repo info & status" "$G"
+        print_item "19" "System Info      " "Device details" "$W"
+        print_item "20" "Network Info     " "IP, DNS, ping" "$W"
+        print_item "21" "QuinxBench       " "System benchmark" "$Y"
+        print_item "22" "Profiles         " "Multi-config" "$C"
+        print_item "23" "Dotfiles Sync    " "GitHub sync" "$C"
+        print_item "24" "Termux API Hooks " "Battery, GPS, torch" "$B"
+        print_item "25" "MOTD Editor      " "Boot message" "$M"
+        print_item "26" "Backup/Restore   " "Save/load config" "$M"
+        print_item "27" "Startup Timer    " "Shell load time" "$D"
         draw_sep
-        print_item "21" "Update QuinxOS   " "Pull latest version" "$G"
-        print_item "22" "Uninstall        " "Remove completely" "$R"
-        print_item "23" "RGB Animation    " "Preview boot effect" "$Y"
+        print_item "28" "Quinx Shield     " "Terminal lock" "$R"
+        print_item "29" "Fingerprint Lock " "Biometric auth" "$R"
+        print_item "30" "Remove Lock      " "Deactivate" "$R"
+        print_item "31" "Command Palette  " "Search features" "$G"
+        print_item "32" "Update QuinxOS   " "Pull latest" "$G"
+        print_item "33" "Uninstall        " "Remove all" "$R"
+        print_item "34" "RGB Animation    " "Preview effect" "$Y"
         draw_sep
         print_item "00" "Exit             " "Close terminal" "$R"
         draw_bot; echo ""
-        echo -ne "${left_pad}${C}  ┌─ Selection ❯ ${RS}"
+        echo -ne "${left_pad}${C}  ┌─ ❯ ${RS}"
         read -r opt; echo ""
-
         case $opt in
-            1|01)  do_necessary_setup ;;   2|02)  do_zsh_setup ;;
-            3|03)  do_set_zsh ;;           4|04)  do_set_bash ;;
-            5|05)  do_set_banner ;;        6|06)  do_set_theme ;;
-            7|07)  do_plugins ;;           8|08)  do_theme_presets ;;
-            9|09)  do_dev_tools ;;         10)    do_quick_commands ;;
-            11)    do_aliases_manager ;;   12)    do_plugin_system ;;
-            13)    do_custom_banner_text ;;14)    do_login_sound ;;
-            15)    do_sysinfo ;;           16)    do_network_info ;;
-            17)    do_motd_editor ;;       18)    do_backup ;;
-            19)    do_cyber_lock ;;        20)    do_remove_lock ;;
-            21)    do_update ;;            22)    do_uninstall ;;
-            23)    do_rgb_animation ;;
-            0|00)  clear; echo -e "${C}  QuinxOS ${W}— Session ended. See you next time.${RS}\n"; exit 0 ;;
-            *)     continue ;;
+            1|01)  do_necessary_setup ;;     2|02)  do_zsh_setup ;;
+            3|03)  do_set_zsh ;;             4|04)  do_set_bash ;;
+            5|05)  do_set_banner ;;          6|06)  do_set_theme ;;
+            7|07)  do_plugins ;;             8|08)  do_theme_presets ;;
+            9|09)  do_theme_builder ;;       10)    do_color_export ;;
+            11)    do_dev_tools ;;           12)    do_quick_commands ;;
+            13)    do_aliases_manager ;;     14)    do_plugin_system ;;
+            15)    do_custom_banner_text ;;  16)    do_login_sound ;;
+            17)    do_dashboard ;;           18)    do_git_dashboard ;;
+            19)    do_sysinfo ;;             20)    do_network_info ;;
+            21)    do_bench ;;               22)    do_profiles ;;
+            23)    do_dotfiles_sync ;;       24)    do_termux_hooks ;;
+            25)    do_motd_editor ;;         26)    do_backup ;;
+            27)    do_startup_timer ;;       28)    do_cyber_lock ;;
+            29)    do_fingerprint_lock ;;    30)    do_remove_lock ;;
+            31)    do_command_palette ;;     32)    do_update ;;
+            33)    do_uninstall ;;           34)    do_rgb_animation ;;
+            0|00)  clear; echo -e "${C}  QuinxOS ${W}— Session ended.${RS}\n"; exit 0 ;;
         esac
     done
 }
 
 # ═══════════════════════════════════════════════════════════
-# DEV TOOLS (from v4.1)
+# ENTRY
 # ═══════════════════════════════════════════════════════════
-do_dev_tools() {
-    while true; do
-        clear; show_banner; draw_top
-        print_line "DEV TOOLS INSTALLER" "$Y"
-        draw_sep
-        print_item "01" "Python 3     " "pip, venv, ipython" "$G"
-        print_item "02" "Node.js      " "npm, yarn" "$G"
-        print_item "03" "Go           " "Go compiler" "$G"
-        print_item "04" "Rust         " "cargo, rustc" "$G"
-        print_item "05" "Ruby         " "gem, bundler" "$G"
-        print_item "06" "PHP          " "php" "$G"
-        print_item "07" "Git + SSH    " "git, openssh" "$B"
-        print_item "08" "Neovim       " "Modern editor" "$B"
-        print_item "09" "tmux         " "Terminal multiplexer" "$B"
-        print_item "10" "All Python   " "python + numpy, pandas, flask" "$Y"
-        print_item "11" "All Web      " "node + npm + php + ruby" "$Y"
-        draw_sep
-        print_item "0"  "Back         " "Return to menu" "$R"
-        draw_bot; echo ""
-        echo -ne "${left_pad}${C}  Select ❯ ${RS}"
-        read -r dev_choice
-        case $dev_choice in
-            1|01) clear; echo -e "\n${C}  Installing Python 3...${RS}\n"; pkg install python python-pip -y 2>&1 | tail -3; pip install ipython virtualenv 2>&1 | tail -2; echo -e "\n${G}  ✓ Python 3 installed${RS}"; sleep 2 ;;
-            2|02) clear; echo -e "\n${C}  Installing Node.js...${RS}\n"; pkg install nodejs -y 2>&1 | tail -3; npm install -g yarn 2>&1 | tail -2; echo -e "\n${G}  ✓ Node.js installed${RS}"; sleep 2 ;;
-            3|03) clear; echo -e "\n${C}  Installing Go...${RS}\n"; pkg install golang -y 2>&1 | tail -3; echo -e "\n${G}  ✓ Go installed${RS}"; sleep 2 ;;
-            4|04) clear; echo -e "\n${C}  Installing Rust...${RS}\n"; pkg install rust -y 2>&1 | tail -3; echo -e "\n${G}  ✓ Rust installed${RS}"; sleep 2 ;;
-            5|05) clear; echo -e "\n${C}  Installing Ruby...${RS}\n"; pkg install ruby -y 2>&1 | tail -3; gem install bundler 2>&1 | tail -2; echo -e "\n${G}  ✓ Ruby installed${RS}"; sleep 2 ;;
-            6|06) clear; echo -e "\n${C}  Installing PHP...${RS}\n"; pkg install php -y 2>&1 | tail -3; echo -e "\n${G}  ✓ PHP installed${RS}"; sleep 2 ;;
-            7|07) clear; echo -e "\n${C}  Installing Git + SSH...${RS}\n"; pkg install git openssh -y 2>&1 | tail -3; echo -e "\n${G}  ✓ Git + SSH installed${RS}"; sleep 2 ;;
-            8|08) clear; echo -e "\n${C}  Installing Neovim...${RS}\n"; pkg install neovim -y 2>&1 | tail -3; echo -e "\n${G}  ✓ Neovim installed${RS}"; sleep 2 ;;
-            9|09) clear; echo -e "\n${C}  Installing tmux...${RS}\n"; pkg install tmux -y 2>&1 | tail -3; echo -e "\n${G}  ✓ tmux installed${RS}"; sleep 2 ;;
-            10) clear; echo -e "\n${C}  Installing Python stack...${RS}\n"; pkg install python python-pip -y 2>&1 | tail -3; pip install numpy pandas flask requests ipython virtualenv 2>&1 | tail -3; echo -e "\n${G}  ✓ Python stack installed${RS}"; sleep 2 ;;
-            11) clear; echo -e "\n${C}  Installing Web stack...${RS}\n"; pkg install nodejs php ruby python -y 2>&1 | tail -3; npm install -g yarn 2>&1 | tail -2; gem install bundler 2>&1 | tail -2; echo -e "\n${G}  ✓ Web stack installed${RS}"; sleep 2 ;;
-            0|00) return ;;
-        esac
-    done
-}
-
-# ═══════════════════════════════════════════════════════════
-# ENTRY POINT
-# ═══════════════════════════════════════════════════════════
-if [ ! -f "$QUINX_MARKER" ] && [ "$1" != "--skip-wizard" ]; then
-    do_first_run_wizard
-fi
+[ ! -f "$QUINX_MARKER" ] && [ "$1" != "--skip-wizard" ] && do_first_run_wizard
 check_for_updates
 main_menu
