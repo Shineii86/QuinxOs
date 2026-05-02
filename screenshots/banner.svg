@@ -1,50 +1,106 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="300" font-family="JetBrains Mono, monospace">
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="320" font-family="JetBrains Mono, Courier New, monospace">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#0d1117"/>
       <stop offset="50%" stop-color="#161b22"/>
       <stop offset="100%" stop-color="#0d1117"/>
     </linearGradient>
-    <linearGradient id="title" x1="0" y1="0" x2="1" y2="0">
+    <linearGradient id="title-grad" x1="0" y1="0" x2="1" y2="0">
       <stop offset="0%" stop-color="#00e5ff"/>
-      <stop offset="50%" stop-color="#a855f7"/>
+      <stop offset="40%" stop-color="#a855f7"/>
       <stop offset="100%" stop-color="#ff4757"/>
     </linearGradient>
     <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
       <stop offset="0%" stop-color="#00e5ff"/>
       <stop offset="100%" stop-color="#a855f7"/>
     </linearGradient>
+    <linearGradient id="line-grad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#00e5ff" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#a855f7" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#ff4757" stop-opacity="0"/>
+    </linearGradient>
     <filter id="glow">
       <feGaussianBlur stdDeviation="3" result="blur"/>
       <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
+    <filter id="soft-glow">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
   </defs>
+
   <!-- Background -->
-  <rect width="1200" height="300" fill="url(#bg)" rx="12"/>
-  <!-- Border gradient -->
-  <rect x="1" y="1" width="1198" height="298" rx="11" fill="none" stroke="url(#accent)" stroke-width="1" opacity="0.3"/>
-  <!-- Decorative grid lines -->
-  <line x1="0" y1="75" x2="1200" y2="75" stroke="#30363d" stroke-width="0.5" opacity="0.3"/>
-  <line x1="0" y1="225" x2="1200" y2="225" stroke="#30363d" stroke-width="0.5" opacity="0.3"/>
-  <!-- ASCII Art Banner -->
-  <text filter="url(#glow)" fill="url(#title)" font-size="28" font-weight="bold">
-    <tspan x="100" y="75">    ██████╗ ██╗   ██╗██╗███╗   ██╗██╗  ██╗ ██████╗ ███████╗</tspan>
-    <tspan x="100" dy="32">   ██╔═══██╗██║   ██║██║████╗  ██║╚██╗██╔╝██╔═══██╗██╔════╝</tspan>
-    <tspan x="100" dy="32">   ██║   ██║██║   ██║██║██╔██╗ ██║ ╚███╔╝ ██║   ██║███████╗</tspan>
-    <tspan x="100" dy="32">   ██║▄▄ ██║██║   ██║██║██║╚██╗██║ ██╔██╗ ██║   ██║╚════██║</tspan>
-    <tspan x="100" dy="32">   ╚██████╔╝╚██████╔╝██║██║ ╚████║██╔╝ ██╗╚██████╔╝███████║</tspan>
-    <tspan x="100" dy="32">    ╚══▀▀═╝  ╚═════╝ ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝</tspan>
-  </text>
+  <rect width="1200" height="320" fill="url(#bg)" rx="12"/>
+  <rect x="1" y="1" width="1198" height="318" rx="11" fill="none" stroke="url(#accent)" stroke-width="1" opacity="0.2"/>
+
+  <!-- Subtle grid pattern -->
+  <g opacity="0.03">
+    <line x1="0" y1="40" x2="1200" y2="40" stroke="#ffffff" stroke-width="1"/>
+    <line x1="0" y1="80" x2="1200" y2="80" stroke="#ffffff" stroke-width="1"/>
+    <line x1="0" y1="120" x2="1200" y2="120" stroke="#ffffff" stroke-width="1"/>
+    <line x1="0" y1="160" x2="1200" y2="160" stroke="#ffffff" stroke-width="1"/>
+    <line x1="0" y1="200" x2="1200" y2="200" stroke="#ffffff" stroke-width="1"/>
+    <line x1="0" y1="240" x2="1200" y2="240" stroke="#ffffff" stroke-width="1"/>
+    <line x1="0" y1="280" x2="1200" y2="280" stroke="#ffffff" stroke-width="1"/>
+    <line x1="200" y1="0" x2="200" y2="320" stroke="#ffffff" stroke-width="1"/>
+    <line x1="400" y1="0" x2="400" y2="320" stroke="#ffffff" stroke-width="1"/>
+    <line x1="600" y1="0" x2="600" y2="320" stroke="#ffffff" stroke-width="1"/>
+    <line x1="800" y1="0" x2="800" y2="320" stroke="#ffffff" stroke-width="1"/>
+    <line x1="1000" y1="0" x2="1000" y2="320" stroke="#ffffff" stroke-width="1"/>
+  </g>
+
+  <!-- Decorative corner accents -->
+  <g stroke="#00e5ff" stroke-width="2" opacity="0.3">
+    <line x1="20" y1="20" x2="60" y2="20"/>
+    <line x1="20" y1="20" x2="20" y2="60"/>
+    <line x1="1180" y1="20" x2="1140" y2="20"/>
+    <line x1="1180" y1="20" x2="1180" y2="60"/>
+    <line x1="20" y1="300" x2="60" y2="300"/>
+    <line x1="20" y1="300" x2="20" y2="260"/>
+    <line x1="1180" y1="300" x2="1140" y2="300"/>
+    <line x1="1180" y1="300" x2="1180" y2="260"/>
+  </g>
+
+  <!-- Main title — QuinxOS -->
+  <text x="600" y="120" text-anchor="middle" fill="url(#title-grad)" font-size="88" font-weight="900" letter-spacing="6" filter="url(#glow)">QuinxOS</text>
+
+  <!-- Glow layer behind title -->
+  <text x="600" y="120" text-anchor="middle" fill="url(#title-grad)" font-size="88" font-weight="900" letter-spacing="6" filter="url(#soft-glow)" opacity="0.3">QuinxOS</text>
+
+  <!-- Separator line -->
+  <rect x="300" y="140" width="600" height="2" rx="1" fill="url(#line-grad)"/>
+
   <!-- Subtitle -->
-  <text x="600" y="260" text-anchor="middle" fill="#8b949e" font-size="16" font-family="Inter, sans-serif" font-weight="300">The Ultimate Termux Customization Suite</text>
-  <!-- Version tag -->
-  <rect x="510" y="270" width="50" height="20" rx="10" fill="#00e5ff" fill-opacity="0.15" stroke="#00e5ff" stroke-width="1"/>
-  <text x="535" y="284" text-anchor="middle" fill="#00e5ff" font-size="11" font-family="Inter, sans-serif" font-weight="600">v6.0</text>
-  <!-- Decorative dots -->
-  <circle cx="60" cy="150" r="3" fill="#00e5ff" opacity="0.4"/>
-  <circle cx="60" cy="170" r="2" fill="#a855f7" opacity="0.3"/>
-  <circle cx="60" cy="130" r="2" fill="#ff4757" opacity="0.3"/>
-  <circle cx="1140" cy="150" r="3" fill="#a855f7" opacity="0.4"/>
-  <circle cx="1140" cy="170" r="2" fill="#00e5ff" opacity="0.3"/>
-  <circle cx="1140" cy="130" r="2" fill="#2ed573" opacity="0.3"/>
+  <text x="600" y="172" text-anchor="middle" fill="#8b949e" font-size="17" font-family="Inter, system-ui, sans-serif" font-weight="300" letter-spacing="4">THE ULTIMATE TERMUX CUSTOMIZATION SUITE</text>
+
+  <!-- Badges -->
+  <g transform="translate(310, 192)">
+    <!-- v6.0 -->
+    <rect x="0" y="0" width="60" height="24" rx="12" fill="#00e5ff" fill-opacity="0.1" stroke="#00e5ff" stroke-width="1.5"/>
+    <text x="30" y="16" text-anchor="middle" fill="#00e5ff" font-size="12" font-family="Inter, sans-serif" font-weight="700">v6.0</text>
+    <!-- 38 features -->
+    <rect x="72" y="0" width="100" height="24" rx="12" fill="#ff4757" fill-opacity="0.1" stroke="#ff4757" stroke-width="1.5"/>
+    <text x="122" y="16" text-anchor="middle" fill="#ff4757" font-size="12" font-family="Inter, sans-serif" font-weight="700">38 features</text>
+    <!-- 22 themes -->
+    <rect x="184" y="0" width="95" height="24" rx="12" fill="#a855f7" fill-opacity="0.1" stroke="#a855f7" stroke-width="1.5"/>
+    <text x="231" y="16" text-anchor="middle" fill="#a855f7" font-size="12" font-family="Inter, sans-serif" font-weight="700">22 themes</text>
+    <!-- 14 plugins -->
+    <rect x="291" y="0" width="98" height="24" rx="12" fill="#2ed573" fill-opacity="0.1" stroke="#2ed573" stroke-width="1.5"/>
+    <text x="340" y="16" text-anchor="middle" fill="#2ed573" font-size="12" font-family="Inter, sans-serif" font-weight="700">14 plugins</text>
+  </g>
+
+  <!-- Terminal prompt line -->
+  <g opacity="0.35">
+    <text x="80" y="280" fill="#00e5ff" font-size="12" font-family="JetBrains Mono, monospace">~/QuinxOS $</text>
+    <text x="195" y="280" fill="#8b949e" font-size="12" font-family="JetBrains Mono, monospace">bash install.sh</text>
+    <rect x="335" y="268" width="2" height="16" fill="#00e5ff" opacity="0.8">
+      <animate attributeName="opacity" values="0.8;0;0.8" dur="1.2s" repeatCount="indefinite"/>
+    </rect>
+  </g>
+  <g opacity="0.35">
+    <text x="900" y="280" fill="#a855f7" font-size="12" font-family="JetBrains Mono, monospace">★ Star this repo</text>
+  </g>
+
+  <!-- Bottom credit -->
+  <text x="600" y="310" text-anchor="middle" fill="#484f58" font-size="11" font-family="Inter, sans-serif">Built for Termux • Powered by Bash • Made by Shineii86</text>
 </svg>
