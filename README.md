@@ -9,7 +9,8 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/Tool-QuinxOS-00e5ff?style=flat-square&logo=linux">
-  <img src="https://img.shields.io/badge/Version-4.1-purple?style=flat-square">
+  <img src="https://img.shields.io/badge/Version-4.2-purple?style=flat-square">
+  <img src="https://img.shields.io/badge/Themes-15-2ed573?style=flat-square">
   <img src="https://img.shields.io/badge/Maintained-Yes-2ed573?style=flat-square">
   <img src="https://img.shields.io/badge/License-GNU-blue?style=flat-square">
 </p>
@@ -24,78 +25,76 @@
 
 ## What is QuinxOS?
 
-**QuinxOS** is an all-in-one terminal customization suite for Termux. Transform your default shell into a polished, modern, and secure development environment with guided setup and one-click configuration.
-
-### What's New in v4.1
-
-| Feature | Description |
-|---------|-------------|
-| 🎨 **Theme Presets** | 7 built-in color schemes — switch with one key |
-| 🛠️ **Dev Tools Installer** | Quick-install Python, Node, Go, Rust, Ruby, PHP, Neovim, tmux |
-| 🌐 **Network Info** | View IP, DNS, hostname, and connectivity tests |
-| 🧙 **First-Run Wizard** | Guided 4-step setup on first launch |
-| 🔄 **Auto-Update Check** | Notifies when new version is available |
-| 🖼️ **Multiple Banners** | 3 ASCII art styles to choose from |
-| 📝 **MOTD Editor** | Custom boot message for your terminal |
-| 🗑️ **Uninstaller** | Clean removal of all QuinxOS components |
+**QuinxOS** is the most feature-rich terminal customization suite for Termux. 23 menu options, 15 color themes, plugin system, live dashboard, and guided setup — all in one script.
 
 ---
 
-## All Features
+## ✨ Features at a Glance
 
-### 🎨 Theme Presets (7 Schemes)
-| Theme | Style |
-|-------|-------|
-| Cyber Midnight | Deep space with neon accents |
-| Matrix Green | Classic hacker terminal |
-| Solar Flare | Warm dark with orange/gold |
-| Arctic Blue | Cool blue and ice tones |
-| Purple Haze | Deep purple with magenta |
-| Dracacula | Dracula-inspired dark theme |
-| Nord | Arctic north-blue clean theme |
+| Feature | Description |
+|---------|-------------|
+| 🎨 **15 Theme Presets** | Cyber Midnight, Matrix Green, Gruvbox, Tokyo Night, Catppuccin, Nord, Synthwave, and 8 more |
+| 📌 **Persistent Header** | System info bar survives `clear` — shows time, IP, battery, RAM, git branch |
+| 🌐 **Dynamic Boot Banner** | Live IP, date, battery, RAM displayed at boot |
+| 🎵 **Login Sound** | Play audio or terminal bell on boot |
+| 🎭 **RGB Animation** | Color-cycling loading sequence |
+| 🛠️ **Dev Tools Installer** | One-click Python, Node, Go, Rust, Ruby, PHP, Neovim, tmux |
+| ⚡ **Quick Commands** | Git init, compress, find large files, kill port, HTTP serve, SSH keygen |
+| ⚡ **Aliases Manager** | Create, list, delete shell aliases + common presets |
+| 🧩 **Plugin System** | Drop `.sh` files in plugins folder — auto-loaded on boot |
+| 🖼️ **Custom ASCII Art** | Set your own banner text |
+| 🔒 **Quinx Shield** | Terminal lock with recovery system |
+| 📊 **System Info** | Architecture, kernel, uptime, CPU, RAM, disk, packages |
+| 🌐 **Network Info** | IP, DNS, hostname, connectivity tests |
+| 💾 **Backup/Restore** | Save & load all configs |
+| 📝 **MOTD Editor** | Custom boot message |
+| 🧙 **First-Run Wizard** | 4-step guided setup on first launch |
+| 🔄 **Auto-Update Check** | Daily check for new versions |
+| 🗑️ **Uninstaller** | Clean removal |
 
-### 🛠️ Dev Tools Installer
-One-click install for popular development tools:
-- **Languages:** Python 3, Node.js, Go, Rust, Ruby, PHP
-- **Tools:** Git + SSH, Neovim, tmux
-- **Stacks:** All Python (numpy, pandas, flask), All Web (node + php + ruby)
+---
 
-### 🔒 Quinx Shield (Security)
-Terminal lock with encrypted access key. Features:
-- 3-attempt lockout with session termination
-- **Recovery system:** auto-generated recovery key + standalone unlock script
-- Recovery options displayed after lockout
+## 🎨 Theme Gallery (15 Themes)
 
-### 🌐 Network Info
-- Local & public IP addresses
-- DNS server
-- Hostname
-- Connectivity tests (Google DNS, Cloudflare)
+| # | Theme | Style |
+|---|-------|-------|
+| 1 | Cyber Midnight | Deep space with neon accents |
+| 2 | Matrix Green | Classic hacker terminal |
+| 3 | Solar Flare | Warm dark with orange/gold |
+| 4 | Arctic Blue | Cool blue and ice tones |
+| 5 | Purple Haze | Deep purple with magenta |
+| 6 | Dracacula | Dracula-inspired dark theme |
+| 7 | Nord | Arctic north-blue clean theme |
+| 8 | Gruvbox | Retro groove warm theme |
+| 9 | Tokyo Night | Clean VS Code dark |
+| 10 | Catppuccin Mocha | Smooth pastel dark |
+| 11 | Everforest | Nature-inspired green |
+| 12 | Monokai | Classic code editor |
+| 13 | Synthwave | Neon retro 80s |
+| 14 | Rosé Pine | Gentle pine/rose/gold |
+| 15 | Kanagawa | Japanese ink painting |
 
-### 🧙 First-Run Wizard
-Automatically launches on first install. Guides through:
-1. Shell selection (Zsh / Bash)
-2. Theme selection (7 presets)
-3. Banner style (3 options)
-4. Display name
+---
 
-### 📊 System Info
-View architecture, kernel, uptime, CPU, memory, disk usage, and installed packages.
+## 🧩 Plugin System
 
-### 💾 Backup & Restore
-Save and restore your complete configuration including theme, banner, and shell config.
+Drop `.sh` files in `.object/plugins/` — they auto-load on terminal start.
 
-### 📝 MOTD Editor
-Set a custom Message of the Day, use the default QuinxOS message, or disable it.
+**Built-in plugins:**
+- `quinx-weather <city>` — Weather info
+- `quinx-extract <file>` — Universal archive extractor
+- `quinx-ports [host]` — Quick port scanner
 
-### 🔄 Auto-Update Check
-Checks GitHub for new versions once per day and notifies you in the menu.
+Create your own! See `.object/plugins/README.md` for details.
 
-### 🖼️ Banner Styles
-Choose from 3 ASCII art banner designs for your boot screen.
+---
 
-### 🗑️ Uninstaller
-Clean removal that preserves Oh My Zsh and your shell configs.
+## 📌 Persistent Header
+
+After `clear`, you still see:
+```
+┌──[14:32:07] IP:192.168.1.5 BAT:85% RAM:1.2G/4G Git:[main]───────┘
+```
 
 ---
 
@@ -107,31 +106,26 @@ cd QuinxOS
 bash install.sh
 ```
 
-> **First launch?** The setup wizard will guide you through everything automatically.
+> **First launch?** The setup wizard guides you through shell, theme, banner, and name.
 
 ---
 
-## Menu Options
+## Menu Options (23)
 
-| # | Feature | Description |
-|---|---------|-------------|
-| 01 | Core Setup | Install dependencies, fonts, Oh My Zsh |
-| 02 | Zsh Config | Reset Zsh environment |
-| 03 | Switch → Zsh | Set Zsh as default shell |
-| 04 | Switch → Bash | Set Bash as default shell |
-| 05 | Banner Style | Choose from 3 banner designs |
-| 06 | Custom Theme | Set shell prompt name |
-| 07 | Zsh Plugins | Install syntax highlighting + autosuggestions |
-| 08 | Theme Presets | Choose from 7 color schemes |
-| 09 | Dev Tools | Install Python, Node, Go, Rust, etc. |
-| 10 | System Info | View system details |
-| 11 | Network Info | IP, DNS, connectivity tests |
-| 12 | MOTD Editor | Custom boot message |
-| 13 | Backup/Restore | Save or load configurations |
-| 14 | Quinx Shield | Activate terminal lock |
-| 15 | Remove Lock | Deactivate Quinx Shield |
-| 16 | Update | Pull latest QuinxOS version |
-| 17 | Uninstall | Remove QuinxOS completely |
+| # | Feature | # | Feature |
+|---|---------|---|---------|
+| 01 | Core Setup | 13 | Custom ASCII Art |
+| 02 | Zsh Config | 14 | Login Sound |
+| 03 | Switch → Zsh | 15 | System Info |
+| 04 | Switch → Bash | 16 | Network Info |
+| 05 | Banner Style | 17 | MOTD Editor |
+| 06 | Custom Theme | 18 | Backup/Restore |
+| 07 | Zsh Plugins | 19 | Quinx Shield |
+| 08 | Theme Gallery (15) | 20 | Remove Lock |
+| 09 | Dev Tools | 21 | Update |
+| 10 | Quick Commands | 22 | Uninstall |
+| 11 | Aliases Manager | 23 | RGB Animation Preview |
+| 12 | Plugin System | 00 | Exit |
 
 ---
 
