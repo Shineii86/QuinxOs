@@ -241,6 +241,11 @@ do_plugins() {
     sleep 2
 }
 
+generate_recovery_key() {
+    # Generate a 16-char alphanumeric recovery key
+    cat /dev/urandom 2>/dev/null | tr -dc 'A-Za-z0-9' | head -c 16
+}
+
 do_cyber_lock() {
     clear; show_banner
     draw_top
@@ -261,6 +266,57 @@ do_cyber_lock() {
         sleep 2
         return
     fi
+
+    # Generate recovery key
+    local recovery_key=$(generate_recovery_key)
+    local recovery_file="$QUINX_HOME/.quinx-recovery"
+    echo "$recovery_key" > "$recovery_file"
+    chmod 600 "$recovery_file"
+
+    # Also create emergency unlock script
+    local unlock_script="$QUINX_HOME/quinx-unlock"
+    cat > "$unlock_script" << 'UNLOCK_EOF'
+#!/bin/bash
+# QuinxOS Emergency Unlock — run this to remove Quinx Shield
+# Usage: bash quinx-unlock
+R='\033[1;31m'; G='\033[1;32m'; C='\033[1;96m'; W='\033[1;97m'; RS='\033[0m'
+echo -e "\n${C}  QUINX SHIELD — EMERGENCY UNLOCK${RS}"
+echo -e "${C}  ─────────────────────────────────${RS}\n"
+echo -ne "  Enter recovery key or access key: "
+read -s input_key
+echo
+
+# Check against recovery file
+QUINX_HOME="$HOME/QuinxOS"
+recovery_file="$QUINX_HOME/.quinx-recovery"
+if [ -f "$recovery_file" ]; then
+    stored_key=$(cat "$recovery_file")
+    if [ "$input_key" = "$stored_key" ]; then
+        sed -i '/#QUINX_LOCK_START/,/#QUINX_LOCK_END/d' ~/.bashrc 2>/dev/null
+        [ -f ~/.zshrc ] && sed -i '/#QUINX_LOCK_START/,/#QUINX_LOCK_END/d' ~/.zshrc 2>/dev/null
+        echo -e "\n  ${G}✓ QUINX SHIELD REMOVED SUCCESSFULLY${RS}"
+        rm -f "$recovery_file"
+        echo -e "  ${W}Recovery key consumed and deleted.${RS}\n"
+        exit 0
+    fi
+fi
+
+# Also try as direct access key
+if grep -q "#QUINX_LOCK_START" ~/.bashrc 2>/dev/null || grep -q "#QUINX_LOCK_START" ~/.zshrc 2>/dev/null; then
+    # Extract the stored password from the lock code
+    stored_pass=$(grep -oP 'pass_input" = "\K[^"]+' ~/.bashrc 2>/dev/null || grep -oP 'pass_input" = "\K[^"]+' ~/.zshrc 2>/dev/null)
+    if [ "$input_key" = "$stored_pass" ]; then
+        sed -i '/#QUINX_LOCK_START/,/#QUINX_LOCK_END/d' ~/.bashrc 2>/dev/null
+        [ -f ~/.zshrc ] && sed -i '/#QUINX_LOCK_START/,/#QUINX_LOCK_END/d' ~/.zshrc 2>/dev/null
+        echo -e "\n  ${G}✓ QUINX SHIELD REMOVED SUCCESSFULLY${RS}\n"
+        exit 0
+    fi
+fi
+
+echo -e "\n  ${R}✗ INVALID KEY. UNLOCK FAILED.${RS}\n"
+exit 1
+UNLOCK_EOF
+    chmod +x "$unlock_script"
 
     local lock_code='#QUINX_LOCK_START
 clear
@@ -287,7 +343,38 @@ while [ $attempt -le 3 ]; do
     else
         echo -e "\033[1;31m  ✗ ACCESS DENIED.\033[0m"
         if [ $attempt -eq 3 ]; then
-            echo -e "\033[1;31m  ✗ TOO MANY ATTEMPTS. SESSION TERMINATED.\033[0m"
+            echo -e "\033[1;31m"
+            echo "  ╔══════════════════════════════════════╗"
+            echo "  ║   LOCKED OUT — RECOVERY OPTIONS      ║"
+            echo "  ╠══════════════════════════════════════╣"
+            echo "  ║                                      ║"
+            echo "  ║  Option 1: Run from another terminal ║"
+            echo "  ║    bash ~/QuinxOS/quinx-unlock       ║"
+            echo "  ║                                      ║"
+            echo "  ║  Option 2: Use your recovery key     ║"
+            echo "  ║    (saved during lock setup)          ║"
+            echo "  ║                                      ║"
+            echo "  ║  Option 3: Remove lock file directly ║"
+            echo "  ║    nano ~/.bashrc (delete lock block) ║"
+            echo "  ║                                      ║"
+            echo "  ╚══════════════════════════════════════╝"
+            echo -e "\033[0m"
+            echo -ne "\033[1;33m  Enter recovery key (or Enter to exit): \033[0m"
+            read -s recovery_input
+            echo
+            if [ -n "$recovery_input" ] && [ -f "'"$QUINX_HOME"'/.quinx-recovery" ]; then
+                stored_recovery=$(cat "'"$QUINX_HOME"'/.quinx-recovery")
+                if [ "$recovery_input" = "$stored_recovery" ]; then
+                    sed -i "/#QUINX_LOCK_START/,/#QUINX_LOCK_END/d" ~/.bashrc 2>/dev/null
+                    [ -f ~/.zshrc ] && sed -i "/#QUINX_LOCK_START/,/#QUINX_LOCK_END/d" ~/.zshrc 2>/dev/null
+                    echo -e "\033[1;32m  ✓ RECOVERY SUCCESSFUL. Lock removed.\033[0m"
+                    rm -f "'"$QUINX_HOME"'/.quinx-recovery"
+                    sleep 2
+                    clear
+                    break
+                fi
+            fi
+            echo -e "\033[1;31m  ✗ SESSION TERMINATED.\033[0m"
             exit
         fi
         attempt=$((attempt + 1))
@@ -315,19 +402,32 @@ done
     print_line ""
     print_line "QUINX SHIELD ACTIVATED ✓" "$G"
     print_line "3-attempt lockout enabled" "$Y"
+    draw_sep
+    print_line "" "$W"
+    print_line "⚠ SAVE YOUR RECOVERY KEY NOW ⚠" "$R"
+    print_line "" "$W"
+    print_line "Key: $recovery_key" "$G"
+    print_line "" "$W"
+    print_line "File: $recovery_file" "$D"
+    print_line "Unlock: bash ~/QuinxOS/quinx-unlock" "$D"
     print_line ""
     draw_bot
-    sleep 2
+    echo ""
+    echo -ne "${left_pad}${C}  Press Enter after saving your key...${RS}"
+    read -r
 }
 
 do_remove_lock() {
     sed -i '/#QUINX_LOCK_START/,/#QUINX_LOCK_END/d' ~/.bashrc 2>/dev/null
     [ -f ~/.zshrc ] && sed -i '/#QUINX_LOCK_START/,/#QUINX_LOCK_END/d' ~/.zshrc 2>/dev/null
+    rm -f "$QUINX_HOME/.quinx-recovery" 2>/dev/null
+    rm -f "$QUINX_HOME/quinx-unlock" 2>/dev/null
     clear
     show_banner
     draw_top
     print_line ""
     print_line "QUINX SHIELD DEACTIVATED" "$R"
+    print_line "Recovery artifacts cleaned" "$D"
     print_line ""
     draw_bot
     sleep 2
