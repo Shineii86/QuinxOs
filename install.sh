@@ -1,9 +1,9 @@
 #!/bin/bash
-# ╔══════════════════════════════════════════════════════════════╗
-# ║                      QuinxOS v6.0                            ║
-# ║           Termux Optimization & Customization Suite          ║
-# ║                      by Shineii86                            ║
-# ╚══════════════════════════════════════════════════════════════╝
+# +----------------------------------------------------------+
+# |                      QuinxOS v6.0                        |
+# |           Termux Optimization & Customization Suite      |
+# |                      by Shineii86                        |
+# +----------------------------------------------------------+
 
 R='\033[1;31m'; G='\033[1;32m'; Y='\033[1;93m'; B='\033[1;94m'
 C='\033[1;96m'; W='\033[1;97m'; M='\033[1;95m'; D='\033[2m'
@@ -21,65 +21,62 @@ BOX_WIDTH=$(( term_width > 64 ? 62 : term_width - 2 ))
 margin=$(( (term_width - BOX_WIDTH) / 2 ))
 left_pad=$(printf '%*s' "$margin" "")
 
-draw_top()    { printf "${C}${left_pad}╔"; for ((i=0; i<BOX_WIDTH-2; i++)); do printf "═"; done; printf "╗${RS}\n"; }
-draw_bot()    { printf "${C}${left_pad}╚"; for ((i=0; i<BOX_WIDTH-2; i++)); do printf "═"; done; printf "╝${RS}\n"; }
-draw_sep()    { printf "${C}${left_pad}╠"; for ((i=0; i<BOX_WIDTH-2; i++)); do printf "─"; done; printf "╣${RS}\n"; }
+draw_top()    { printf "${C}${left_pad}+"; for ((i=0; i<BOX_WIDTH-2; i++)); do printf "-"; done; printf "+${RS}\n"; }
+draw_bot()    { printf "${C}${left_pad}+"; for ((i=0; i<BOX_WIDTH-2; i++)); do printf "-"; done; printf "+${RS}\n"; }
+draw_sep()    { printf "${C}${left_pad}+"; for ((i=0; i<BOX_WIDTH-2; i++)); do printf "-"; done; printf "+${RS}\n"; }
 print_line() {
     local text="$1" color="${2:-$W}" len=${#text} inner=$((BOX_WIDTH - 2))
     local sl=$(( (inner - len) / 2 )) sr=$(( inner - len - sl ))
-    printf "${C}${left_pad}║%*s${color}%s${C}%*s║${RS}\n" $sl "" "$text" $sr ""
+    printf "${C}${left_pad}|%*s${color}%s${C}%*s|${RS}\n" $sl "" "$text" $sr ""
 }
 print_item() {
     local num="$1" label="$2" desc="$3" color="${4:-$G}"
     local full="  ${C}[${W}${num}${C}]${color} ${label}"
-    printf "${C}${left_pad}║${RS}${full}"
+    printf "${C}${left_pad}|${RS}${full}"
     printf '%*s' $(( BOX_WIDTH - 2 - ${#full} - ${#desc} - 2 )) ""
-    printf "${D}%s${RS}  ${C}║${RS}\n" "$desc"
+    printf "${D}%s${RS}  ${C}|${RS}\n" "$desc"
 }
 
-# ─── Banners ───────────────────────────────────────────────
+# --- Banners -----------------------------------------------
 banner_style_1() {
     echo ""
-    echo -e "${C}    ██████╗ ██╗   ██╗██╗███╗   ██╗██╗  ██╗ ██████╗ ███████╗${RS}"
-    echo -e "${C}   ██╔═══██╗██║   ██║██║████╗  ██║╚██╗██╔╝██╔═══██╗██╔════╝${RS}"
-    echo -e "${C}   ██║   ██║██║   ██║██║██╔██╗ ██║ ╚███╔╝ ██║   ██║███████╗${RS}"
-    echo -e "${C}   ██║▄▄ ██║██║   ██║██║██║╚██╗██║ ██╔██╗ ██║   ██║╚════██║${RS}"
-    echo -e "${C}   ╚██████╔╝╚██████╔╝██║██║ ╚████║██╔╝ ██╗╚██████╔╝███████║${RS}"
-    echo -e "${C}    ╚══▀▀═╝  ╚═════╝ ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝${RS}"
+    echo -e "${C}     _  _ ____ _  _ ____ ____ _  _ ____ _  _ ___  ${RS}"
+    echo -e "${C}     |\\/| |__  |  | |__  |__/ |  | |__  |\\/| |__] ${RS}"
+    echo -e "${C}     |  | |___ |/\\| |___ |  \\ |/\\| |___ |  | |    ${RS}"
+    echo ""
 }
 banner_style_2() {
     echo ""
-    echo -e "${M}    ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄${RS}"
-    echo -e "${M}   █░█▀▄░█░█░█▄░█░█▀▀░█░█░█▀█░█▀▀░█▀█░█▀▄░█▀▀░█▀▄░█${RS}"
-    echo -e "${M}   █░█░█░█░█░█░▀█░█░░░█▀█░█▄█░█░░░█░█░█░█░█▀▀░█░█░█${RS}"
-    echo -e "${M}   █░▀▀░░▀▀▀░▀░░▀░▀▀▀░▀░▀░▀░▀░▀▀▀░▀▀▀░▀▀░░▀▀▀░▀▀░░▀${RS}"
-    echo -e "${M}   ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀${RS}"
+    echo -e "${M}    +-------------------------------------------------+${RS}"
+    echo -e "${M}    |  Q U I N X O S                                  |${RS}"
+    echo -e "${M}    |  Termux Optimization Suite                      |${RS}"
+    echo -e "${M}    +-------------------------------------------------+${RS}"
 }
 banner_style_3() {
     echo ""
-    echo -e "${G}   ╔═══════════════════════════════════════════════════╗${RS}"
-    echo -e "${G}   ║   ░█▀▄░█░█░█▄░█░█▀▀░█░█░█▀█░█▀▀░█▀█░█▀▄░█▀▀    ║${RS}"
-    echo -e "${G}   ║   ░█░█░█░█░█░▀█░█░░░█▀█░█▄█░█░░░█░█░█░█░█▀▀    ║${RS}"
-    echo -e "${G}   ║   ░▀▀░░▀▀▀░▀░░▀░▀▀▀░▀░▀░▀░▀░▀▀▀░▀▀▀░▀▀░░▀▀▀    ║${RS}"
-    echo -e "${G}   ╚═══════════════════════════════════════════════════╝${RS}"
+    echo -e "${G}    _________________________________________________${RS}"
+    echo -e "${G}    |  ___        _           _              _     |${RS}"
+    echo -e "${G}    | |   | _ _ _| |___ ___ _| |___ ___ ___|_|___ |${RS}"
+    echo -e "${G}    | | | || | | . | -_|   | . | . |_ -| -_| | .'||${RS}"
+    echo -e "${G}    | |_|_|___|_|___|___|_|___|___|___|___|_|__,||${RS}"
+    echo -e "${G}    |_________________________________________________|${RS}"
 }
 banner_style_4() {
     echo ""
-    echo -e "${Y}          ╱▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔╲${RS}"
-    echo -e "${Y}         │  ${R}█▀█ █▀█ █▀▄ █▀▀ █▀█ ▀█▀ █▀▀${Y}  │${RS}"
-    echo -e "${Y}         │  ${R}█▀▀ █▀█ █▀▄ █▀▀ █▄█  █  █▀▀${Y}  │${RS}"
-    echo -e "${Y}         │  ${R}▀   ▀  ▀ ▀  ▀▀▀ ▀ ▀  ▀  ▀▀▀${Y}  │${RS}"
-    echo -e "${Y}          ╲▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁╱${RS}"
+    echo -e "${Y}          +---------------------------+${RS}"
+    echo -e "${Y}          | ${R}  _  _ ___ _  _ ____ _  _  ${Y}|${RS}"
+    echo -e "${Y}          | ${R}  |  |  |  |__| |  | |\\ |  ${Y}|${RS}"
+    echo -e "${Y}          | ${R}  |__|  |  |  | |__| | \\|  ${Y}|${RS}"
+    echo -e "${Y}          +---------------------------+${RS}"
 }
 banner_style_5() {
     echo ""
-    echo -e "${R}    ██████████████████████████████████████████${RS}"
-    echo -e "${R}    ██${W}                                    ${R}██${RS}"
-    echo -e "${R}    ██${W}   ▄▀▄ █▀▄ █▀▀ █▀█ ▀█▀ █▀▀ ▄▀▄    ${R}██${RS}"
-    echo -e "${R}    ██${W}   ▀▄▀ █▀▄ █▀▀ █▄█  █  █▀▀ ▀▄▀    ${R}██${RS}"
-    echo -e "${R}    ██${W}     ▀ ▀▀  ▀▀▀ ▀ ▀  ▀  ▀▀▀   ▀    ${R}██${RS}"
-    echo -e "${R}    ██${W}                                    ${R}██${RS}"
-    echo -e "${R}    ██████████████████████████████████████████${RS}"
+    echo -e "${R}    +------------------------------------------+${RS}"
+    echo -e "${R}    |                                          |${RS}"
+    echo -e "${R}    |   Q U I N X O S                          |${RS}"
+    echo -e "${R}    |   The Ultimate Termux Suite               |${RS}"
+    echo -e "${R}    |                                          |${RS}"
+    echo -e "${R}    +------------------------------------------+${RS}"
 }
 
 show_banner() {
@@ -87,9 +84,9 @@ show_banner() {
     local style="1"; [ -f "$QUINX_HOME/.banner-style" ] && style=$(cat "$QUINX_HOME/.banner-style")
     case $style in 1) banner_style_1 ;; 2) banner_style_2 ;; 3) banner_style_3 ;; 4) banner_style_4 ;; 5) banner_style_5 ;; *) banner_style_1 ;; esac
     echo ""
-    echo -e "${M}         ╔═══════════════════════════════════════╗${RS}"
-    echo -e "${M}         ║  ${W}Termux Optimization Suite ${D}v${QUINX_VERSION}${M}         ║${RS}"
-    echo -e "${M}         ╚═══════════════════════════════════════╝${RS}"
+    echo -e "${M}         +---------------------------------------+${RS}"
+    echo -e "${M}         | ${W}Termux Optimization Suite ${D}v${QUINX_VERSION}${M}         |${RS}"
+    echo -e "${M}         +---------------------------------------+${RS}"
     # Anime quote or fun fact on boot
     local boot_msg_file=""
     local show_quote=$((RANDOM % 3))
@@ -113,15 +110,15 @@ show_status() {
     draw_top
     print_line "SYSTEM STATUS" "$Y"
     draw_sep
-    printf "${C}${left_pad}║${RS}  ${W}Shell:%-7s${RS} Zsh:%-3b${RS} Lock:%-3b${RS} Theme:%-10s${RS} Plugins:%-3s${RS} Profile:%-8s${RS}" \
+    printf "${C}${left_pad}|${RS}  ${W}Shell:%-7s${RS} Zsh:%-3b${RS} Lock:%-3b${RS} Theme:%-10s${RS} Plugins:%-3s${RS} Profile:%-8s${RS}" \
         "$shell_now" "$z" "$lk" "$th" "$pc" "$profile"
-    printf '%*s' $(( BOX_WIDTH - 58 )) "" "${C}║${RS}\n"
+    printf '%*s' $(( BOX_WIDTH - 58 )) "" "${C}|${RS}\n"
     print_line ""
 }
 
-# ═══════════════════════════════════════════════════════════
+# -----------------------------------------------------------
 # 1. INTERACTIVE DASHBOARD
-# ═══════════════════════════════════════════════════════════
+# -----------------------------------------------------------
 do_dashboard() {
     echo -e "\033[?25l"  # hide cursor
     trap 'echo -e "\033[?25h"; return' INT
@@ -141,40 +138,40 @@ do_dashboard() {
         local arch=$(uname -m 2>/dev/null)
 
         echo ""
-        echo -e "${C}  ╔══════════════════════════════════════════════════════════╗${RS}"
-        echo -e "${C}  ║${W}              QUINXOS LIVE DASHBOARD v${QUINX_VERSION}              ${C}║${RS}"
-        echo -e "${C}  ╠══════════════════════════════════════════════════════════╣${RS}"
-        echo -e "${C}  ║${RS}                                                        ${C}║${RS}"
-        echo -e "${C}  ║${RS}  ${G}▸${RS} Time:      ${W}${now}${RS}                     ${C}║${RS}"
-        echo -e "${C}  ║${RS}  ${G}▸${RS} Uptime:    ${W}${uptime}${RS}                            ${C}║${RS}"
-        echo -e "${C}  ║${RS}  ${G}▸${RS} Kernel:    ${W}${kernel} ${arch}${RS}                   ${C}║${RS}"
-        echo -e "${C}  ║${RS}                                                        ${C}║${RS}"
-        echo -e "${C}  ║${RS}  ${Y}▸${RS} CPU:       ${W}${cpu}%${RS}  Load: ${W}${load}${RS}           ${C}║${RS}"
-        echo -e "${C}  ║${RS}  ${Y}▸${RS} Memory:    ${W}${mem}${RS}                        ${C}║${RS}"
-        echo -e "${C}  ║${RS}  ${Y}▸${RS} Swap:      ${W}${swap}${RS}                            ${C}║${RS}"
-        echo -e "${C}  ║${RS}  ${Y}▸${RS} Disk:      ${W}${disk}${RS}                       ${C}║${RS}"
-        echo -e "${C}  ║${RS}                                                        ${C}║${RS}"
-        echo -e "${C}  ║${RS}  ${B}▸${RS} Network:   ${W}IP: ${ip}${RS}                           ${C}║${RS}"
-        echo -e "${C}  ║${RS}  ${B}▸${RS} Battery:   ${W}${bat}${RS}                                   ${C}║${RS}"
-        echo -e "${C}  ║${RS}  ${B}▸${RS} Processes: ${W}${procs}${RS}                                     ${C}║${RS}"
-        echo -e "${C}  ║${RS}                                                        ${C}║${RS}"
-        echo -e "${C}  ╠══════════════════════════════════════════════════════════╣${RS}"
-        echo -e "${C}  ║${RS}  ${D}Top Processes by CPU:${RS}                                  ${C}║${RS}"
+        echo -e "${C}  +----------------------------------------------------------+${RS}"
+        echo -e "${C}  |${W}              QUINXOS LIVE DASHBOARD v${QUINX_VERSION}              ${C}|${RS}"
+        echo -e "${C}  +----------------------------------------------------------+${RS}"
+        echo -e "${C}  |${RS}                                                        ${C}|${RS}"
+        echo -e "${C}  |${RS}  ${G}>${RS} Time:      ${W}${now}${RS}                     ${C}|${RS}"
+        echo -e "${C}  |${RS}  ${G}>${RS} Uptime:    ${W}${uptime}${RS}                            ${C}|${RS}"
+        echo -e "${C}  |${RS}  ${G}>${RS} Kernel:    ${W}${kernel} ${arch}${RS}                   ${C}|${RS}"
+        echo -e "${C}  |${RS}                                                        ${C}|${RS}"
+        echo -e "${C}  |${RS}  ${Y}>${RS} CPU:       ${W}${cpu}%${RS}  Load: ${W}${load}${RS}           ${C}|${RS}"
+        echo -e "${C}  |${RS}  ${Y}>${RS} Memory:    ${W}${mem}${RS}                        ${C}|${RS}"
+        echo -e "${C}  |${RS}  ${Y}>${RS} Swap:      ${W}${swap}${RS}                            ${C}|${RS}"
+        echo -e "${C}  |${RS}  ${Y}>${RS} Disk:      ${W}${disk}${RS}                       ${C}|${RS}"
+        echo -e "${C}  |${RS}                                                        ${C}|${RS}"
+        echo -e "${C}  |${RS}  ${B}>${RS} Network:   ${W}IP: ${ip}${RS}                           ${C}|${RS}"
+        echo -e "${C}  |${RS}  ${B}>${RS} Battery:   ${W}${bat}${RS}                                   ${C}|${RS}"
+        echo -e "${C}  |${RS}  ${B}>${RS} Processes: ${W}${procs}${RS}                                     ${C}|${RS}"
+        echo -e "${C}  |${RS}                                                        ${C}|${RS}"
+        echo -e "${C}  +----------------------------------------------------------+${RS}"
+        echo -e "${C}  |${RS}  ${D}Top Processes by CPU:${RS}                                  ${C}|${RS}"
         ps aux 2>/dev/null | sort -nrk 3 | head -5 | while IFS= read -r line; do
-            printf "${C}  ║${RS}  ${W}%-56s${RS}${C}║${RS}\n" "$(echo "$line" | awk '{printf "%-8s %5s%% %5s%% %s", $1, $3, $4, $11}')"
+            printf "${C}  |${RS}  ${W}%-56s${RS}${C}|${RS}\n" "$(echo "$line" | awk '{printf "%-8s %5s%% %5s%% %s", $1, $3, $4, $11}')"
         done
-        echo -e "${C}  ║${RS}                                                        ${C}║${RS}"
-        echo -e "${C}  ╠══════════════════════════════════════════════════════════╣${RS}"
-        echo -e "${C}  ║${RS}  ${D}Refreshing every 2s — Press Ctrl+C to exit${RS}             ${C}║${RS}"
-        echo -e "${C}  ╚══════════════════════════════════════════════════════════╝${RS}"
+        echo -e "${C}  |${RS}                                                        ${C}|${RS}"
+        echo -e "${C}  +----------------------------------------------------------+${RS}"
+        echo -e "${C}  |${RS}  ${D}Refreshing every 2s -- Press Ctrl+C to exit${RS}             ${C}|${RS}"
+        echo -e "${C}  +----------------------------------------------------------+${RS}"
         sleep 2
     done
     echo -e "\033[?25h"
 }
 
-# ═══════════════════════════════════════════════════════════
+# -----------------------------------------------------------
 # 2. FINGERPRINT LOCK
-# ═══════════════════════════════════════════════════════════
+# -----------------------------------------------------------
 do_fingerprint_lock() {
     clear; show_banner; draw_top
     print_line "FINGERPRINT LOCK" "$Y"
@@ -199,9 +196,9 @@ do_fingerprint_lock() {
         1)
             local fp_code='#QUINX_FINGERPRINT_START
 clear
-echo -e "\033[1;36m  ┌─────────────────────────────────────┐"
-echo -e "  │     QUINX SHIELD — BIOMETRIC        │"
-echo -e "  └─────────────────────────────────────┘\033[0m"
+echo -e "\033[1;36m  +-------------------------------------+"
+echo -e "  |     QUINX SHIELD — BIOMETRIC        |"
+echo -e "  +-------------------------------------+\033[0m"
 attempt=1
 while [ $attempt -le 3 ]; do
     echo -e "\n\033[1;33m  Touch sensor to authenticate...\033[0m"
@@ -239,9 +236,9 @@ done
     esac
 }
 
-# ═══════════════════════════════════════════════════════════
+# -----------------------------------------------------------
 # 3. COMMAND PALETTE
-# ═══════════════════════════════════════════════════════════
+# -----------------------------------------------------------
 do_command_palette() {
     clear; show_banner; draw_top
     print_line "COMMAND PALETTE" "$Y"
@@ -255,7 +252,7 @@ do_command_palette() {
     [ -z "$query" ] && return
 
     echo ""
-    echo -e "${C}  ── Results ──${RS}"
+    echo -e "${C}  -- Results --${RS}"
 
     # Search menu options
     local menu_items=("Core Setup" "Zsh Config" "Switch Zsh" "Switch Bash" "Banner Style" "Custom Theme" "Zsh Plugins" "Theme Gallery" "Dev Tools" "Quick Commands" "Aliases Manager" "Plugin System" "Custom ASCII Art" "Login Sound" "System Info" "Network Info" "MOTD Editor" "Backup Restore" "Quinx Shield" "Remove Lock" "Update" "Uninstall" "RGB Animation" "Dashboard" "Fingerprint Lock" "Command Palette" "Dotfiles Sync" "Theme Builder" "Profiles" "Git Dashboard" "Termux Hooks" "QuinxBench" "Startup Timer" "Color Export")
@@ -286,9 +283,9 @@ do_command_palette() {
     read -r
 }
 
-# ═══════════════════════════════════════════════════════════
+# -----------------------------------------------------------
 # 4. DOTFILES SYNC
-# ═══════════════════════════════════════════════════════════
+# -----------------------------------------------------------
 do_dotfiles_sync() {
     while true; do
         clear; show_banner; draw_top
@@ -357,9 +354,9 @@ do_dotfiles_sync() {
     done
 }
 
-# ═══════════════════════════════════════════════════════════
+# -----------------------------------------------------------
 # 5. THEME BUILDER
-# ═══════════════════════════════════════════════════════════
+# -----------------------------------------------------------
 do_theme_builder() {
     clear; show_banner; draw_top
     print_line "THEME BUILDER" "$Y"
@@ -402,9 +399,9 @@ do_theme_builder() {
     draw_bot; sleep 2
 }
 
-# ═══════════════════════════════════════════════════════════
+# -----------------------------------------------------------
 # 6. PROFILE SYSTEM
-# ═══════════════════════════════════════════════════════════
+# -----------------------------------------------------------
 do_profiles() {
     while true; do
         clear; show_banner; draw_top
@@ -414,8 +411,8 @@ do_profiles() {
         draw_sep
 
         local active="default"; [ -f "$QUINX_HOME/.active-profile" ] && active=$(cat "$QUINX_HOME/.active-profile")
-        printf "${C}${left_pad}║${RS}  ${W}Active Profile: ${G}%-20s${RS}" "$active"
-        printf '%*s' $(( BOX_WIDTH - 2 - 32 )) "" "${C}║${RS}\n"
+        printf "${C}${left_pad}|${RS}  ${W}Active Profile: ${G}%-20s${RS}" "$active"
+        printf '%*s' $(( BOX_WIDTH - 2 - 32 )) "" "${C}|${RS}\n"
         draw_sep
 
         print_item "1" "Create Profile  " "New named profile" "$G"
@@ -485,9 +482,9 @@ do_profiles() {
     done
 }
 
-# ═══════════════════════════════════════════════════════════
+# -----------------------------------------------------------
 # 7. GIT DASHBOARD
-# ═══════════════════════════════════════════════════════════
+# -----------------------------------------------------------
 do_git_dashboard() {
     clear; show_banner; draw_top
     print_line "GIT DASHBOARD" "$Y"
@@ -511,41 +508,41 @@ do_git_dashboard() {
     local stashes=$(git stash list 2>/dev/null | wc -l)
     local tags=$(git tag 2>/dev/null | wc -l)
 
-    printf "${C}${left_pad}║${RS}  ${W}Branch:${RS}    ${G}%-30s${RS}" "$branch"
-    printf '%*s' $(( BOX_WIDTH - 2 - 35 )) "" "${C}║${RS}\n"
-    printf "${C}${left_pad}║${RS}  ${W}Remote:${RS}    ${G}%-30s${RS}" "$remote"
-    printf '%*s' $(( BOX_WIDTH - 2 - 35 )) "" "${C}║${RS}\n"
-    printf "${C}${left_pad}║${RS}  ${W}Commits:${RS}   ${G}%-30s${RS}" "$commits"
-    printf '%*s' $(( BOX_WIDTH - 2 - 35 )) "" "${C}║${RS}\n"
-    printf "${C}${left_pad}║${RS}  ${W}Changed:${RS}   ${G}%-30s${RS}" "$changed files"
-    printf '%*s' $(( BOX_WIDTH - 2 - 35 )) "" "${C}║${RS}\n"
-    printf "${C}${left_pad}║${RS}  ${W}Ahead:${RS}     ${G}%-30s${RS}" "$ahead commits"
-    printf '%*s' $(( BOX_WIDTH - 2 - 35 )) "" "${C}║${RS}\n"
-    printf "${C}${left_pad}║${RS}  ${W}Behind:${RS}    ${G}%-30s${RS}" "$behind commits"
-    printf '%*s' $(( BOX_WIDTH - 2 - 35 )) "" "${C}║${RS}\n"
-    printf "${C}${left_pad}║${RS}  ${W}Stashes:${RS}   ${G}%-30s${RS}" "$stashes"
-    printf '%*s' $(( BOX_WIDTH - 2 - 35 )) "" "${C}║${RS}\n"
-    printf "${C}${left_pad}║${RS}  ${W}Tags:${RS}      ${G}%-30s${RS}" "$tags"
-    printf '%*s' $(( BOX_WIDTH - 2 - 35 )) "" "${C}║${RS}\n"
-    printf "${C}${left_pad}║${RS}  ${W}Author:${RS}    ${G}%-30s${RS}" "$author"
-    printf '%*s' $(( BOX_WIDTH - 2 - 35 )) "" "${C}║${RS}\n"
-    printf "${C}${left_pad}║${RS}  ${W}Last:${RS}      ${G}%-30s${RS}" "$last_commit"
-    printf '%*s' $(( BOX_WIDTH - 2 - 35 )) "" "${C}║${RS}\n"
+    printf "${C}${left_pad}|${RS}  ${W}Branch:${RS}    ${G}%-30s${RS}" "$branch"
+    printf '%*s' $(( BOX_WIDTH - 2 - 35 )) "" "${C}|${RS}\n"
+    printf "${C}${left_pad}|${RS}  ${W}Remote:${RS}    ${G}%-30s${RS}" "$remote"
+    printf '%*s' $(( BOX_WIDTH - 2 - 35 )) "" "${C}|${RS}\n"
+    printf "${C}${left_pad}|${RS}  ${W}Commits:${RS}   ${G}%-30s${RS}" "$commits"
+    printf '%*s' $(( BOX_WIDTH - 2 - 35 )) "" "${C}|${RS}\n"
+    printf "${C}${left_pad}|${RS}  ${W}Changed:${RS}   ${G}%-30s${RS}" "$changed files"
+    printf '%*s' $(( BOX_WIDTH - 2 - 35 )) "" "${C}|${RS}\n"
+    printf "${C}${left_pad}|${RS}  ${W}Ahead:${RS}     ${G}%-30s${RS}" "$ahead commits"
+    printf '%*s' $(( BOX_WIDTH - 2 - 35 )) "" "${C}|${RS}\n"
+    printf "${C}${left_pad}|${RS}  ${W}Behind:${RS}    ${G}%-30s${RS}" "$behind commits"
+    printf '%*s' $(( BOX_WIDTH - 2 - 35 )) "" "${C}|${RS}\n"
+    printf "${C}${left_pad}|${RS}  ${W}Stashes:${RS}   ${G}%-30s${RS}" "$stashes"
+    printf '%*s' $(( BOX_WIDTH - 2 - 35 )) "" "${C}|${RS}\n"
+    printf "${C}${left_pad}|${RS}  ${W}Tags:${RS}      ${G}%-30s${RS}" "$tags"
+    printf '%*s' $(( BOX_WIDTH - 2 - 35 )) "" "${C}|${RS}\n"
+    printf "${C}${left_pad}|${RS}  ${W}Author:${RS}    ${G}%-30s${RS}" "$author"
+    printf '%*s' $(( BOX_WIDTH - 2 - 35 )) "" "${C}|${RS}\n"
+    printf "${C}${left_pad}|${RS}  ${W}Last:${RS}      ${G}%-30s${RS}" "$last_commit"
+    printf '%*s' $(( BOX_WIDTH - 2 - 35 )) "" "${C}|${RS}\n"
 
     draw_sep
     print_line "RECENT COMMITS" "$Y"
     draw_sep
     git log --oneline -5 2>/dev/null | while IFS= read -r line; do
-        printf "${C}${left_pad}║${RS}  ${W}%-56s${RS}" "$line"
-        printf '%*s' $(( BOX_WIDTH - 2 - 58 )) "" "${C}║${RS}\n"
+        printf "${C}${left_pad}|${RS}  ${W}%-56s${RS}" "$line"
+        printf '%*s' $(( BOX_WIDTH - 2 - 58 )) "" "${C}|${RS}\n"
     done
 
     draw_sep
     print_line "CHANGED FILES" "$Y"
     draw_sep
     git status --short 2>/dev/null | head -8 | while IFS= read -r line; do
-        printf "${C}${left_pad}║${RS}  ${W}%-56s${RS}" "$line"
-        printf '%*s' $(( BOX_WIDTH - 2 - 58 )) "" "${C}║${RS}\n"
+        printf "${C}${left_pad}|${RS}  ${W}%-56s${RS}" "$line"
+        printf '%*s' $(( BOX_WIDTH - 2 - 58 )) "" "${C}|${RS}\n"
     done
 
     print_line ""
@@ -553,9 +550,9 @@ do_git_dashboard() {
     echo -ne "${left_pad}${C}  Press Enter...${RS}"; read -r
 }
 
-# ═══════════════════════════════════════════════════════════
+# -----------------------------------------------------------
 # 8. TERMUX API HOOKS
-# ═══════════════════════════════════════════════════════════
+# -----------------------------------------------------------
 do_termux_hooks() {
     while true; do
         clear; show_banner; draw_top
@@ -639,9 +636,9 @@ except: print('  Failed to get location')
     done
 }
 
-# ═══════════════════════════════════════════════════════════
+# -----------------------------------------------------------
 # 9. QUINXBENCH
-# ═══════════════════════════════════════════════════════════
+# -----------------------------------------------------------
 do_bench() {
     clear; show_banner; draw_top
     print_line "QUINXBENCH — SYSTEM BENCHMARK" "$Y"
@@ -707,9 +704,9 @@ for i in range(2,1000):
     echo -ne "${left_pad}${C}  Press Enter...${RS}"; read -r
 }
 
-# ═══════════════════════════════════════════════════════════
+# -----------------------------------------------------------
 # 10. STARTUP TIMER
-# ═══════════════════════════════════════════════════════════
+# -----------------------------------------------------------
 do_startup_timer() {
     clear; show_banner; draw_top
     print_line "STARTUP TIMER" "$Y"
@@ -773,9 +770,9 @@ echo -e "\033[2m  Shell loaded in ${_QUINX_MS}ms\033[0m"'
     esac
 }
 
-# ═══════════════════════════════════════════════════════════
+# -----------------------------------------------------------
 # 11. COLOR SCHEME EXPORT
-# ═══════════════════════════════════════════════════════════
+# -----------------------------------------------------------
 do_color_export() {
     clear; show_banner; draw_top
     print_line "COLOR SCHEME EXPORT" "$Y"
@@ -936,9 +933,9 @@ EOF
     draw_bot; sleep 2
 }
 
-# ═══════════════════════════════════════════════════════════
+# -----------------------------------------------------------
 # EXISTING FEATURES (carried from v4.2)
-# ═══════════════════════════════════════════════════════════
+# -----------------------------------------------------------
 generate_recovery_key() { cat /dev/urandom 2>/dev/null | tr -dc 'A-Za-z0-9' | head -c 16; }
 
 do_necessary_setup() {
@@ -998,8 +995,8 @@ do_theme_presets() {
     local colors=("$C" "$G" "$Y" "$B" "$M" "$M" "$B" "$Y" "$B" "$M" "$G" "$Y" "$R" "$M" "$B" "$W" "$Y" "$R" "$G" "$Y" "$R" "$M")
     for i in {0..21}; do
         local num=$(printf "%02d" $((i+1)))
-        printf "${C}${left_pad}║${RS}  ${C}[${W}${num}${C}]${colors[$i]} %-18s${RS}" "${names[$i]}"
-        printf '%*s' $(( BOX_WIDTH - 2 - 22 )) "" "${C}║${RS}\n"
+        printf "${C}${left_pad}|${RS}  ${C}[${W}${num}${C}]${colors[$i]} %-18s${RS}" "${names[$i]}"
+        printf '%*s' $(( BOX_WIDTH - 2 - 22 )) "" "${C}|${RS}\n"
     done
     draw_sep; print_item "0" "Back" "Return" "$R"; draw_bot; echo ""
     echo -ne "${left_pad}${C}  Theme ❯ ${RS}"; read -r t
@@ -1078,7 +1075,7 @@ do_aliases_manager() {
         local af="$QUINX_HOME/.quinx-aliases"
         case $a in
             1) clear; show_banner; draw_top; print_line "ALIASES" "$Y"; draw_sep
-               [ -f "$af" ] && [ -s "$af" ] && while IFS= read -r l; do printf "${C}${left_pad}║${RS}  ${W}%-56s${RS}" "$l"; printf '%*s' $(( BOX_WIDTH - 60 )) "" "${C}║${RS}\n"; done < "$af" || print_line "None yet" "$D"
+               [ -f "$af" ] && [ -s "$af" ] && while IFS= read -r l; do printf "${C}${left_pad}|${RS}  ${W}%-56s${RS}" "$l"; printf '%*s' $(( BOX_WIDTH - 60 )) "" "${C}|${RS}\n"; done < "$af" || print_line "None yet" "$D"
                draw_bot; echo ""; echo -ne "${left_pad}${C}  Enter...${RS}"; read -r ;;
             2) echo ""; echo -ne "${left_pad}${C}  Alias: ${RS}"; read -r an; echo -ne "${left_pad}${C}  Command: ${RS}"; read -r ac
                [ -n "$an" ] && [ -n "$ac" ] && echo "alias ${an}='${ac}'" >> "$af" && echo -e "${G}  ✓ Added${RS}"; sleep 2 ;;
@@ -1099,7 +1096,7 @@ do_plugin_system() {
         clear; show_banner; draw_top; print_line "PLUGIN SYSTEM" "$Y"; draw_sep
         print_line "Auto-loaded from: .object/plugins/" "$D"; draw_sep
         local cnt=0
-        for p in "$QUINX_PLUGINS"/*.sh; do [ -f "$p" ] || continue; printf "${C}${left_pad}║${RS}  ${G}●${RS} %-54s" "$(basename "$p" .sh)"; printf '%*s' $(( BOX_WIDTH - 58 )) "" "${C}║${RS}\n"; cnt=$((cnt+1)); done
+        for p in "$QUINX_PLUGINS"/*.sh; do [ -f "$p" ] || continue; printf "${C}${left_pad}|${RS}  ${G}●${RS} %-54s" "$(basename "$p" .sh)"; printf '%*s' $(( BOX_WIDTH - 58 )) "" "${C}|${RS}\n"; cnt=$((cnt+1)); done
         [ $cnt -eq 0 ] && print_line "No plugins" "$D"
         draw_sep; print_item "1" "Create Plugin" "Write new" "$G"; print_item "2" "Plugin Dir" "Open folder" "$B"
         draw_sep; print_item "0" "Back" "Return" "$R"; draw_bot; echo ""
@@ -1140,7 +1137,7 @@ do_login_sound() {
 do_sysinfo() {
     clear; show_banner; draw_top; print_line "SYSTEM INFORMATION" "$Y"; draw_sep
     for e in "OS:$(uname -o)" "Arch:$(uname -m)" "Kernel:$(uname -r)" "Uptime:$(uptime -p 2>/dev/null || echo N/A)" "CPU:$(nproc) cores" "Memory:$(free -h 2>/dev/null | awk '/Mem:/{print $3"/"$2}')" "Disk:$(df -h / 2>/dev/null | awk 'NR==2{print $3"/"$2" ("$5")"}')" "Packages:$(dpkg -l 2>/dev/null | grep -c '^ii')"; do
-        local k="${e%%:*}"; local v="${e#*:}"; printf "${C}${left_pad}║${RS}  ${W}%-10s${RS} ${G}%-30s${RS}" "$k:" "$v"; printf '%*s' $(( BOX_WIDTH - 42 )) "" "${C}║${RS}\n"
+        local k="${e%%:*}"; local v="${e#*:}"; printf "${C}${left_pad}|${RS}  ${W}%-10s${RS} ${G}%-30s${RS}" "$k:" "$v"; printf '%*s' $(( BOX_WIDTH - 42 )) "" "${C}|${RS}\n"
     done
     print_line ""; draw_bot; echo ""; echo -ne "${left_pad}${C}  Enter...${RS}"; read -r
 }
@@ -1148,13 +1145,13 @@ do_sysinfo() {
 do_network_info() {
     clear; show_banner; draw_top; print_line "NETWORK" "$Y"; draw_sep
     for e in "Hostname:$(hostname)" "Local IP:$(ip route get 1.1.1.1 2>/dev/null | grep -oP 'src \K\S+')" "Public IP:$(curl -s --max-time 5 ifconfig.me)" "DNS:$(grep -m1 nameserver /etc/resolv.conf 2>/dev/null | awk '{print $2}')"; do
-        local k="${e%%:*}"; local v="${e#*:}"; printf "${C}${left_pad}║${RS}  ${W}%-10s${RS} ${G}%-30s${RS}" "$k:" "$v"; printf '%*s' $(( BOX_WIDTH - 42 )) "" "${C}║${RS}\n"
+        local k="${e%%:*}"; local v="${e#*:}"; printf "${C}${left_pad}|${RS}  ${W}%-10s${RS} ${G}%-30s${RS}" "$k:" "$v"; printf '%*s' $(( BOX_WIDTH - 42 )) "" "${C}|${RS}\n"
     done
     draw_sep; print_line "PING TESTS" "$Y"; draw_sep
     for t in "8.8.8.8:Google" "1.1.1.1:Cloudflare"; do
         local a="${t%%:*}"; local n="${t#*:}"; local pt=$(ping -c1 -W3 "$a" 2>/dev/null | grep -oP 'time=\K\S+')
-        [ -n "$pt" ] && printf "${C}${left_pad}║${RS}  ${W}%-12s${RS} ${G}✓ %s${RS}" "$n:" "$pt" || printf "${C}${left_pad}║${RS}  ${W}%-12s${RS} ${R}✗ Timeout${RS}" "$n:"
-        printf '%*s' $(( BOX_WIDTH - 30 )) "" "${C}║${RS}\n"
+        [ -n "$pt" ] && printf "${C}${left_pad}|${RS}  ${W}%-12s${RS} ${G}✓ %s${RS}" "$n:" "$pt" || printf "${C}${left_pad}|${RS}  ${W}%-12s${RS} ${R}✗ Timeout${RS}" "$n:"
+        printf '%*s' $(( BOX_WIDTH - 30 )) "" "${C}|${RS}\n"
     done
     print_line ""; draw_bot; echo ""; echo -ne "${left_pad}${C}  Enter...${RS}"; read -r
 }
@@ -1167,7 +1164,7 @@ do_motd_editor() {
     local mf="/data/data/com.termux/files/usr/etc/motd"
     case $m in
         1) echo ""; echo -ne "${left_pad}${C}  Text: ${RS}"; read -r mt; echo -e "\033[1;96m${mt}\033[0m" > "$mf"; echo -e "${G}  ✓${RS}"; sleep 2 ;;
-        2) echo -e "\033[1;96m\n  ╔═══════════════════════════════════════╗\n  ║        Welcome to QuinxOS v5.0        ║\n  ║       by Shineii86                    ║\n  ╚═══════════════════════════════════════╝\n\033[0m" > "$mf"; echo -e "${G}  ✓${RS}"; sleep 2 ;;
+        2) echo -e "\033[1;96m\n  +---------------------------------------+\n  |        Welcome to QuinxOS v5.0        |\n  |       by Shineii86                    |\n  +---------------------------------------+\n\033[0m" > "$mf"; echo -e "${G}  ✓${RS}"; sleep 2 ;;
         3) rm -f "$mf"; echo -e "${G}  ✓ Disabled${RS}"; sleep 2 ;;
         0) return ;;
     esac
@@ -1201,7 +1198,7 @@ echo -e "\n  ✗ Invalid key"
 U
     chmod +x "$QUINX_HOME/quinx-unlock"
     local lc='#QUINX_LOCK_START
-clear; echo -e "\033[1;36m  ┌─────────────────────────────────────┐\n  │     QUINX SHIELD — ACCESS GATE      │\n  └─────────────────────────────────────┘\033[0m"
+clear; echo -e "\033[1;36m  +-------------------------------------+\n  |     QUINX SHIELD — ACCESS GATE      |\n  +-------------------------------------+\033[0m"
 a=1; while [ $a -le 3 ]; do echo -ne "\n\033[1;33m  [Attempt $a/3] Key: \033[0m"; read -s p; echo
 [ "$p" = "'"$np"'" ] && echo -e "\033[1;32m  ✓ GRANTED\033[0m" && sleep 1 && clear && break
 echo -e "\033[1;31m  ✗ DENIED\033[0m"; [ $a -eq 3 ] && echo -e "\033[1;31m  LOCKED. bash ~/QuinxOS/quinx-unlock\033[0m" && exit; a=$((a+1)); done
@@ -1242,9 +1239,9 @@ do_rgb_animation() {
     echo -e "  \033[1;32mDONE\033[0m\n"; echo -ne "${left_pad}${C}  Enter...${RS}"; read -r
 }
 
-# ═══════════════════════════════════════════════════════════
+# -----------------------------------------------------------
 # ANIME THEMES + GITHUB + FUN FEATURES (v6.0)
-# ═══════════════════════════════════════════════════════════
+# -----------------------------------------------------------
 
 do_anime_themes() {
     clear; show_banner; draw_top
@@ -1254,9 +1251,9 @@ do_anime_themes() {
     local files=("naruto" "one-piece" "attack-on-titan" "dragon-ball" "demon-slayer" "evangelion")
     local descs=("Orange & black" "Red, gold, ocean" "Military green" "Orange & blue" "Purple & crimson" "EVA-01 purple")
     for i in {0..5}; do
-        printf "${C}${left_pad}║${RS}  ${C}[${W}0$((i+1))${C}]${M} %-18s${RS}" "${names[$i]}"
+        printf "${C}${left_pad}|${RS}  ${C}[${W}0$((i+1))${C}]${M} %-18s${RS}" "${names[$i]}"
         printf "${D}%s${RS}" "${descs[$i]}"
-        printf '%*s' $(( BOX_WIDTH - 2 - 22 - ${#descs[$i]} )) "" "${C}║${RS}\n"
+        printf '%*s' $(( BOX_WIDTH - 2 - 22 - ${#descs[$i]} )) "" "${C}|${RS}\n"
     done
     draw_sep; print_item "0" "Back" "Return" "$R"; draw_bot; echo ""
     echo -ne "${left_pad}${C}  Theme ❯ ${RS}"; read -r t
@@ -1285,7 +1282,7 @@ do_anime_banner() {
     [ $idx -lt 0 ] || [ $idx -gt 5 ] && return
     clear
     echo ""
-    echo -e "${M}  ── ${chars[$idx]^} ──${RS}"
+    echo -e "${M}  -- ${chars[$idx]^} --${RS}"
     echo ""
     sed -n "/===${chars[$idx]}===/,/===/p" "$QUINX_HOME/.object/anime-art.txt" 2>/dev/null | grep -v "==="
     echo ""
@@ -1406,7 +1403,7 @@ do_neofetch_banner() {
     echo -e "${C}  █${M}▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀${M}▀▀▀${C}█${RS}"
     echo -e "${C}  █${RS}                                     ${C}█${RS}"
     echo -e "${C}  █${RS}  ${W}${user}${C}@${W}${host}${RS}                           ${C}█${RS}"
-    echo -e "${C}  █${RS}  ${D}───────────────────────${RS}            ${C}█${RS}"
+    echo -e "${C}  █${RS}  ${D}-----------------------${RS}            ${C}█${RS}"
     echo -e "${C}  █${RS}  ${W}OS:${RS}       ${G}${os}${RS}                   ${C}█${RS}"
     echo -e "${C}  █${RS}  ${W}Kernel:${RS}   ${G}${kernel}${RS}     ${C}█${RS}"
     echo -e "${C}  █${RS}  ${W}Arch:${RS}     ${G}${arch}${RS}                    ${C}█${RS}"
@@ -1442,7 +1439,7 @@ do_fun_stuff() {
         case $fun_choice in
             1) clear; echo ""; quinx-anime-quote 2>/dev/null || { local qf="$QUINX_HOME/.object/anime-quotes.txt"; local t=$(wc -l < "$qf"); echo -e "\n${M}  「 $(sed -n "$((RANDOM % t + 1))p" "$qf") 」${RS}\n"; }; echo -ne "${left_pad}${C}  Enter...${RS}"; read -r ;;
             2) do_anime_banner ;;
-            3) clear; echo ""; local af="$QUINX_HOME/.object/anime-art.txt"; local arts=("naruto" "luffy" "eren" "goku" "tanjiro" "rei"); local r=$((RANDOM % ${#arts[@]})); echo -e "${M}  ── ${arts[$r]^} ──${RS}\n"; sed -n "/===${arts[$r]}===/,/===/p" "$af" 2>/dev/null | grep -v "==="; echo ""; echo -ne "${left_pad}${C}  Enter...${RS}"; read -r ;;
+            3) clear; echo ""; local af="$QUINX_HOME/.object/anime-art.txt"; local arts=("naruto" "luffy" "eren" "goku" "tanjiro" "rei"); local r=$((RANDOM % ${#arts[@]})); echo -e "${M}  -- ${arts[$r]^} --${RS}\n"; sed -n "/===${arts[$r]}===/,/===/p" "$af" 2>/dev/null | grep -v "==="; echo ""; echo -ne "${left_pad}${C}  Enter...${RS}"; read -r ;;
             4) clear; echo ""; local ff="$QUINX_HOME/.object/fun-facts.txt"; local t=$(wc -l < "$ff"); echo -e "\n${Y}  💡 $(sed -n "$((RANDOM % t + 1))p" "$ff")${RS}\n"; echo -ne "${left_pad}${C}  Enter...${RS}"; read -r ;;
             5) do_matrix_rain ;;
             6) do_neofetch_banner ;;
@@ -1452,7 +1449,7 @@ do_fun_stuff() {
     done
 }
 
-# ─── Auto-Update ──────────────────────────────────────────
+# --- Auto-Update ------------------------------------------
 check_for_updates() {
     local lc="$QUINX_HOME/.last-update-check" now=$(date +%s)
     [ -f "$lc" ] && [ $(( now - $(cat "$lc") )) -lt 86400 ] && return
@@ -1461,13 +1458,13 @@ check_for_updates() {
     [ -n "$rv" ] && [ "$rv" != "$QUINX_VERSION" ] && { echo ""; draw_top; print_line "UPDATE: v${QUINX_VERSION} → v${rv}" "$Y"; print_line "Run option [26] to update" "$D"; draw_bot; sleep 2; }
 }
 
-# ─── First-Run Wizard ─────────────────────────────────────
+# --- First-Run Wizard -------------------------------------
 do_first_run_wizard() {
     clear; echo ""
     banner_style_1; echo ""
-    echo -e "${M}  ╔═══════════════════════════════════════════════════════╗${RS}"
-    echo -e "${M}  ║     ${W}WELCOME TO QUINXOS v${QUINX_VERSION} SETUP WIZARD${M}          ║${RS}"
-    echo -e "${M}  ╚═══════════════════════════════════════════════════════╝${RS}"
+    echo -e "${M}  +-------------------------------------------------------+${RS}"
+    echo -e "${M}  |     ${W}WELCOME TO QUINXOS v${QUINX_VERSION} SETUP WIZARD${M}          |${RS}"
+    echo -e "${M}  +-------------------------------------------------------+${RS}"
     echo ""
     echo -e "${C}  Step 1: Shell${RS}  [1] Zsh  [2] Bash"; echo -ne "  Choice: "; read -r s
     case $s in 2) chsh -s bash ;; *) pkg install zsh -y 2>&1 | tail -1; chsh -s zsh ;; esac
@@ -1504,15 +1501,15 @@ do_first_run_wizard() {
     echo "v${QUINX_VERSION}" > "$QUINX_MARKER"
     mkdir -p "$QUINX_PROFILES/default"
     echo ""
-    echo -e "${M}  ╔═══════════════════════════════════════════════════════╗${RS}"
-    echo -e "${M}  ║  ${G}✓ SETUP COMPLETE!${M}  Shell:${G}$(basename "$SHELL")${M}  Theme:${G}${tn[$idx]}${M}      ║${RS}"
-    echo -e "${M}  ╚═══════════════════════════════════════════════════════╝${RS}"
+    echo -e "${M}  +-------------------------------------------------------+${RS}"
+    echo -e "${M}  |  ${G}✓ SETUP COMPLETE!${M}  Shell:${G}$(basename "$SHELL")${M}  Theme:${G}${tn[$idx]}${M}      |${RS}"
+    echo -e "${M}  +-------------------------------------------------------+${RS}"
     echo ""; echo -ne "${C}  Enter to continue...${RS}"; read -r
 }
 
-# ═══════════════════════════════════════════════════════════
+# -----------------------------------------------------------
 # MAIN MENU — 28 OPTIONS
-# ═══════════════════════════════════════════════════════════
+# -----------------------------------------------------------
 main_menu() {
     while true; do
         show_banner; show_status; echo ""
@@ -1559,7 +1556,7 @@ main_menu() {
         draw_sep
         print_item "00" "Exit             " "Close terminal" "$R"
         draw_bot; echo ""
-        echo -ne "${left_pad}${C}  ┌─ ❯ ${RS}"
+        echo -ne "${left_pad}${C}  +- ❯ ${RS}"
         read -r opt; echo ""
         case $opt in
             1|01)  do_necessary_setup ;;     2|02)  do_zsh_setup ;;
@@ -1586,9 +1583,9 @@ main_menu() {
     done
 }
 
-# ═══════════════════════════════════════════════════════════
+# -----------------------------------------------------------
 # ENTRY
-# ═══════════════════════════════════════════════════════════
+# -----------------------------------------------------------
 [ ! -f "$QUINX_MARKER" ] && [ "$1" != "--skip-wizard" ] && do_first_run_wizard
 check_for_updates
 main_menu
