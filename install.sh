@@ -1,6 +1,6 @@
 #!/bin/bash
 # ╔══════════════════════════════════════════════════════════════╗
-# ║                      QuinxOS v5.0                            ║
+# ║                      QuinxOS v6.0                            ║
 # ║           Termux Optimization & Customization Suite          ║
 # ║                      by Shineii86                            ║
 # ╚══════════════════════════════════════════════════════════════╝
@@ -10,7 +10,7 @@ C='\033[1;96m'; W='\033[1;97m'; M='\033[1;95m'; D='\033[2m'
 RS='\033[0m'
 
 QUINX_HOME="$HOME/QuinxOS"
-QUINX_VERSION="5.0"
+QUINX_VERSION="6.0"
 QUINX_MARKER="$HOME/.quinx-installed"
 QUINX_THEMES="$QUINX_HOME/.object/themes"
 QUINX_PLUGINS="$QUINX_HOME/.object/plugins"
@@ -63,15 +63,43 @@ banner_style_3() {
     echo -e "${G}   ║   ░▀▀░░▀▀▀░▀░░▀░▀▀▀░▀░▀░▀░▀░▀▀▀░▀▀▀░▀▀░░▀▀▀    ║${RS}"
     echo -e "${G}   ╚═══════════════════════════════════════════════════╝${RS}"
 }
+banner_style_4() {
+    echo ""
+    echo -e "${Y}          ╱▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔╲${RS}"
+    echo -e "${Y}         │  ${R}█▀█ █▀█ █▀▄ █▀▀ █▀█ ▀█▀ █▀▀${Y}  │${RS}"
+    echo -e "${Y}         │  ${R}█▀▀ █▀█ █▀▄ █▀▀ █▄█  █  █▀▀${Y}  │${RS}"
+    echo -e "${Y}         │  ${R}▀   ▀  ▀ ▀  ▀▀▀ ▀ ▀  ▀  ▀▀▀${Y}  │${RS}"
+    echo -e "${Y}          ╲▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁╱${RS}"
+}
+banner_style_5() {
+    echo ""
+    echo -e "${R}    ██████████████████████████████████████████${RS}"
+    echo -e "${R}    ██${W}                                    ${R}██${RS}"
+    echo -e "${R}    ██${W}   ▄▀▄ █▀▄ █▀▀ █▀█ ▀█▀ █▀▀ ▄▀▄    ${R}██${RS}"
+    echo -e "${R}    ██${W}   ▀▄▀ █▀▄ █▀▀ █▄█  █  █▀▀ ▀▄▀    ${R}██${RS}"
+    echo -e "${R}    ██${W}     ▀ ▀▀  ▀▀▀ ▀ ▀  ▀  ▀▀▀   ▀    ${R}██${RS}"
+    echo -e "${R}    ██${W}                                    ${R}██${RS}"
+    echo -e "${R}    ██████████████████████████████████████████${RS}"
+}
 
 show_banner() {
     clear
     local style="1"; [ -f "$QUINX_HOME/.banner-style" ] && style=$(cat "$QUINX_HOME/.banner-style")
-    case $style in 1) banner_style_1 ;; 2) banner_style_2 ;; 3) banner_style_3 ;; *) banner_style_1 ;; esac
+    case $style in 1) banner_style_1 ;; 2) banner_style_2 ;; 3) banner_style_3 ;; 4) banner_style_4 ;; 5) banner_style_5 ;; *) banner_style_1 ;; esac
     echo ""
     echo -e "${M}         ╔═══════════════════════════════════════╗${RS}"
     echo -e "${M}         ║  ${W}Termux Optimization Suite ${D}v${QUINX_VERSION}${M}         ║${RS}"
     echo -e "${M}         ╚═══════════════════════════════════════╝${RS}"
+    # Anime quote or fun fact on boot
+    local boot_msg_file=""
+    local show_quote=$((RANDOM % 3))
+    if [ $show_quote -eq 0 ] && [ -f "$QUINX_HOME/.object/anime-quotes.txt" ]; then
+        local total=$(wc -l < "$QUINX_HOME/.object/anime-quotes.txt" 2>/dev/null)
+        [ $total -gt 0 ] && local idx=$((RANDOM % total + 1)) && local quote=$(sed -n "${idx}p" "$QUINX_HOME/.object/anime-quotes.txt" 2>/dev/null) && echo -e "${M}    「 ${W}${quote}${M} 」${RS}"
+    elif [ $show_quote -eq 1 ] && [ -f "$QUINX_HOME/.object/fun-facts.txt" ]; then
+        local total=$(wc -l < "$QUINX_HOME/.object/fun-facts.txt" 2>/dev/null)
+        [ $total -gt 0 ] && local idx=$((RANDOM % total + 1)) && local fact=$(sed -n "${idx}p" "$QUINX_HOME/.object/fun-facts.txt" 2>/dev/null) && echo -e "${Y}    💡 ${W}${fact}${RS}"
+    fi
     echo ""
 }
 
@@ -941,9 +969,10 @@ do_set_bash() { chsh -s bash; clear; show_banner; draw_top; print_line "DEFAULT 
 do_set_banner() {
     clear; show_banner; draw_top; print_line "BANNER STYLE" "$Y"; draw_sep
     print_item "1" "Block Letters" "Bold gradient" "$C"; print_item "2" "Box Art" "Framed pixel" "$M"; print_item "3" "Clean Box" "Minimal" "$G"
+    print_item "4" "Naruto Style" "Anime red/gold" "$Y"; print_item "5" "Military" "AOT dark" "$R"
     draw_sep; print_item "0" "Back" "Return" "$R"; draw_bot; echo ""
     echo -ne "${left_pad}${C}  Style ❯ ${RS}"; read -r s
-    case $s in 1|2|3) echo "$s" > "$QUINX_HOME/.banner-style"; clear; show_banner; draw_top; print_line "BANNER $s SET ✓" "$G"; draw_bot ;; 0) return ;; esac; sleep 2
+    case $s in 1|2|3|4|5) echo "$s" > "$QUINX_HOME/.banner-style"; clear; show_banner; draw_top; print_line "BANNER $s SET ✓" "$G"; draw_bot ;; 0) return ;; esac; sleep 2
 }
 
 do_set_theme() {
@@ -964,10 +993,10 @@ do_plugins() {
 
 do_theme_presets() {
     clear; show_banner; draw_top; print_line "THEME GALLERY — 15 THEMES" "$Y"; draw_sep
-    local names=("Cyber Midnight" "Matrix Green" "Solar Flare" "Arctic Blue" "Purple Haze" "Dracacula" "Nord" "Gruvbox" "Tokyo Night" "Catppuccin Mocha" "Everforest" "Monokai" "Synthwave" "Rose Pine" "Kanagawa")
-    local files=("cyber-midnight" "matrix-green" "solar-flare" "arctic-blue" "purple-haze" "dracacula" "nord" "gruvbox" "tokyo-night" "catppuccin-mocha" "everforest" "monokai" "synthwave" "rose-pine" "kanagawa")
-    local colors=("$C" "$G" "$Y" "$B" "$M" "$M" "$B" "$Y" "$B" "$M" "$G" "$Y" "$R" "$M" "$B")
-    for i in {0..14}; do
+    local names=("Cyber Midnight" "Matrix Green" "Solar Flare" "Arctic Blue" "Purple Haze" "Dracacula" "Nord" "Gruvbox" "Tokyo Night" "Catppuccin Mocha" "Everforest" "Monokai" "Synthwave" "Rose Pine" "Kanagawa" "Tokyo Day" "Naruto" "One Piece" "Attack on Titan" "Dragon Ball" "Demon Slayer" "Evangelion")
+    local files=("cyber-midnight" "matrix-green" "solar-flare" "arctic-blue" "purple-haze" "dracacula" "nord" "gruvbox" "tokyo-night" "catppuccin-mocha" "everforest" "monokai" "synthwave" "rose-pine" "kanagawa" "tokyo-day" "naruto" "one-piece" "attack-on-titan" "dragon-ball" "demon-slayer" "evangelion")
+    local colors=("$C" "$G" "$Y" "$B" "$M" "$M" "$B" "$Y" "$B" "$M" "$G" "$Y" "$R" "$M" "$B" "$W" "$Y" "$R" "$G" "$Y" "$R" "$M")
+    for i in {0..21}; do
         local num=$(printf "%02d" $((i+1)))
         printf "${C}${left_pad}║${RS}  ${C}[${W}${num}${C}]${colors[$i]} %-18s${RS}" "${names[$i]}"
         printf '%*s' $(( BOX_WIDTH - 2 - 22 )) "" "${C}║${RS}\n"
@@ -975,7 +1004,7 @@ do_theme_presets() {
     draw_sep; print_item "0" "Back" "Return" "$R"; draw_bot; echo ""
     echo -ne "${left_pad}${C}  Theme ❯ ${RS}"; read -r t
     local idx=$(( ${t:-0} - 1 ))
-    [ $idx -lt 0 ] || [ $idx -gt 14 ] && return
+    [ $idx -lt 0 ] || [ $idx -gt 21 ] && return
     [ -f "$QUINX_THEMES/${files[$idx]}.colors" ] && cp "$QUINX_THEMES/${files[$idx]}.colors" ~/.termux/colors.properties 2>/dev/null
     echo "${names[$idx]}" > "$QUINX_HOME/.current-theme"
     termux-reload-settings 2>/dev/null
@@ -1213,6 +1242,216 @@ do_rgb_animation() {
     echo -e "  \033[1;32mDONE\033[0m\n"; echo -ne "${left_pad}${C}  Enter...${RS}"; read -r
 }
 
+# ═══════════════════════════════════════════════════════════
+# ANIME THEMES + GITHUB + FUN FEATURES (v6.0)
+# ═══════════════════════════════════════════════════════════
+
+do_anime_themes() {
+    clear; show_banner; draw_top
+    print_line "ANIME THEMES" "$M"
+    draw_sep
+    local names=("Naruto" "One Piece" "Attack on Titan" "Dragon Ball" "Demon Slayer" "Evangelion")
+    local files=("naruto" "one-piece" "attack-on-titan" "dragon-ball" "demon-slayer" "evangelion")
+    local descs=("Orange & black" "Red, gold, ocean" "Military green" "Orange & blue" "Purple & crimson" "EVA-01 purple")
+    for i in {0..5}; do
+        printf "${C}${left_pad}║${RS}  ${C}[${W}0$((i+1))${C}]${M} %-18s${RS}" "${names[$i]}"
+        printf "${D}%s${RS}" "${descs[$i]}"
+        printf '%*s' $(( BOX_WIDTH - 2 - 22 - ${#descs[$i]} )) "" "${C}║${RS}\n"
+    done
+    draw_sep; print_item "0" "Back" "Return" "$R"; draw_bot; echo ""
+    echo -ne "${left_pad}${C}  Theme ❯ ${RS}"; read -r t
+    local idx=$(( ${t:-0} - 1 ))
+    [ $idx -lt 0 ] || [ $idx -gt 5 ] && return
+    [ -f "$QUINX_THEMES/${files[$idx]}.colors" ] && cp "$QUINX_THEMES/${files[$idx]}.colors" ~/.termux/colors.properties 2>/dev/null
+    echo "${names[$idx]}" > "$QUINX_HOME/.current-theme"
+    termux-reload-settings 2>/dev/null
+    clear; show_banner; draw_top; print_line "APPLIED: ${names[$idx]} ✓" "$G"; draw_bot; sleep 2
+}
+
+do_anime_banner() {
+    clear; show_banner; draw_top
+    print_line "ANIME ASCII BANNERS" "$M"
+    draw_sep
+    print_item "1" "Naruto   " "Believe it!" "$Y"
+    print_item "2" "Luffy    " "Gomu Gomu no!" "$R"
+    print_item "3" "Eren     " "Fight!" "$G"
+    print_item "4" "Goku     " "Kamehameha!" "$Y"
+    print_item "5" "Tanjiro  " "Water Breathing" "$B"
+    print_item "6" "Rei      " "I mustn't run" "$M"
+    draw_sep; print_item "0" "Back" "Return" "$R"; draw_bot; echo ""
+    echo -ne "${left_pad}${C}  Character ❯ ${RS}"; read -r c
+    local chars=("naruto" "luffy" "eren" "goku" "tanjiro" "rei")
+    local idx=$(( ${c:-0} - 1 ))
+    [ $idx -lt 0 ] || [ $idx -gt 5 ] && return
+    clear
+    echo ""
+    echo -e "${M}  ── ${chars[$idx]^} ──${RS}"
+    echo ""
+    sed -n "/===${chars[$idx]}===/,/===/p" "$QUINX_HOME/.object/anime-art.txt" 2>/dev/null | grep -v "==="
+    echo ""
+    echo -ne "${left_pad}${C}  Press Enter...${RS}"; read -r
+}
+
+do_github_stats() {
+    while true; do
+        clear; show_banner; draw_top
+        print_line "GITHUB INTEGRATION" "$Y"
+        draw_sep
+        print_item "1" "Profile Stats  " "Stars, repos, followers" "$G"
+        print_item "2" "Notifications  " "PRs, issues, reviews" "$G"
+        print_item "3" "Streak Counter  " "Contribution streak" "$Y"
+        print_item "4" "Repo Quick View " "Search any repo" "$B"
+        draw_sep; print_item "0" "Back" "Return" "$R"; draw_bot; echo ""
+        echo -ne "${left_pad}${C}  ❯ ${RS}"; read -r gh_choice
+        case $gh_choice in
+            1) echo ""; echo -ne "${left_pad}${C}  GitHub username: ${RS}"; read -r gh_user
+               [ -n "$gh_user" ] && quinx-ghstats "$gh_user" 2>/dev/null || echo -e "${R}  Plugin not loaded${RS}"
+               echo ""; echo -ne "${left_pad}${C}  Enter...${RS}"; read -r ;;
+            2) quinx-ghnotifs 2>/dev/null || echo -e "${R}  Install gh: pkg install gh${RS}"
+               echo ""; echo -ne "${left_pad}${C}  Enter...${RS}"; read -r ;;
+            3) echo ""; echo -ne "${left_pad}${C}  GitHub username: ${RS}"; read -r gh_user
+               [ -n "$gh_user" ] && quinx-ghstreak "$gh_user" 2>/dev/null
+               echo ""; echo -ne "${left_pad}${C}  Enter...${RS}"; read -r ;;
+            4) echo ""; echo -ne "${left_pad}${C}  Repo (owner/name): ${RS}"; read -r gh_repo
+               [ -n "$gh_repo" ] && quinx-ghrepo "$gh_repo" 2>/dev/null
+               echo ""; echo -ne "${left_pad}${C}  Enter...${RS}"; read -r ;;
+            0) return ;;
+        esac
+    done
+}
+
+do_matrix_rain() {
+    echo -e "\n${left_pad}${G}  Matrix Rain — 15s — Ctrl+C to stop${RS}"
+    sleep 1
+    local cols=$(tput cols 2>/dev/null || echo 80)
+    local lines=$(tput lines 2>/dev/null || echo 24)
+    local chars="01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモ"
+    local start=$(date +%s)
+    trap 'echo -e "\033[0m"; clear; return' INT
+    while true; do
+        [ $(($(date +%s) - start)) -ge 15 ] && break
+        local col=$((RANDOM % cols)) len=$((RANDOM % 15 + 3))
+        for ((i=0; i<len; i++)); do
+            local row=$((RANDOM % lines)) char="${chars:$((RANDOM % ${#chars})):1}"
+            [ $i -lt 2 ] && echo -ne "\033[${row};${col}H\033[1;37m${char}\033[0m" && continue
+            [ $i -lt 5 ] && echo -ne "\033[${row};${col}H\033[1;32m${char}\033[0m" && continue
+            echo -ne "\033[${row};${col}H\033[2;32m${char}\033[0m"
+        done
+        sleep 0.02
+    done
+    echo -e "\033[0m"; clear
+}
+
+do_auto_theme() {
+    clear; show_banner; draw_top
+    print_line "AUTO DARK/LIGHT THEME" "$Y"
+    draw_sep
+    print_line "Switches theme based on time of day" "$D"
+    draw_sep
+    print_item "1" "Enable  " "Auto-switch at 6AM/6PM" "$G"
+    print_item "2" "Disable " "Manual theme only" "$R"
+    draw_sep; print_item "0" "Back" "Return" "$R"; draw_bot; echo ""
+    echo -ne "${left_pad}${C}  ❯ ${RS}"; read -r at_choice
+    case $at_choice in
+        1)
+            # Add auto-theme to zshrc/bashrc
+            local auto_code='
+# QuinxOS Auto Theme
+_hour=$(date +%H)
+if [ $_hour -ge 6 ] && [ $_hour -lt 18 ]; then
+    [ -f "$HOME/QuinxOS/.object/themes/arctic-blue.colors" ] && cp "$HOME/QuinxOS/.object/themes/arctic-blue.colors" ~/.termux/colors.properties 2>/dev/null
+else
+    [ -f "$HOME/QuinxOS/.object/themes/cyber-midnight.colors" ] && cp "$HOME/QuinxOS/.object/themes/cyber-midnight.colors" ~/.termux/colors.properties 2>/dev/null
+fi'
+            for rc in ~/.zshrc ~/.bashrc; do
+                [ -f "$rc" ] || continue
+                sed -i '/# QuinxOS Auto Theme/,/^fi$/d' "$rc"
+                echo "$auto_code" >> "$rc"
+            done
+            clear; show_banner; draw_top
+            print_line "AUTO THEME ENABLED ✓" "$G"
+            print_line "6AM: Arctic Blue | 6PM: Cyber Midnight" "$D"
+            draw_bot; sleep 2 ;;
+        2)
+            for rc in ~/.zshrc ~/.bashrc; do
+                [ -f "$rc" ] && sed -i '/# QuinxOS Auto Theme/,/^fi$/d' "$rc"
+            done
+            clear; show_banner; draw_top; print_line "AUTO THEME DISABLED" "$R"; draw_bot; sleep 2 ;;
+    esac
+}
+
+do_neofetch_banner() {
+    clear
+    local user=$(whoami 2>/dev/null)
+    local host=$(hostname 2>/dev/null)
+    local os=$(uname -o 2>/dev/null)
+    local kernel=$(uname -r 2>/dev/null)
+    local arch=$(uname -m 2>/dev/null)
+    local shell=$(basename "$SHELL" 2>/dev/null)
+    local uptime=$(uptime -p 2>/dev/null || echo "N/A")
+    local pkgs=$(dpkg -l 2>/dev/null | grep -c '^ii')
+    local mem=$(free -h 2>/dev/null | awk '/Mem:/{print $3"/"$2}')
+    local disk=$(df -h / 2>/dev/null | awk 'NR==2{print $3"/"$2}')
+    local term=$(echo "$TERM")
+    local theme=$(cat "$QUINX_HOME/.current-theme" 2>/dev/null || echo "Default")
+
+    echo ""
+    echo -e "${C}              ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄${RS}"
+    echo -e "${C}            ▄█${M}▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀${C}█▄${RS}"
+    echo -e "${C}          ▄█${M}                     ${C}█▄${RS}"
+    echo -e "${C}        ▄█${M}   ${C}█▀█ █▀█ █▀▄ █▀▀${M}   ${C}█▄${RS}"
+    echo -e "${C}      ▄█${M}     ${C}█▀▀ █▀█ █▀▄ █▀▀${M}     ${C}█▄${RS}"
+    echo -e "${C}    ▄█${M}       ${C}▀   ▀  ▀ ▀  ▀▀▀${M}       ${C}█▄${RS}"
+    echo -e "${C}  ▄█${M}                                   ${C}█▄${RS}"
+    echo -e "${C}  █${M}▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀${M}▀▀▀${C}█${RS}"
+    echo -e "${C}  █${RS}                                     ${C}█${RS}"
+    echo -e "${C}  █${RS}  ${W}${user}${C}@${W}${host}${RS}                           ${C}█${RS}"
+    echo -e "${C}  █${RS}  ${D}───────────────────────${RS}            ${C}█${RS}"
+    echo -e "${C}  █${RS}  ${W}OS:${RS}       ${G}${os}${RS}                   ${C}█${RS}"
+    echo -e "${C}  █${RS}  ${W}Kernel:${RS}   ${G}${kernel}${RS}     ${C}█${RS}"
+    echo -e "${C}  █${RS}  ${W}Arch:${RS}     ${G}${arch}${RS}                    ${C}█${RS}"
+    echo -e "${C}  █${RS}  ${W}Shell:${RS}    ${G}${shell}${RS}                      ${C}█${RS}"
+    echo -e "${C}  █${RS}  ${W}Uptime:${RS}   ${G}${uptime}${RS}  ${C}█${RS}"
+    echo -e "${C}  █${RS}  ${W}Packages:${RS} ${G}${pkgs}${RS}                        ${C}█${RS}"
+    echo -e "${C}  █${RS}  ${W}Memory:${RS}   ${G}${mem}${RS}                   ${C}█${RS}"
+    echo -e "${C}  █${RS}  ${W}Disk:${RS}     ${G}${disk}${RS}                    ${C}█${RS}"
+    echo -e "${C}  █${RS}  ${W}Theme:${RS}    ${M}${theme}${RS}                   ${C}█${RS}"
+    echo -e "${C}  █${RS}  ${W}Terminal:${RS} ${G}${term}${RS}                    ${C}█${RS}"
+    echo -e "${C}  █${RS}                                     ${C}█${RS}"
+    echo -e "${C}  █▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█${RS}"
+    echo ""
+    echo -e "  ${R}███${G}███${Y}███${B}███${M}███${C}███${W}███${RS}"
+    echo ""
+    echo -ne "${left_pad}${C}  Press Enter...${RS}"; read -r
+}
+
+do_fun_stuff() {
+    while true; do
+        clear; show_banner; draw_top
+        print_line "FUN STUFF" "$M"
+        draw_sep
+        print_item "1" "Anime Quote    " "Random quote" "$M"
+        print_item "2" "Anime Art      " "Character ASCII art" "$M"
+        print_item "3" "Waifu Mascot   " "Random character" "$R"
+        print_item "4" "Fun Fact       " "Random fact" "$Y"
+        print_item "5" "Matrix Rain    " "Animated green rain" "$G"
+        print_item "6" "Neofetch-style " "System info banner" "$C"
+        print_item "7" "Auto Theme     " "Dark/Light by time" "$B"
+        draw_sep; print_item "0" "Back" "Return" "$R"; draw_bot; echo ""
+        echo -ne "${left_pad}${C}  ❯ ${RS}"; read -r fun_choice
+        case $fun_choice in
+            1) clear; echo ""; quinx-anime-quote 2>/dev/null || { local qf="$QUINX_HOME/.object/anime-quotes.txt"; local t=$(wc -l < "$qf"); echo -e "\n${M}  「 $(sed -n "$((RANDOM % t + 1))p" "$qf") 」${RS}\n"; }; echo -ne "${left_pad}${C}  Enter...${RS}"; read -r ;;
+            2) do_anime_banner ;;
+            3) clear; echo ""; local af="$QUINX_HOME/.object/anime-art.txt"; local arts=("naruto" "luffy" "eren" "goku" "tanjiro" "rei"); local r=$((RANDOM % ${#arts[@]})); echo -e "${M}  ── ${arts[$r]^} ──${RS}\n"; sed -n "/===${arts[$r]}===/,/===/p" "$af" 2>/dev/null | grep -v "==="; echo ""; echo -ne "${left_pad}${C}  Enter...${RS}"; read -r ;;
+            4) clear; echo ""; local ff="$QUINX_HOME/.object/fun-facts.txt"; local t=$(wc -l < "$ff"); echo -e "\n${Y}  💡 $(sed -n "$((RANDOM % t + 1))p" "$ff")${RS}\n"; echo -ne "${left_pad}${C}  Enter...${RS}"; read -r ;;
+            5) do_matrix_rain ;;
+            6) do_neofetch_banner ;;
+            7) do_auto_theme ;;
+            0) return ;;
+        esac
+    done
+}
+
 # ─── Auto-Update ──────────────────────────────────────────
 check_for_updates() {
     local lc="$QUINX_HOME/.last-update-check" now=$(date +%s)
@@ -1233,18 +1472,19 @@ do_first_run_wizard() {
     echo -e "${C}  Step 1: Shell${RS}  [1] Zsh  [2] Bash"; echo -ne "  Choice: "; read -r s
     case $s in 2) chsh -s bash ;; *) pkg install zsh -y 2>&1 | tail -1; chsh -s zsh ;; esac
     echo ""
-    echo -e "${C}  Step 2: Theme (1-15)${RS}"
+    echo -e "${C}  Step 2: Theme (1-22)${RS}"
     echo "  1.Cyber Midnight 2.Matrix Green 3.Solar Flare 4.Arctic Blue 5.Purple Haze"
     echo "  6.Dracacula 7.Nord 8.Gruvbox 9.Tokyo Night 10.Catppuccin"
-    echo "  11.Everforest 12.Monokai 13.Synthwave 14.Rose Pine 15.Kanagawa"
+    echo "  11.Everforest 12.Monokai 13.Synthwave 14.Rose Pine 15.Kanagawa 16.Tokyo Day"
+    echo "  17.Naruto 18.One Piece 19.Attack on Titan 20.Dragon Ball 21.Demon Slayer 22.Evangelion"
     echo -ne "  Choice: "; read -r tw
-    local tf=("cyber-midnight" "matrix-green" "solar-flare" "arctic-blue" "purple-haze" "dracacula" "nord" "gruvbox" "tokyo-night" "catppuccin-mocha" "everforest" "monokai" "synthwave" "rose-pine" "kanagawa")
-    local tn=("Cyber Midnight" "Matrix Green" "Solar Flare" "Arctic Blue" "Purple Haze" "Dracacula" "Nord" "Gruvbox" "Tokyo Night" "Catppuccin Mocha" "Everforest" "Monokai" "Synthwave" "Rose Pine" "Kanagawa")
-    local idx=$(( ${tw:-1} - 1 )); [ $idx -lt 0 ] && idx=0; [ $idx -gt 14 ] && idx=0
+    local tf=("cyber-midnight" "matrix-green" "solar-flare" "arctic-blue" "purple-haze" "dracacula" "nord" "gruvbox" "tokyo-night" "catppuccin-mocha" "everforest" "monokai" "synthwave" "rose-pine" "kanagawa" "tokyo-day" "naruto" "one-piece" "attack-on-titan" "dragon-ball" "demon-slayer" "evangelion")
+    local tn=("Cyber Midnight" "Matrix Green" "Solar Flare" "Arctic Blue" "Purple Haze" "Dracacula" "Nord" "Gruvbox" "Tokyo Night" "Catppuccin Mocha" "Everforest" "Monokai" "Synthwave" "Rose Pine" "Kanagawa" "Tokyo Day" "Naruto" "One Piece" "Attack on Titan" "Dragon Ball" "Demon Slayer" "Evangelion")
+    local idx=$(( ${tw:-1} - 1 )); [ $idx -lt 0 ] && idx=0; [ $idx -gt 21 ] && idx=0
     [ -f "$QUINX_THEMES/${tf[$idx]}.colors" ] && cp "$QUINX_THEMES/${tf[$idx]}.colors" ~/.termux/colors.properties 2>/dev/null
     echo "${tn[$idx]}" > "$QUINX_HOME/.current-theme"
     echo ""
-    echo -e "${C}  Step 3: Banner [1] Block [2] Box [3] Clean${RS}"; echo -ne "  Choice: "; read -r b; echo "$b" > "$QUINX_HOME/.banner-style"
+    echo -e "${C}  Step 3: Banner [1] Block [2] Box [3] Clean [4] Naruto [5] Military${RS}"; echo -ne "  Choice: "; read -r b; echo "$b" > "$QUINX_HOME/.banner-style"
     echo ""
     echo -e "${C}  Step 4: Display Name${RS}"; echo -ne "  Name: "; read -r dn; [ -z "$dn" ] && dn="${USER:-Quinx}"
     echo ""
@@ -1281,37 +1521,41 @@ main_menu() {
         print_item "02" "Zsh Config       " "Reset zsh" "$G"
         print_item "03" "Switch → Zsh     " "Default shell" "$G"
         print_item "04" "Switch → Bash    " "Default shell" "$G"
-        print_item "05" "Banner Style     " "3 designs" "$Y"
+        print_item "05" "Banner Style     " "5 designs" "$Y"
         print_item "06" "Custom Theme     " "Prompt name" "$Y"
         print_item "07" "Zsh Plugins      " "Highlight+Auto" "$Y"
-        print_item "08" "Theme Gallery    " "15 color schemes" "$C"
+        print_item "08" "Theme Gallery    " "22 color schemes" "$C"
         print_item "09" "Theme Builder    " "Create custom" "$C"
         print_item "10" "Color Export     " "Win/iTerm/Alacritty" "$C"
-        print_item "11" "Dev Tools        " "Python,Node,Go..." "$B"
-        print_item "12" "Quick Commands   " "Git,serve,compress" "$B"
-        print_item "13" "Aliases Manager  " "Shell shortcuts" "$B"
-        print_item "14" "Plugin System    " "Custom scripts" "$B"
-        print_item "15" "Custom ASCII Art " "Banner text" "$M"
-        print_item "16" "Login Sound      " "Audio on boot" "$M"
-        print_item "17" "Dashboard        " "Live system monitor" "$G"
-        print_item "18" "Git Dashboard    " "Repo info & status" "$G"
-        print_item "19" "System Info      " "Device details" "$W"
-        print_item "20" "Network Info     " "IP, DNS, ping" "$W"
-        print_item "21" "QuinxBench       " "System benchmark" "$Y"
-        print_item "22" "Profiles         " "Multi-config" "$C"
-        print_item "23" "Dotfiles Sync    " "GitHub sync" "$C"
-        print_item "24" "Termux API Hooks " "Battery, GPS, torch" "$B"
-        print_item "25" "MOTD Editor      " "Boot message" "$M"
-        print_item "26" "Backup/Restore   " "Save/load config" "$M"
-        print_item "27" "Startup Timer    " "Shell load time" "$D"
+        print_item "11" "Anime Themes     " "6 anime schemes" "$M"
+        print_item "12" "Dev Tools        " "Python,Node,Go..." "$B"
+        print_item "13" "Quick Commands   " "Git,serve,compress" "$B"
+        print_item "14" "Aliases Manager  " "Shell shortcuts" "$B"
+        print_item "15" "Plugin System    " "Custom scripts" "$B"
+        print_item "16" "Custom ASCII Art " "Banner text" "$M"
+        print_item "17" "Login Sound      " "Audio on boot" "$M"
+        print_item "18" "Dashboard        " "Live system monitor" "$G"
+        print_item "19" "Git Dashboard    " "Repo info & status" "$G"
+        print_item "20" "GitHub Integration" "Stats, streak, repos" "$Y"
+        print_item "21" "System Info      " "Device details" "$W"
+        print_item "22" "Network Info     " "IP, DNS, ping" "$W"
+        print_item "23" "QuinxBench       " "System benchmark" "$Y"
+        print_item "24" "Neofetch Banner  " "System info art" "$C"
+        print_item "25" "Profiles         " "Multi-config" "$C"
+        print_item "26" "Dotfiles Sync    " "GitHub sync" "$C"
+        print_item "27" "Termux API Hooks " "Battery, GPS, torch" "$B"
+        print_item "28" "Fun Stuff        " "Anime, Matrix, facts" "$M"
+        print_item "29" "MOTD Editor      " "Boot message" "$M"
+        print_item "30" "Backup/Restore   " "Save/load config" "$M"
+        print_item "31" "Startup Timer    " "Shell load time" "$D"
         draw_sep
-        print_item "28" "Quinx Shield     " "Terminal lock" "$R"
-        print_item "29" "Fingerprint Lock " "Biometric auth" "$R"
-        print_item "30" "Remove Lock      " "Deactivate" "$R"
-        print_item "31" "Command Palette  " "Search features" "$G"
-        print_item "32" "Update QuinxOS   " "Pull latest" "$G"
-        print_item "33" "Uninstall        " "Remove all" "$R"
-        print_item "34" "RGB Animation    " "Preview effect" "$Y"
+        print_item "32" "Quinx Shield     " "Terminal lock" "$R"
+        print_item "33" "Fingerprint Lock " "Biometric auth" "$R"
+        print_item "34" "Remove Lock      " "Deactivate" "$R"
+        print_item "35" "Command Palette  " "Search features" "$G"
+        print_item "36" "Update QuinxOS   " "Pull latest" "$G"
+        print_item "37" "Uninstall        " "Remove all" "$R"
+        print_item "38" "RGB Animation    " "Preview effect" "$Y"
         draw_sep
         print_item "00" "Exit             " "Close terminal" "$R"
         draw_bot; echo ""
@@ -1323,18 +1567,20 @@ main_menu() {
             5|05)  do_set_banner ;;          6|06)  do_set_theme ;;
             7|07)  do_plugins ;;             8|08)  do_theme_presets ;;
             9|09)  do_theme_builder ;;       10)    do_color_export ;;
-            11)    do_dev_tools ;;           12)    do_quick_commands ;;
-            13)    do_aliases_manager ;;     14)    do_plugin_system ;;
-            15)    do_custom_banner_text ;;  16)    do_login_sound ;;
-            17)    do_dashboard ;;           18)    do_git_dashboard ;;
-            19)    do_sysinfo ;;             20)    do_network_info ;;
-            21)    do_bench ;;               22)    do_profiles ;;
-            23)    do_dotfiles_sync ;;       24)    do_termux_hooks ;;
-            25)    do_motd_editor ;;         26)    do_backup ;;
-            27)    do_startup_timer ;;       28)    do_cyber_lock ;;
-            29)    do_fingerprint_lock ;;    30)    do_remove_lock ;;
-            31)    do_command_palette ;;     32)    do_update ;;
-            33)    do_uninstall ;;           34)    do_rgb_animation ;;
+            11)    do_anime_themes ;;        12)    do_dev_tools ;;
+            13)    do_quick_commands ;;      14)    do_aliases_manager ;;
+            15)    do_plugin_system ;;       16)    do_custom_banner_text ;;
+            17)    do_login_sound ;;         18)    do_dashboard ;;
+            19)    do_git_dashboard ;;       20)    do_github_stats ;;
+            21)    do_sysinfo ;;             22)    do_network_info ;;
+            23)    do_bench ;;               24)    do_neofetch_banner ;;
+            25)    do_profiles ;;            26)    do_dotfiles_sync ;;
+            27)    do_termux_hooks ;;        28)    do_fun_stuff ;;
+            29)    do_motd_editor ;;         30)    do_backup ;;
+            31)    do_startup_timer ;;       32)    do_cyber_lock ;;
+            33)    do_fingerprint_lock ;;    34)    do_remove_lock ;;
+            35)    do_command_palette ;;     36)    do_update ;;
+            37)    do_uninstall ;;           38)    do_rgb_animation ;;
             0|00)  clear; echo -e "${C}  QuinxOS ${W}— Session ended.${RS}\n"; exit 0 ;;
         esac
     done

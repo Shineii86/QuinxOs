@@ -8,10 +8,10 @@
 
 <br>
 
-<img src="https://img.shields.io/badge/Version-5.0-00e5ff?style=for-the-badge&logo=semver">
-<img src="https://img.shields.io/badge/Themes-15-a855f7?style=for-the-badge&logo=materialdesign">
-<img src="https://img.shields.io/badge/Plugins-11-2ed573?style=for-the-badge&logo=gnometerminal">
-<img src="https://img.shields.io/badge/Menu_Options-34-ff4757?style=for-the-badge&logo=linux">
+<img src="https://img.shields.io/badge/Version-6.0-00e5ff?style=for-the-badge&logo=semver">
+<img src="https://img.shields.io/badge/Themes-22-a855f7?style=for-the-badge&logo=materialdesign">
+<img src="https://img.shields.io/badge/Plugins-14-2ed573?style=for-the-badge&logo=gnometerminal">
+<img src="https://img.shields.io/badge/Menu_Options-38-ff4757?style=for-the-badge&logo=linux">
 <img src="https://img.shields.io/badge/License-GNU-0088ff?style=for-the-badge&logo=gnu">
 
 <br>
