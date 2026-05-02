@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuinxOS — The Ultimate Termux Customization Suite</title>
+    <meta name="description" content="QuinxOS is the most feature-rich terminal optimization and customization suite for Termux. 34 menu options, 15 themes, plugin system, live dashboard, and more.">
+    <meta name="keywords" content="Termux, Termux theme, Termux customization, terminal, Linux, Android, QuinxOS, Shell, Zsh">
+    <meta name="author" content="Shineii86">
+    <meta property="og:title" content="QuinxOS — The Ultimate Termux Customization Suite">
+    <meta property="og:description" content="34 features. 15 themes. 11 plugins. One script.">
+    <meta property="og:type" content="website">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #1c2333;
+            --bg-card: #161b22;
+            --text-primary: #e6edf3;
+            --text-secondary: #8b949e;
+            --text-muted: #484f58;
+            --accent-cyan: #00e5ff;
+            --accent-magenta: #a855f7;
+            --accent-green: #2ed573;
+            --accent-red: #ff4757;
+            --accent-yellow: #ffa502;
+            --accent-blue: #1e90ff;
+            --border: #30363d;
+            --glow-cyan: rgba(0, 229, 255, 0.15);
+            --glow-magenta: rgba(168, 85, 247, 0.15);
+            --gradient-1: linear-gradient(135deg, #00e5ff 0%, #a855f7 100%);
+            --gradient-2: linear-gradient(135deg, #a855f7 0%, #ff4757 100%);
+            --gradient-3: linear-gradient(135deg, #2ed573 0%, #00e5ff 100%);
+            --radius: 12px;
+            --radius-sm: 8px;
+            --shadow: 0 8px 32px rgba(0,0,0,0.4);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            scroll-behavior: smooth;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent-cyan) var(--bg-secondary);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        ::selection {
+            background: var(--accent-cyan);
+            color: var(--bg-primary);
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-secondary); }
+        ::-webkit-scrollbar-thumb { background: var(--accent-cyan); border-radius: 4px; }
+
+        /* ─── Navigation ─────────────────────────────── */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(13, 17, 23, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            transition: var(--transition);
+        }
+
+        .navbar.scrolled {
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            font-size: 1.25rem;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .nav-logo .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--gradient-1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 900;
+            color: var(--bg-primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-cyan);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-cyan);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-cta {
+            background: var(--gradient-1) !important;
+            color: var(--bg-primary) !important;
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-weight: 600 !important;
+        }
+
+        .nav-cta::after { display: none !important; }
+
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* ─── Hero ───────────────────────────────────── */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 120px 2rem 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(ellipse at 30% 50%, var(--glow-cyan) 0%, transparent 50%),
+                        radial-gradient(ellipse at 70% 50%, var(--glow-magenta) 0%, transparent 50%);
+            animation: heroGlow 15s ease-in-out infinite alternate;
+        }
+
+        @keyframes heroGlow {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(-5%, 5%) rotate(3deg); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .hero-badge .dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 7vw, 5rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 0.6s ease-out 0.1s both;
+        }
+
+        .hero h1 .gradient {
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 2.5rem;
+            animation: fadeInUp 0.6s ease-out 0.2s both;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.6s ease-out 0.3s both;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: var(--gradient-1);
+            color: var(--bg-primary);
+            box-shadow: 0 4px 20px rgba(0, 229, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 229, 255, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent-cyan);
+            transform: translateY(-2px);
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 3rem;
+            justify-content: center;
+            margin-top: 4rem;
+            animation: fadeInUp 0.6s ease-out 0.4s both;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ─── Terminal Demo ───────────────────────────── */
+        .terminal-section {
+            padding: 80px 2rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .terminal {
+            max-width: 700px;
+            width: 100%;
+            background: var(--bg-secondary);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .terminal-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background: var(--bg-tertiary);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .terminal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .terminal-dot.red { background: #ff5f57; }
+        .terminal-dot.yellow { background: #febc2e; }
+        .terminal-dot.green { background: #28c840; }
+
+        .terminal-title {
+            margin-left: 8px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .terminal-body {
+            padding: 20px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            line-height: 1.8;
+            min-height: 300px;
+        }
+
+        .terminal-body .prompt { color: var(--accent-cyan); }
+        .terminal-body .cmd { color: var(--text-primary); }
+        .terminal-body .output { color: var(--text-secondary); }
+        .terminal-body .success { color: var(--accent-green); }
+        .terminal-body .highlight { color: var(--accent-yellow); }
+        .terminal-body .accent { color: var(--accent-magenta); }
+
+        /* ─── Sections ───────────────────────────────── */
+        .section {
+            padding: 100px 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-tag {
+            display: inline-block;
+            padding: 4px 14px;
+            background: var(--glow-cyan);
+            border: 1px solid rgba(0, 229, 255, 0.2);
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--accent-cyan);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+
+        .section-header h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* ─── Feature Grid ───────────────────────────── */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 2rem;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-1);
+            transform: scaleX(0);
+            transition: var(--transition);
+        }
+
+        .feature-card:hover {
+            border-color: rgba(0, 229, 255, 0.3);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+        }
+
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .feature-icon.cyan { background: rgba(0, 229, 255, 0.1); }
+        .feature-icon.magenta { background: rgba(168, 85, 247, 0.1); }
+        .feature-icon.green { background: rgba(46, 213, 115, 0.1); }
+        .feature-icon.yellow { background: rgba(255, 165, 2, 0.1); }
+        .feature-icon.red { background: rgba(255, 71, 87, 0.1); }
+        .feature-icon.blue { background: rgba(30, 144, 255, 0.1); }
+
+        .feature-card h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* ─── Theme Gallery ──────────────────────────── */
+        .themes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .theme-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .theme-card:hover {
+            border-color: var(--accent-cyan);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow);
+        }
+
+        .theme-preview {
+            height: 80px;
+            display: flex;
+            padding: 12px;
+            gap: 4px;
+        }
+
+        .theme-preview .color-bar {
+            flex: 1;
+            border-radius: 4px;
+        }
+
+        .theme-info {
+            padding: 16px;
+        }
+
+        .theme-info h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .theme-info span {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* ─── Plugin Table ───────────────────────────── */
+        .plugins-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .plugins-table th {
+            background: var(--bg-tertiary);
+            padding: 14px 20px;
+            text-align: left;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .plugins-table td {
+            padding: 14px 20px;
+            border-top: 1px solid var(--border);
+            font-size: 0.95rem;
+        }
+
+        .plugins-table tr:hover td {
+            background: rgba(0, 229, 255, 0.03);
+        }
+
+        .plugins-table code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--accent-cyan);
+            background: rgba(0, 229, 255, 0.08);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        /* ─── Install Steps ──────────────────────────── */
+        .install-block {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .install-block-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 20px;
+            background: var(--bg-tertiary);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .install-block-header span {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .copy-btn {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+
+        .copy-btn:hover {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+
+        .install-code {
+            padding: 20px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 2;
+            color: var(--text-primary);
+            overflow-x: auto;
+        }
+
+        .install-code .comment { color: var(--text-muted); }
+
+        /* ─── Menu Table ─────────────────────────────── */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+        }
+
+        .menu-item:hover {
+            border-color: rgba(0, 229, 255, 0.3);
+        }
+
+        .menu-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            min-width: 28px;
+        }
+
+        .menu-label {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* ─── Footer ─────────────────────────────────── */
+        .footer {
+            border-top: 1px solid var(--border);
+            padding: 60px 2rem 40px;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-cyan);
+        }
+
+        .footer p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .footer .heart { color: var(--accent-red); }
+
+        /* ─── Animations ─────────────────────────────── */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ─── Responsive ─────────────────────────────── */
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .nav-links.active {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 64px;
+                left: 0;
+                right: 0;
+                background: var(--bg-primary);
+                border-bottom: 1px solid var(--border);
+                padding: 1rem 2rem;
+                gap: 1rem;
+            }
+            .mobile-toggle { display: block; }
+            .hero-stats { gap: 1.5rem; }
+            .stat-number { font-size: 1.8rem; }
+            .features-grid { grid-template-columns: 1fr; }
+            .themes-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+            .menu-grid { grid-template-columns: 1fr; }
+            .section { padding: 60px 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">
+                <div class="logo-icon">Q</div>
+                QuinxOS
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#themes">Themes</a></li>
+                <li><a href="#plugins">Plugins</a></li>
+                <li><a href="#menu">Menu</a></li>
+                <li><a href="https://github.com/Shineii86/QuinxOS" class="nav-cta">GitHub ⭐</a></li>
+            </ul>
+            <button class="mobile-toggle" id="mobileToggle" aria-label="Menu">☰</button>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="dot"></span>
+                v5.0 — Now with Live Dashboard & Plugin System
+            </div>
+            <h1>
+                The Ultimate<br>
+                <span class="gradient">Termux Suite</span>
+            </h1>
+            <p>34 features. 15 themes. 11 plugins. One script. Transform your boring Termux terminal into a powerful, beautiful development environment.</p>
+            <div class="hero-actions">
+                <a href="#install" class="btn btn-primary">⚡ Quick Install</a>
+                <a href="https://github.com/Shineii86/QuinxOS" class="btn btn-secondary">📦 View on GitHub</a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat">
+                    <div class="stat-number">34</div>
+                    <div class="stat-label">Features</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">15</div>
+                    <div class="stat-label">Themes</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">11</div>
+                    <div class="stat-label">Plugins</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">1.8K</div>
+                    <div class="stat-label">Lines of Code</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Terminal Demo -->
+    <section class="terminal-section fade-in">
+        <div class="terminal">
+            <div class="terminal-header">
+                <div class="terminal-dot red"></div>
+                <div class="terminal-dot yellow"></div>
+                <div class="terminal-dot green"></div>
+                <span class="terminal-title">termux — bash</span>
+            </div>
+            <div class="terminal-body" id="terminalDemo">
+                <div><span class="prompt">$</span> <span class="cmd">git clone https://github.com/Shineii86/QuinxOS.git</span></div>
+                <div><span class="output">Cloning into 'QuinxOS'...</span></div>
+                <div><span class="success">✓</span> <span class="output">Done.</span></div>
+                <br>
+                <div><span class="prompt">$</span> <span class="cmd">cd QuinxOS && bash install.sh</span></div>
+                <br>
+                <div><span class="accent">╔═══════════════════════════════════════════════╗</span></div>
+                <div><span class="accent">║</span>  <span class="highlight">QUINXOS v5.0 — Termux Optimization Suite</span>  <span class="accent">║</span></div>
+                <div><span class="accent">╚═══════════════════════════════════════════════╝</span></div>
+                <br>
+                <div><span class="accent">┌──[14:32:07]</span> <span class="success">IP:192.168.1.5</span> <span class="output">BAT:85%</span> <span class="output">RAM:1.2G/4G</span></div>
+                <br>
+                <div><span class="accent">  [01]</span> <span class="success">Core Setup</span>        <span class="output">Install deps & fonts</span></div>
+                <div><span class="accent">  [08]</span> <span class="highlight">Theme Gallery</span>     <span class="output">15 color schemes</span></div>
+                <div><span class="accent">  [17]</span> <span class="success">Live Dashboard</span>    <span class="output">System monitor</span></div>
+                <div><span class="accent">  [28]</span> <span class="highlight">Quinx Shield</span>      <span class="output">Terminal lock</span></div>
+                <br>
+                <div><span class="prompt">Selection ❯</span> <span class="cmd" id="typingCursor">█</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="section" id="features">
+        <div class="section-header fade-in">
+            <span class="section-tag">Features</span>
+            <h2>Everything You Need</h2>
+            <p>From live system monitoring to biometric locks — QuinxOS has it all.</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card fade-in">
+                <div class="feature-icon cyan">🖥️</div>
+                <h3>Live Dashboard</h3>
+                <p>Full-screen real-time system monitor with CPU, RAM, battery, network, and top processes. Refreshes every 2 seconds.</p>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon magenta">🎨</div>
+                <h3>15 Theme Presets</h3>
+                <p>Cyber Midnight, Matrix Green, Gruvbox, Tokyo Night, Catppuccin, Nord, Synthwave, and 8 more handcrafted themes.</p>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon green">🧩</div>
+                <h3>Plugin System</h3>
+                <p>Drop .sh files in the plugins folder — auto-loaded on boot. 11 built-in plugins for weather, QR codes, passwords, and more.</p>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon red">🔐</div>
+                <h3>Quinx Shield</h3>
+                <p>Encrypted terminal lock with 3-attempt lockout, recovery keys, and standalone unlock script. Never get locked out.</p>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon yellow">🔍</div>
+                <h3>Command Palette</h3>
+                <p>Fuzzy-search across all 34 features, aliases, and plugins. Like VS Code, but for your terminal.</p>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon blue">📊</div>
+                <h3>Git Dashboard</h3>
+                <p>Full repo info at a glance — branch, commits, changes, stashes, tags, recent log, and changed files.</p>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon cyan">📌</div>
+                <h3>Persistent Header</h3>
+                <p>System info bar survives the clear command. Always see time, IP, battery, RAM, and git branch.</p>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon magenta">👤</div>
+                <h3>Profile System</h3>
+                <p>Multiple profiles for different contexts — Work, Personal, Hacking — each with separate theme, aliases, and plugins.</p>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon green">☁️</div>
+                <h3>Dotfiles Sync</h3>
+                <p>Push and pull your configs to a private GitHub repo. Restore your setup on any device instantly.</p>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon yellow">🎨</div>
+                <h3>Theme Builder</h3>
+                <p>Interactive color picker with 19 fields. Create unlimited custom themes and preview them live.</p>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon blue">📡</div>
+                <h3>Termux API Hooks</h3>
+                <p>Battery status, GPS location, clipboard, flashlight toggle, vibration — all from the menu.</p>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon red">⏱️</div>
+                <h3>QuinxBench</h3>
+                <p>Benchmark your device — CPU prime calculation, disk read/write speed, network latency. Star-rated scoring.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Themes -->
+    <section class="section" id="themes">
+        <div class="section-header fade-in">
+            <span class="section-tag">Themes</span>
+            <h2>15 Handcrafted Color Schemes</h2>
+            <p>From cyberpunk neon to nature-inspired calm. Plus, build your own with Theme Builder.</p>
+        </div>
+        <div class="themes-grid" id="themesGrid">
+            <!-- Populated by JS -->
+        </div>
+    </section>
+
+    <!-- Plugins -->
+    <section class="section" id="plugins">
+        <div class="section-header fade-in">
+            <span class="section-tag">Plugins</span>
+            <h2>11 Built-in Plugins</h2>
+            <p>Auto-loaded on terminal start. Create your own by dropping .sh files in the plugins folder.</p>
+        </div>
+        <div class="fade-in">
+            <table class="plugins-table">
+                <thead>
+                    <tr>
+                        <th>Command</th>
+                        <th>Plugin</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>quinx-weather London</code></td><td>Weather</td><td>Current weather for any city</td></tr>
+                    <tr><td><code>quinx-extract file.zip</code></td><td>Extract</td><td>Universal archive extractor (tar, zip, rar, 7z, gz, xz, zst)</td></tr>
+                    <tr><td><code>quinx-ports 192.168.1.1</code></td><td>Ports</td><td>Quick port scanner (SSH, HTTP, HTTPS, MySQL, PostgreSQL)</td></tr>
+                    <tr><td><code>quinx-calc '2+2'</code></td><td>Calculator</td><td>Math expressions with bc (supports decimals)</td></tr>
+                    <tr><td><code>quinx-qr 'URL'</code></td><td>QR Code</td><td>Generate QR codes from text or URLs</td></tr>
+                    <tr><td><code>quinx-timer 60</code></td><td>Timer</td><td>Countdown timer + stopwatch with Ctrl+C stop</td></tr>
+                    <tr><td><code>quinx-pass 20</code></td><td>Password</td><td>Random password generator (copies to clipboard)</td></tr>
+                    <tr><td><code>quinx-note add 'text'</code></td><td>Notes</td><td>Quick note-taking (add, list, search, clear)</td></tr>
+                    <tr><td><code>quinx-color '#ff5733'</code></td><td>Color Info</td><td>Color converter with HEX, RGB, and ANSI preview</td></tr>
+                    <tr><td><code>quinx-report</code></td><td>System Report</td><td>Full system report saved to file</td></tr>
+                    <tr><td><code>quinx-define 'ephemeral'</code></td><td>Dictionary</td><td>English dictionary lookup via API</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Install -->
+    <section class="section" id="install">
+        <div class="section-header fade-in">
+            <span class="section-tag">Install</span>
+            <h2>Get Started in 30 Seconds</h2>
+            <p>One command. A wizard guides you through the rest.</p>
+        </div>
+        <div class="install-block fade-in">
+            <div class="install-block-header">
+                <span>Terminal</span>
+                <button class="copy-btn" onclick="copyInstall()">Copy</button>
+            </div>
+            <div class="install-code" id="installCode">
+<span class="comment"># Update packages</span>
+pkg update && pkg upgrade -y
+
+<span class="comment"># Install git</span>
+pkg install git -y
+
+<span class="comment"># Clone QuinxOS</span>
+git clone https://github.com/Shineii86/QuinxOS.git
+
+<span class="comment"># Run installer</span>
+cd QuinxOS && bash install.sh
+            </div>
+        </div>
+    </section>
+
+    <!-- Full Menu -->
+    <section class="section" id="menu">
+        <div class="section-header fade-in">
+            <span class="section-tag">Menu</span>
+            <h2>34 Options. One Menu.</h2>
+            <p>Everything accessible from a single, organized interface.</p>
+        </div>
+        <div class="menu-grid fade-in">
+            <div class="menu-item"><span class="menu-num">01</span><span class="menu-label">Core Setup</span></div>
+            <div class="menu-item"><span class="menu-num">02</span><span class="menu-label">Zsh Config</span></div>
+            <div class="menu-item"><span class="menu-num">03</span><span class="menu-label">Switch → Zsh</span></div>
+            <div class="menu-item"><span class="menu-num">04</span><span class="menu-label">Switch → Bash</span></div>
+            <div class="menu-item"><span class="menu-num">05</span><span class="menu-label">Banner Style (3)</span></div>
+            <div class="menu-item"><span class="menu-num">06</span><span class="menu-label">Custom Theme</span></div>
+            <div class="menu-item"><span class="menu-num">07</span><span class="menu-label">Zsh Plugins</span></div>
+            <div class="menu-item"><span class="menu-num">08</span><span class="menu-label">Theme Gallery (15)</span></div>
+            <div class="menu-item"><span class="menu-num">09</span><span class="menu-label">Theme Builder</span></div>
+            <div class="menu-item"><span class="menu-num">10</span><span class="menu-label">Color Export</span></div>
+            <div class="menu-item"><span class="menu-num">11</span><span class="menu-label">Dev Tools</span></div>
+            <div class="menu-item"><span class="menu-num">12</span><span class="menu-label">Quick Commands</span></div>
+            <div class="menu-item"><span class="menu-num">13</span><span class="menu-label">Aliases Manager</span></div>
+            <div class="menu-item"><span class="menu-num">14</span><span class="menu-label">Plugin System</span></div>
+            <div class="menu-item"><span class="menu-num">15</span><span class="menu-label">Custom ASCII Art</span></div>
+            <div class="menu-item"><span class="menu-num">16</span><span class="menu-label">Login Sound</span></div>
+            <div class="menu-item"><span class="menu-num">17</span><span class="menu-label">Live Dashboard</span></div>
+            <div class="menu-item"><span class="menu-num">18</span><span class="menu-label">Git Dashboard</span></div>
+            <div class="menu-item"><span class="menu-num">19</span><span class="menu-label">System Info</span></div>
+            <div class="menu-item"><span class="menu-num">20</span><span class="menu-label">Network Info</span></div>
+            <div class="menu-item"><span class="menu-num">21</span><span class="menu-label">QuinxBench</span></div>
+            <div class="menu-item"><span class="menu-num">22</span><span class="menu-label">Profile System</span></div>
+            <div class="menu-item"><span class="menu-num">23</span><span class="menu-label">Dotfiles Sync</span></div>
+            <div class="menu-item"><span class="menu-num">24</span><span class="menu-label">Termux API Hooks</span></div>
+            <div class="menu-item"><span class="menu-num">25</span><span class="menu-label">MOTD Editor</span></div>
+            <div class="menu-item"><span class="menu-num">26</span><span class="menu-label">Backup/Restore</span></div>
+            <div class="menu-item"><span class="menu-num">27</span><span class="menu-label">Startup Timer</span></div>
+            <div class="menu-item"><span class="menu-num">28</span><span class="menu-label">Quinx Shield</span></div>
+            <div class="menu-item"><span class="menu-num">29</span><span class="menu-label">Fingerprint Lock</span></div>
+            <div class="menu-item"><span class="menu-num">30</span><span class="menu-label">Remove Lock</span></div>
+            <div class="menu-item"><span class="menu-num">31</span><span class="menu-label">Command Palette</span></div>
+            <div class="menu-item"><span class="menu-num">32</span><span class="menu-label">Update QuinxOS</span></div>
+            <div class="menu-item"><span class="menu-num">33</span><span class="menu-label">Uninstall</span></div>
+            <div class="menu-item"><span class="menu-num">34</span><span class="menu-label">RGB Animation</span></div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="https://github.com/Shineii86/QuinxOS">GitHub</a>
+                <a href="https://github.com/Shineii86/QuinxOS/releases">Releases</a>
+                <a href="https://github.com/Shineii86/QuinxOS/issues">Issues</a>
+                <a href="https://github.com/Shineii86/QuinxOS/blob/main/LICENSE">License</a>
+                <a href="https://github.com/Shineii86">Shineii86</a>
+            </div>
+            <p>Built with <span class="heart">❤️</span> by <strong>Shineii86</strong> • Powered by Bash • Made for Termux</p>
+        </div>
+    </footer>
+
+    <script>
+        // ─── Navbar scroll effect ─────────────────────
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        // ─── Mobile menu ─────────────────────────────
+        document.getElementById('mobileToggle').addEventListener('click', () => {
+            document.getElementById('navLinks').classList.toggle('active');
+        });
+
+        // ─── Fade-in on scroll ───────────────────────
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        // ─── Terminal cursor blink ───────────────────
+        const cursor = document.getElementById('typingCursor');
+        setInterval(() => {
+            cursor.style.opacity = cursor.style.opacity === '0' ? '1' : '0';
+        }, 530);
+
+        // ─── Theme gallery ───────────────────────────
+        const themes = [
+            { name: 'Cyber Midnight', vibe: 'Deep space neon', colors: ['#0d1117','#00e5ff','#a855f7','#ff4757','#2ed573','#1e90ff'] },
+            { name: 'Matrix Green', vibe: 'Classic hacker', colors: ['#000000','#00ff41','#003b00','#ff0000','#ffff00','#00ff41'] },
+            { name: 'Solar Flare', vibe: 'Warm dark + orange', colors: ['#1a1a2e','#ff6b35','#ffa502','#ff4757','#4ecdc4','#ffc048'] },
+            { name: 'Arctic Blue', vibe: 'Cool blue / ice', colors: ['#0e1621','#66d9ef','#5e81ac','#bf616a','#a3be8c','#88c0d0'] },
+            { name: 'Purple Haze', vibe: 'Purple + magenta', colors: ['#130f26','#ff79c6','#a855f7','#ff5555','#50fa7b','#6272a4'] },
+            { name: 'Dracacula', vibe: 'Dracula-inspired', colors: ['#282a36','#ff79c6','#bd93f9','#ff5555','#50fa7b','#8be9fd'] },
+            { name: 'Nord', vibe: 'Arctic north-blue', colors: ['#2e3440','#88c0d0','#81a1c1','#bf616a','#a3be8c','#b48ead'] },
+            { name: 'Gruvbox', vibe: 'Retro groove warm', colors: ['#282828','#d79921','#458588','#cc241d','#98971a','#b16286'] },
+            { name: 'Tokyo Night', vibe: 'Clean VS Code dark', colors: ['#1a1b26','#7aa2f7','#bb9af7','#f7768e','#9ece6a','#7dcfff'] },
+            { name: 'Catppuccin', vibe: 'Smooth pastel dark', colors: ['#1e1e2e','#f5c2e7','#89b4fa','#f38ba8','#a6e3a1','#94e2d5'] },
+            { name: 'Everforest', vibe: 'Nature green dark', colors: ['#2b3339','#d699b6','#7fbbb3','#e67e80','#a7c080','#83c092'] },
+            { name: 'Monokai', vibe: 'Classic code editor', colors: ['#272822','#ae81ff','#66d9ef','#f92672','#a6e22e','#f4bf75'] },
+            { name: 'Synthwave', vibe: 'Neon retro 80s', colors: ['#262335','#ff7edb','#03edf9','#fe4450','#72f1b8','#fede5d'] },
+            { name: 'Rosé Pine', vibe: 'Gentle rose/gold', colors: ['#191724','#c4a7e7','#9ccfd8','#eb6f92','#31748f','#f6c177'] },
+            { name: 'Kanagawa', vibe: 'Japanese ink dark', colors: ['#1f1f28','#957fb8','#7e9cd8','#c34043','#76946a','#c0a36e'] },
+        ];
+
+        const themesGrid = document.getElementById('themesGrid');
+        themes.forEach(theme => {
+            const card = document.createElement('div');
+            card.className = 'theme-card fade-in';
+            card.innerHTML = `
+                <div class="theme-preview">
+                    ${theme.colors.map(c => `<div class="color-bar" style="background:${c}"></div>`).join('')}
+                </div>
+                <div class="theme-info">
+                    <h4>${theme.name}</h4>
+                    <span>${theme.vibe}</span>
+                </div>
+            `;
+            themesGrid.appendChild(card);
+            observer.observe(card);
+        });
+
+        // ─── Copy install command ────────────────────
+        function copyInstall() {
+            const text = document.getElementById('installCode').innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                btn.textContent = 'Copied!';
+                setTimeout(() => btn.textContent = 'Copy', 2000);
+            });
+        }
+
+        // ─── Smooth scroll for nav links ─────────────
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    document.getElementById('navLinks').classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
