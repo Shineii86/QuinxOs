@@ -12,7 +12,7 @@
 <img src="https://img.shields.io/badge/Themes-22-a855f7?style=for-the-badge&logo=materialdesign">
 <img src="https://img.shields.io/badge/Plugins-14-2ed573?style=for-the-badge&logo=gnometerminal">
 <img src="https://img.shields.io/badge/Menu_Options-38-ff4757?style=for-the-badge&logo=linux">
-<img src="https://img.shields.io/badge/License-GNU-0088ff?style=for-the-badge&logo=gnu">
+<img src="https://img.shields.io/badge/License-GPL--3.0-0088ff?style=for-the-badge&logo=gnu">
 
 <br>
 
@@ -21,10 +21,11 @@
 <img src="https://img.shields.io/badge/Termux-Required-000000?style=flat-square&logo=android">
 <img src="https://img.shields.io/github/stars/Shineii86/QuinxOS?style=flat-square&logo=github">
 <img src="https://img.shields.io/github/forks/Shineii86/QuinxOS?style=flat-square&logo=github">
+<img src="https://img.shields.io/github/last-commit/Shineii86/QuinxOS?style=flat-square&logo=github">
 
 <br>
 
-[**📥 Install**](#-installation) &nbsp;|&nbsp; [**🎨 Themes**](#-theme-gallery) &nbsp;|&nbsp; [**🧩 Plugins**](#-plugin-system) &nbsp;|&nbsp; [**📖 Docs**](#-all-features) &nbsp;|&nbsp; [**🤝 Contribute**](#-contributing)
+[**📥 Install**](#-installation) &nbsp;|&nbsp; [**🎨 Themes**](#-theme-gallery) &nbsp;|&nbsp; [**🧩 Plugins**](#-plugin-system) &nbsp;|&nbsp; [**📖 Docs**](https://shineii86.github.io/QuinxOS/) &nbsp;|&nbsp; [**🤝 Contribute**](CONTRIBUTING.md) &nbsp;|&nbsp; [**📋 Changelog**](CHANGELOG.md)
 
 </div>
 
@@ -32,7 +33,7 @@
 
 ## What is QuinxOS?
 
-**QuinxOS** is the most feature-rich terminal optimization and customization suite for **Termux**. It transforms your boring terminal into a polished, secure, and powerful development environment — with **34 menu options**, **15 built-in themes**, a **plugin system**, **live dashboard**, **biometric lock**, and much more.
+**QuinxOS** is the most feature-rich terminal optimization and customization suite for **Termux**. It transforms your boring terminal into a polished, secure, and powerful development environment — with **38 menu options**, **22 built-in themes**, a **plugin system**, **live dashboard**, **biometric lock**, **anime art**, and much more.
 
 > One script. One command. Total transformation.
 
@@ -50,28 +51,32 @@ cd QuinxOS && bash install.sh
 
 ---
 
-## 🎯 What's New in v5.0
+## 🎯 What's New in v6.0
 
 | Feature | Description |
 |:--------|:------------|
-| 🖥️ **Live Dashboard** | Full-screen real-time system monitor — CPU, RAM, battery, network, processes |
-| 🔐 **Fingerprint Lock** | Biometric authentication via Termux API |
-| 🔍 **Command Palette** | Fuzzy-search across all features, aliases, and plugins |
-| ☁️ **Dotfiles Sync** | Push/pull your configs to/from a private GitHub repo |
-| 🎨 **Theme Builder** | Interactive color picker — create custom themes with live preview |
-| 👤 **Profile System** | Multiple profiles (Work, Personal, Hacking) with separate configs |
-| 📊 **Git Dashboard** | Full repo info — branch, commits, changes, stashes, tags |
-| 📡 **Termux API Hooks** | Battery status, GPS location, clipboard, torch, vibration |
-| ⏱️ **QuinxBench** | System benchmark — CPU, disk, network speed scoring |
-| ⏲️ **Startup Timer** | Measure how fast your shell loads |
-| 📦 **Color Export** | Export themes to Windows Terminal, iTerm2, Alacritty, Kitty |
-| 🧩 **8 New Plugins** | Calculator, QR code, timer, password gen, notes, color info, dictionary, system report |
+| 🎨 **Anime Theme Gallery** | 7 new anime-inspired color schemes — Evangelion, Gojo, Levi, Zero Two, Marin, Bocchi, Power |
+| 🖼️ **Anime ASCII Art** | 10 anime character ASCII banners with random display on terminal start |
+| 💬 **Anime Quotes** | Motivational anime quotes shown on each new terminal session |
+| 🤓 **Fun Facts** | Random fun facts displayed alongside your daily quote |
+| 🐙 **GitHub Integration** | One-command repo init, commit, and push — no need to leave the terminal |
+| 🎮 **ASCII Games** | Snake, Tetris, and Pong playable right in your terminal |
+| 🤖 **AI Assistant** | Lightweight CLI assistant for quick answers and jokes |
+| 🔍 **Code Snippets** | Save, search, and manage your frequently used code snippets |
+| 📝 **Quick Notes v2** | Enhanced note system with categories, search, and timestamps |
+| ⚙️ **System Tweaks** | Performance optimizations and developer-friendly shell defaults |
+
+### Previous Releases
+
+See [CHANGELOG.md](CHANGELOG.md) for the full version history.
 
 ---
 
 ## 🎨 Theme Gallery
 
-**15 handcrafted color schemes** — from cyberpunk neon to nature-inspired calm.
+**22 handcrafted color schemes** — from cyberpunk neon to anime-inspired palettes.
+
+### Classic Themes (15)
 
 | # | Theme | Vibe | # | Theme | Vibe |
 |:-:|:------|:-----|:-:|:------|:-----|
@@ -84,7 +89,16 @@ cd QuinxOS && bash install.sh
 | 7 | **Nord** | Arctic north-blue | 15 | **Kanagawa** | Japanese ink |
 | 8 | **Gruvbox** | Retro groove | | | |
 
-> 💡 **Theme Builder** lets you create unlimited custom themes beyond these 15.
+### Anime Themes (7)
+
+| # | Theme | Inspiration | # | Theme | Inspiration |
+|:-:|:------|:------------|:-:|:------|:------------|
+| 16 | **Evangelion** | EVA Unit-01 purple/green | 20 | **Marin Kitagawa** | Gyaru pink/bright |
+| 17 | **Gojo Satoru** | Limitless blue/purple | 21 | **Bocchi** | Shy pink/guitar |
+| 18 | **Levi Ackerman** | Clean grey/military | 22 | **Power** | Blood red/chaos |
+| 19 | **Zero Two** | Crimson/pink darling | | | |
+
+> 💡 **Theme Builder** lets you create unlimited custom themes beyond these 22.
 
 ---
 
@@ -92,7 +106,7 @@ cd QuinxOS && bash install.sh
 
 Drop `.sh` files in `.object/plugins/` — they auto-load on terminal start.
 
-### Built-in Plugins (11)
+### Built-in Plugins (14)
 
 | Command | Plugin | What It Does |
 |:--------|:-------|:-------------|
@@ -107,6 +121,9 @@ Drop `.sh` files in `.object/plugins/` — they auto-load on terminal start.
 | `quinx-color '#hex'` | Color Info | Color converter with preview |
 | `quinx-report` | Sys Report | Full system report (saved to file) |
 | `quinx-define <word>` | Dictionary | English dictionary lookup |
+| `quinx-gh <cmd>` | GitHub | Quick git init, commit, and push |
+| `quinx-game` | Games | Play Snake, Tetris, or Pong in terminal |
+| `quinx-ai 'query'` | AI Assistant | Quick answers, jokes, and trivia |
 
 ### Creating Your Own
 
@@ -140,7 +157,7 @@ Full-screen real-time system monitor (refreshes every 2 seconds):
 
 ```
 ╔══════════════════════════════════════════════════════════╗
-║              QUINXOS LIVE DASHBOARD v5.0                 ║
+║              QUINXOS LIVE DASHBOARD v6.0                 ║
 ╠══════════════════════════════════════════════════════════╣
 ║  ▸ Time:      2026-05-02 14:32:07                       ║
 ║  ▸ CPU:       12%   Load: 0.5 0.3 0.2                   ║
@@ -185,23 +202,25 @@ Export any QuinxOS theme to work in other terminals:
 
 | # | Feature | # | Feature |
 |:-:|:--------|:-:|:--------|
-| 01 | Core Setup | 18 | Git Dashboard |
-| 02 | Zsh Config | 19 | System Info |
-| 03 | Switch → Zsh | 20 | Network Info |
-| 04 | Switch → Bash | 21 | QuinxBench |
-| 05 | Banner Style (3) | 22 | Profile System |
-| 06 | Custom Theme | 23 | Dotfiles Sync |
-| 07 | Zsh Plugins | 24 | Termux API Hooks |
-| 08 | Theme Gallery (15) | 25 | MOTD Editor |
-| 09 | Theme Builder | 26 | Backup/Restore |
-| 10 | Color Export | 27 | Startup Timer |
-| 11 | Dev Tools | 28 | Quinx Shield |
-| 12 | Quick Commands | 29 | Fingerprint Lock |
-| 13 | Aliases Manager | 30 | Remove Lock |
-| 14 | Plugin System | 31 | Command Palette |
-| 15 | Custom ASCII Art | 32 | Update |
-| 16 | Login Sound | 33 | Uninstall |
-| 17 | Live Dashboard | 34 | RGB Animation |
+| 01 | Core Setup | 20 | Network Info |
+| 02 | Zsh Config | 21 | QuinxBench |
+| 03 | Switch → Zsh | 22 | Profile System |
+| 04 | Switch → Bash | 23 | Dotfiles Sync |
+| 05 | Banner Style (3) | 24 | Termux API Hooks |
+| 06 | Custom Theme | 25 | MOTD Editor |
+| 07 | Zsh Plugins | 26 | Backup/Restore |
+| 08 | Theme Gallery (22) | 27 | Startup Timer |
+| 09 | Theme Builder | 28 | Quinx Shield |
+| 10 | Color Export | 29 | Fingerprint Lock |
+| 11 | Dev Tools | 30 | Remove Lock |
+| 12 | Quick Commands | 31 | Command Palette |
+| 13 | Aliases Manager | 32 | Update |
+| 14 | Plugin System | 33 | Uninstall |
+| 15 | Custom ASCII Art | 34 | RGB Animation |
+| 16 | Login Sound | 35 | GitHub Integration |
+| 17 | Live Dashboard | 36 | ASCII Games |
+| 18 | Git Dashboard | 37 | AI Assistant |
+| 19 | System Info | 38 | Code Snippets |
 
 ---
 
@@ -262,19 +281,17 @@ Each profile stores: theme, banner, aliases, zshrc, plugins.
 
 ## 🤝 Contributing
 
-Contributions are welcome! Here's how:
+We love contributions! Whether it's a new theme, plugin, bug fix, or documentation improvement — every bit helps.
 
-1. **Fork** this repository
-2. **Create** a feature branch (`git checkout -b feature/amazing`)
-3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
-4. **Push** to the branch (`git push origin feature/amazing`)
-5. **Open** a Pull Request
+See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 
-### Ideas for Contributions
-- New themes (submit `.colors` files)
-- New plugins (submit `.sh` files)
-- Bug fixes and improvements
-- Documentation translations
+### Quick Start
+
+1. **Fork** → **Clone** → **Branch** (`git checkout -b feature/amazing`)
+2. Make your changes
+3. **Commit** (`git commit -m 'feat: add amazing feature'`)
+4. **Push** (`git push origin feature/amazing`)
+5. Open a **Pull Request**
 
 ---
 
@@ -282,12 +299,14 @@ Contributions are welcome! Here's how:
 
 | Metric | Value |
 |:-------|:------|
-| Menu Options | 34 |
-| Color Themes | 15 |
-| Built-in Plugins | 11 |
+| Menu Options | 38 |
+| Color Themes | 22 |
+| Built-in Plugins | 14 |
 | Shell Supported | Zsh + Bash |
-| Install Script | ~1,800 lines |
+| Install Script | ~2,000+ lines |
 | Dependencies | Pure Bash (no Python/Node required for core) |
+| Anime ASCII Art | 10 characters |
+| Anime Themes | 7 palettes |
 
 ---
 
