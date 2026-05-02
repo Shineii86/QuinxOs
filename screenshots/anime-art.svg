@@ -39,6 +39,7 @@
   <text x="40" y="495" fill="#8b949e" font-size="10">  [1] Gojo  [2] Levi  [3] Zero Two  [4] Eren  [5] Naruto</text>
   <text x="40" y="510" fill="#8b949e" font-size="10">  [6] Luffy  [7] Goku  [8] Spike  [9] Guts  [10] Random</text>
   <!-- Header -->
-  <text x="40" y="545" fill="#8b949e" font-size="10">┌──[21:36:07] IP:192.168.1.5 BAT:85% RAM:1.2G/4G Git:[main]───────┘</text>
+  <rect x="40" y="535" width="720" height="18" rx="4" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+  <text x="55" y="548" fill="#8b949e" font-size="10">[21:36:07] IP:192.168.1.5 BAT:85% RAM:1.2G/4G Git:[main]</text>
   <text x="40" y="580" fill="#484f58" font-size="9">QuinxOS v6.0 • 10 anime ASCII art characters • New on each terminal start</text>
 </svg>
